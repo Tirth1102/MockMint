@@ -1,0 +1,2062 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+--paper:#f2efe8;--surface:#fffdf9;--surface2:#f7f4ed;--line:rgba(18,20,24,.11);--line2:rgba(18,20,24,.06);
+--ink:#15171b;--ink2:#5c6169;--ink3:#8b9099;--accent:#b0501e;--accent2:#f0e2d6;
+--ok:#2c7a5b;--okS:#e2f0ea;--warn:#b5860f;--warnS:#f6eed6;--bad:#a93a31;--badS:#f7e4e1;--info:#39548f;--infoS:#e4e9f5;
+--shadow:rgba(18,20,24,.07);--sh2:rgba(18,20,24,.13);
+}
+[data-cattheme="dark"]{
+--paper:#0f1114;--surface:#171a1f;--surface2:#1e2228;--line:rgba(255,255,255,.11);--line2:rgba(255,255,255,.06);
+--ink:#ecebe6;--ink2:#9aa0aa;--ink3:#6c737d;--accent:#e08a4e;--accent2:#33261c;
+--ok:#5cc196;--okS:#17281f;--warn:#e0b64a;--warnS:#2a2415;--bad:#e4796d;--badS:#2c1a18;--info:#8fabe6;--infoS:#1a2032;
+--shadow:rgba(0,0,0,.4);--sh2:rgba(0,0,0,.55);
+}
+body{margin:0;background:var(--paper);-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--ink);text-decoration:underline}
+input,button,select,textarea{font-family:inherit}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+::placeholder{color:var(--ink3)}
+@keyframes catfade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes catpop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+@keyframes catpulse{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes catgrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:var(--paper);color:var(--ink);font-family:Manrope,system-ui,sans-serif;font-size:14px">
+
+<sc-if value="{{ isAuth }}" hint-placeholder-val="{{ true }}">
+<div style="display:grid;grid-template-columns:1.02fr .98fr;min-height:100vh">
+  <div style="background:var(--ink);color:var(--paper);padding:56px 60px;display:flex;flex-direction:column;justify-content:space-between;min-height:100vh">
+    <div style="display:flex;align-items:center;gap:11px">
+      <div style="width:30px;height:30px;border-radius:8px;background:var(--accent);display:grid;place-items:center;font:800 13px Manrope,sans-serif;color:#fff">M</div>
+      <div style="font:700 15px Manrope,sans-serif;letter-spacing:-.01em">MockMint</div>
+    </div>
+    <div style="max-width:520px">
+      <div style="font:400 12px/1 'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;opacity:.55;margin-bottom:22px">Previous year papers · 2015—2025</div>
+      <h1 style="font:400 58px/1.02 'Instrument Serif',Georgia,serif;letter-spacing:-.02em;margin:0 0 20px;text-wrap:pretty">Sit the paper<br>under real pressure.<br><span style="font-style:italic;color:var(--accent)">Then read the pattern.</span></h1>
+      <p style="font:400 15px/1.65 Manrope,sans-serif;opacity:.62;margin:0;max-width:420px;text-wrap:pretty">A full-length CAT environment with sectional timers, a live question palette, and post-test analysis that goes down to the question.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;padding-top:30px;border-top:1px solid rgba(255,255,255,.12)">
+      <div><div style="font:700 26px 'JetBrains Mono',monospace">33</div><div style="font:500 12px Manrope,sans-serif;opacity:.5;margin-top:4px">Papers &amp; slots</div></div>
+      <div><div style="font:700 26px 'JetBrains Mono',monospace">2,178</div><div style="font:500 12px Manrope,sans-serif;opacity:.5;margin-top:4px">Questions</div></div>
+      <div><div style="font:700 26px 'JetBrains Mono',monospace">41k</div><div style="font:500 12px Manrope,sans-serif;opacity:.5;margin-top:4px">Attempts logged</div></div>
+    </div>
+  </div>
+
+  <div style="display:grid;place-items:center;padding:48px 40px">
+    <div style="width:100%;max-width:392px;animation:catfade .4s ease">
+      <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <h2 style="font:700 26px/1.15 Manrope,sans-serif;letter-spacing:-.02em;margin:0 0 6px">Welcome back</h2>
+        <p style="font:400 14px/1.5 Manrope,sans-serif;color:var(--ink2);margin:0 0 26px">Pick up where you left off.</p>
+        <label style="display:block;font:600 12px Manrope,sans-serif;color:var(--ink2);margin-bottom:7px">Email</label>
+        <input type="email" value="{{ authEmail }}" onChange="{{ setEmail }}" placeholder="you@email.com" style="width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px;margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px">
+          <label style="font:600 12px Manrope,sans-serif;color:var(--ink2)">Password</label>
+          <button onClick="{{ goForgot }}" style="background:none;border:none;padding:0;font:600 12px Manrope,sans-serif;color:var(--accent);cursor:pointer">Forgot?</button>
+        </div>
+        <input type="password" value="{{ authPass }}" onChange="{{ setPass }}" placeholder="••••••••" style="width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px;margin-bottom:16px">
+        <div style="background:var(--surface2);border:1px solid var(--line2);border-radius:10px;padding:13px 15px;margin-bottom:18px">
+          <div style="font:700 10.5px 'JetBrains Mono',monospace;letter-spacing:.09em;text-transform:uppercase;color:var(--ink3);margin-bottom:9px">Demo credentials</div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;gap:8px;align-items:baseline"><span style="font:600 11.5px Manrope,sans-serif;color:var(--ink2);width:58px;flex:none">Student</span><span style="font:500 11.5px 'JetBrains Mono',monospace;color:var(--ink)">aarav@example.com · demo1234</span></div>
+            <div style="display:flex;gap:8px;align-items:baseline"><span style="font:600 11.5px Manrope,sans-serif;color:var(--ink2);width:58px;flex:none">Admin</span><span style="font:500 11.5px 'JetBrains Mono',monospace;color:var(--ink)">admin@mockmint.in · MockMint@2026</span></div>
+          </div>
+          <button onClick="{{ fillAdmin }}" style="margin-top:11px;background:transparent;border:1px solid var(--line);border-radius:7px;padding:6px 11px;font:600 11.5px Manrope,sans-serif;color:var(--ink);cursor:pointer">Use admin credentials</button>
+        </div>
+        <sc-if value="{{ authError }}" hint-placeholder-val="">
+          <div style="background:var(--badS);color:var(--bad);border-radius:9px;padding:10px 12px;font:600 12.5px Manrope,sans-serif;margin-bottom:14px">{{ authError }}</div>
+        </sc-if>
+        <button onClick="{{ login }}" style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:11px;padding:13px;font:700 14.5px Manrope,sans-serif;cursor:pointer;box-shadow:0 2px 8px var(--shadow)" style-hover="filter:brightness(1.08)">Sign in</button>
+        <p style="font:400 13px Manrope,sans-serif;color:var(--ink2);text-align:center;margin:20px 0 0">No account? <button onClick="{{ goSignup }}" style="background:none;border:none;padding:0;font:700 13px Manrope,sans-serif;color:var(--accent);cursor:pointer">Create one</button></p>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isSignup }}" hint-placeholder-val="">
+      <div>
+        <h2 style="font:700 26px/1.15 Manrope,sans-serif;letter-spacing:-.02em;margin:0 0 6px">Create your account</h2>
+        <p style="font:400 14px/1.5 Manrope,sans-serif;color:var(--ink2);margin:0 0 26px">Free. Every paper, every slot.</p>
+        <label style="display:block;font:600 12px Manrope,sans-serif;color:var(--ink2);margin-bottom:7px">Full name</label>
+        <input value="{{ authName }}" onChange="{{ setName }}" placeholder="Aarav Sharma" style="width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px;margin-bottom:16px">
+        <label style="display:block;font:600 12px Manrope,sans-serif;color:var(--ink2);margin-bottom:7px">Email</label>
+        <input type="email" value="{{ authEmail }}" onChange="{{ setEmail }}" placeholder="you@email.com" style="width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px;margin-bottom:16px">
+        <label style="display:block;font:600 12px Manrope,sans-serif;color:var(--ink2);margin-bottom:7px">Password</label>
+        <input type="password" value="{{ authPass }}" onChange="{{ setPass }}" placeholder="8+ characters" style="width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px;margin-bottom:10px">
+        <div style="display:flex;gap:5px;margin-bottom:20px">
+          <div style="height:4px;flex:1;border-radius:2px;background:{{ pw1 }}"></div>
+          <div style="height:4px;flex:1;border-radius:2px;background:{{ pw2 }}"></div>
+          <div style="height:4px;flex:1;border-radius:2px;background:{{ pw3 }}"></div>
+        </div>
+        <sc-if value="{{ authError }}" hint-placeholder-val="">
+          <div style="background:var(--badS);color:var(--bad);border-radius:9px;padding:10px 12px;font:600 12.5px Manrope,sans-serif;margin-bottom:14px">{{ authError }}</div>
+        </sc-if>
+        <button onClick="{{ signup }}" style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:11px;padding:13px;font:700 14.5px Manrope,sans-serif;cursor:pointer">Create account</button>
+        <p style="font:400 13px Manrope,sans-serif;color:var(--ink2);text-align:center;margin:20px 0 0">Already registered? <button onClick="{{ goLogin }}" style="background:none;border:none;padding:0;font:700 13px Manrope,sans-serif;color:var(--accent);cursor:pointer">Sign in</button></p>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isForgot }}" hint-placeholder-val="">
+      <div>
+        <h2 style="font:700 26px/1.15 Manrope,sans-serif;letter-spacing:-.02em;margin:0 0 6px">Reset password</h2>
+        <p style="font:400 14px/1.5 Manrope,sans-serif;color:var(--ink2);margin:0 0 26px">We'll email you a secure link that expires in 30 minutes.</p>
+        <label style="display:block;font:600 12px Manrope,sans-serif;color:var(--ink2);margin-bottom:7px">Email</label>
+        <input type="email" value="{{ authEmail }}" onChange="{{ setEmail }}" placeholder="you@email.com" style="width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px;margin-bottom:20px">
+        <button onClick="{{ sendReset }}" style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:11px;padding:13px;font:700 14.5px Manrope,sans-serif;cursor:pointer">Send reset link</button>
+        <p style="font:400 13px Manrope,sans-serif;color:var(--ink2);text-align:center;margin:20px 0 0"><button onClick="{{ goLogin }}" style="background:none;border:none;padding:0;font:700 13px Manrope,sans-serif;color:var(--accent);cursor:pointer">Back to sign in</button></p>
+      </div>
+      </sc-if>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isShell }}" hint-placeholder-val="">
+<div style="display:flex;min-height:100vh;align-items:stretch">
+  <aside style="flex:0 0 244px;background:var(--surface);border-right:1px solid var(--line);padding:22px 16px;display:flex;flex-direction:column;gap:20px;position:sticky;top:0;height:100vh">
+    <div style="display:flex;align-items:center;gap:10px;padding:0 8px">
+      <div style="width:28px;height:28px;border-radius:8px;background:var(--accent);display:grid;place-items:center;font:800 13px Manrope,sans-serif;color:#fff">M</div>
+      <div style="font:700 14.5px Manrope,sans-serif;letter-spacing:-.01em">MockMint</div>
+    </div>
+    <nav style="display:flex;flex-direction:column;gap:2px">
+      <div style="font:700 10.5px 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);padding:6px 10px 4px">Student</div>
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="6">
+        <button onClick="{{ n.go }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 10px;border:none;border-radius:9px;cursor:pointer;font:600 13.5px Manrope,sans-serif;background:{{ n.bg }};color:{{ n.fg }}" style-hover="background:var(--surface2)">
+          <span style="font-size:14px;width:17px;display:inline-block;text-align:center;opacity:.9">{{ n.icon }}</span>{{ n.label }}
+          <sc-if value="{{ n.badge }}" hint-placeholder-val="">
+            <span style="margin-left:auto;font:700 10.5px 'JetBrains Mono',monospace;background:var(--accent2);color:var(--accent);padding:2px 6px;border-radius:5px">{{ n.badge }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+      <sc-if value="{{ isAdmin }}" hint-placeholder-val="">
+      <div>
+        <div style="font:700 10.5px 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);padding:16px 10px 4px">Admin</div>
+        <sc-for list="{{ adminItems }}" as="n" hint-placeholder-count="6">
+          <button onClick="{{ n.go }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 10px;border:none;border-radius:9px;cursor:pointer;font:600 13.5px Manrope,sans-serif;background:{{ n.bg }};color:{{ n.fg }}" style-hover="background:var(--surface2)">
+            <span style="font-size:14px;width:17px;display:inline-block;text-align:center;opacity:.9">{{ n.icon }}</span>{{ n.label }}
+          </button>
+        </sc-for>
+      </div>
+      </sc-if>
+    </nav>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:10px">
+      <button onClick="{{ toggleTheme }}" style="display:flex;align-items:center;gap:9px;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:transparent;color:var(--ink2);font:600 12.5px Manrope,sans-serif;cursor:pointer">{{ themeIcon }} {{ themeLabel }}</button>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 8px;border-top:1px solid var(--line2)">
+        <div style="width:31px;height:31px;border-radius:50%;background:var(--accent2);color:var(--accent);display:grid;place-items:center;font:700 12px Manrope,sans-serif">{{ user.initials }}</div>
+        <div style="min-width:0">
+          <div style="font:700 12.5px Manrope,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ user.name }}</div>
+          <div style="font:500 11px Manrope,sans-serif;color:var(--ink3)">{{ roleLabel }}</div>
+        </div>
+        <button onClick="{{ logout }}" title="Log out" style="margin-left:auto;background:none;border:none;color:var(--ink3);cursor:pointer;font-size:14px">⏻</button>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <header style="display:flex;align-items:center;gap:16px;padding:16px 30px;border-bottom:1px solid var(--line);background:var(--surface);position:sticky;top:0;z-index:20">
+      <div>
+        <div style="font:700 16.5px Manrope,sans-serif;letter-spacing:-.01em">{{ pageTitle }}</div>
+        <div style="font:500 12px Manrope,sans-serif;color:var(--ink3);margin-top:2px">{{ pageSub }}</div>
+      </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
+        <div style="display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--line2);border-radius:9px;padding:8px 11px;width:230px">
+          <span style="color:var(--ink3);font-size:13px">⌕</span>
+          <input value="{{ query }}" onChange="{{ setQuery }}" placeholder="Search papers, results…" style="border:none;background:none;color:var(--ink);font-size:13px;width:100%;outline:none">
+        </div>
+        <button onClick="{{ toggleNotif }}" style="position:relative;width:36px;height:36px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink2);cursor:pointer;font-size:14px">◔<span style="position:absolute;top:6px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--accent)"></span></button>
+      </div>
+    </header>
+
+    <sc-if value="{{ notifOpen }}" hint-placeholder-val="">
+    <div style="position:absolute;top:68px;right:30px;width:340px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 40px var(--sh2);z-index:60;overflow:hidden;animation:catpop .16s ease">
+      <div style="padding:13px 16px;border-bottom:1px solid var(--line2);font:700 13px Manrope,sans-serif;display:flex;align-items:center">Notifications<button onClick="{{ toggleNotif }}" style="margin-left:auto;background:none;border:none;color:var(--ink3);cursor:pointer">✕</button></div>
+      <sc-for list="{{ notifications }}" as="nt" hint-placeholder-count="3">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--line2);display:flex;gap:11px">
+          <div style="width:8px;height:8px;border-radius:50%;background:{{ nt.dot }};margin-top:5px;flex:none"></div>
+          <div><div style="font:600 12.8px/1.45 Manrope,sans-serif">{{ nt.title }}</div><div style="font:500 11.5px Manrope,sans-serif;color:var(--ink3);margin-top:3px">{{ nt.when }}</div></div>
+        </div>
+      </sc-for>
+    </div>
+    </sc-if>
+
+    <div style="padding:28px 30px 60px;max-width:1240px;width:100%">
+
+      <sc-if value="{{ onDashboard }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:20px;animation:catfade .3s ease">
+        <div>
+          <h1 style="font:400 34px/1.1 'Instrument Serif',Georgia,serif;letter-spacing:-.01em;margin:0 0 6px">{{ greeting }}</h1>
+          <p style="font:400 14px Manrope,sans-serif;color:var(--ink2);margin:0">{{ dashLine }}</p>
+        </div>
+
+        <sc-if value="{{ hasSaved }}" hint-placeholder-val="">
+        <div style="display:flex;align-items:center;gap:16px;background:var(--accent2);border:1px solid var(--accent);border-radius:14px;padding:16px 20px">
+          <div style="font-size:19px">◷</div>
+          <div style="min-width:0">
+            <div style="font:700 13.5px Manrope,sans-serif">Unfinished test — {{ savedLabel }}</div>
+            <div style="font:500 12.5px Manrope,sans-serif;color:var(--ink2);margin-top:2px">{{ savedProgress }}</div>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:9px">
+            <button onClick="{{ discardSaved }}" style="background:transparent;border:1px solid var(--line);border-radius:9px;padding:9px 14px;font:600 13px Manrope,sans-serif;color:var(--ink2);cursor:pointer">Discard</button>
+            <button onClick="{{ resumeSaved }}" style="background:var(--accent);color:#fff;border:none;border-radius:9px;padding:9px 16px;font:700 13px Manrope,sans-serif;cursor:pointer">Resume test</button>
+          </div>
+        </div>
+        </sc-if>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px">
+          <sc-for list="{{ statCards }}" as="s" hint-placeholder-count="4">
+            <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:17px 18px;box-shadow:0 1px 2px var(--shadow)">
+              <div style="font:600 11.5px 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)">{{ s.label }}</div>
+              <div style="display:flex;align-items:baseline;gap:6px;margin-top:9px">
+                <div style="font:700 28px 'JetBrains Mono',monospace;letter-spacing:-.02em">{{ s.value }}</div>
+                <div style="font:600 12px Manrope,sans-serif;color:var(--ink3)">{{ s.unit }}</div>
+              </div>
+              <div style="font:600 11.5px Manrope,sans-serif;margin-top:7px;color:{{ s.deltaColor }}">{{ s.delta }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px">
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 2px var(--shadow)">
+            <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">
+              <div style="font:700 14px Manrope,sans-serif">Score trend</div>
+              <div style="font:500 12px Manrope,sans-serif;color:var(--ink3);margin-left:auto">last {{ trendCount }} attempts</div>
+            </div>
+            <svg viewBox="0 0 520 190" style="width:100%;height:190px;overflow:visible">
+              <sc-for list="{{ gridLines }}" as="g" hint-placeholder-count="4">
+                <g><line x1="0" y1="{{ g.y }}" x2="520" y2="{{ g.y }}" stroke="var(--line2)" stroke-width="1"></line><text x="0" y="{{ g.ty }}" fill="var(--ink3)" style="font:500 9.5px 'JetBrains Mono',monospace">{{ g.label }}</text></g>
+              </sc-for>
+              <polyline points="{{ trendPoints }}" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"></polyline>
+              <sc-for list="{{ trendDots }}" as="d" hint-placeholder-count="5">
+                <g><circle cx="{{ d.x }}" cy="{{ d.y }}" r="4.5" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.4"></circle><text x="{{ d.x }}" y="182" text-anchor="middle" fill="var(--ink3)" style="font:600 9.5px Manrope,sans-serif">{{ d.label }}</text></g>
+              </sc-for>
+            </svg>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 2px var(--shadow)">
+            <div style="font:700 14px Manrope,sans-serif;margin-bottom:16px">Section strength</div>
+            <div style="display:flex;flex-direction:column;gap:15px">
+              <sc-for list="{{ strengthBars }}" as="b" hint-placeholder-count="3">
+                <div>
+                  <div style="display:flex;justify-content:space-between;font:600 12.5px Manrope,sans-serif;margin-bottom:6px"><span>{{ b.label }}</span><span style="font-family:'JetBrains Mono',monospace;color:var(--ink2)">{{ b.pct }}%</span></div>
+                  <div style="height:8px;background:var(--surface2);border-radius:4px;overflow:hidden"><div style="height:100%;border-radius:4px;width:{{ b.w }};background:{{ b.color }};transition:width .5s ease"></div></div>
+                  <div style="font:500 11.5px Manrope,sans-serif;color:var(--ink3);margin-top:5px">{{ b.note }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px">
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px var(--shadow);overflow:hidden">
+            <div style="padding:17px 20px;border-bottom:1px solid var(--line2);font:700 14px Manrope,sans-serif;display:flex;align-items:center">Recent tests<button onClick="{{ goResults }}" style="margin-left:auto;background:none;border:none;font:600 12.5px Manrope,sans-serif;color:var(--accent);cursor:pointer">All results →</button></div>
+            <sc-for list="{{ recentTests }}" as="t" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--line2)">
+                <div style="width:38px;height:38px;border-radius:10px;background:var(--surface2);display:grid;place-items:center;font:700 11px 'JetBrains Mono',monospace;color:var(--ink2)">{{ t.yr }}</div>
+                <div style="min-width:0">
+                  <div style="font:700 13px Manrope,sans-serif">{{ t.name }}</div>
+                  <div style="font:500 11.5px Manrope,sans-serif;color:var(--ink3);margin-top:2px">{{ t.meta }}</div>
+                </div>
+                <div style="margin-left:auto;text-align:right">
+                  <div style="font:700 15px 'JetBrains Mono',monospace">{{ t.score }}</div>
+                  <div style="font:600 11px Manrope,sans-serif;color:var(--ink3)">{{ t.pct }} %ile</div>
+                </div>
+                <button onClick="{{ t.open }}" style="background:transparent;border:1px solid var(--line);border-radius:8px;padding:7px 12px;font:600 12px Manrope,sans-serif;color:var(--ink);cursor:pointer">Analysis</button>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="background:var(--ink);color:var(--paper);border-radius:14px;padding:20px">
+              <div style="font:600 11px 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;opacity:.55;margin-bottom:11px">Coach</div>
+              <div style="font:400 18px/1.4 'Instrument Serif',Georgia,serif;margin-bottom:14px;text-wrap:pretty">{{ coachHeadline }}</div>
+              <div style="font:400 13px/1.6 Manrope,sans-serif;opacity:.68">{{ coachBody }}</div>
+              <button onClick="{{ goPapers }}" style="margin-top:16px;background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px 15px;font:700 12.5px Manrope,sans-serif;cursor:pointer">Start a paper</button>
+            </div>
+            <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:0 1px 2px var(--shadow)">
+              <div style="font:700 13.5px Manrope,sans-serif;margin-bottom:13px">Practice streak</div>
+              <div style="display:grid;grid-template-columns:repeat(14,1fr);gap:4px">
+                <sc-for list="{{ miniHeat }}" as="c" hint-placeholder-count="28">
+                  <div title="{{ c.title }}" style="aspect-ratio:1;border-radius:3px;background:{{ c.bg }}"></div>
+                </sc-for>
+              </div>
+              <div style="font:500 11.5px Manrope,sans-serif;color:var(--ink3);margin-top:11px">{{ streakLine }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ onPapers }}" hint-placeholder-val="">
+      <div style="display:flex;flex-direction:column;gap:16px;animation:catfade .3s ease">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <sc-for list="{{ paperFilters }}" as="f" hint-placeholder-count="4">
+            <button onClick="{{ f.go }}" style="border:1px solid {{ f.bd }};background:{{ f.bg }};color:{{ f.fg }};border-radius:99px;padding:8px 15px;font:600 12.5px Manrope,sans-serif;cursor:pointer">{{ f.label }}</button>
+          </sc-for>
+        </div>
+        <sc-for list="{{ years }}" as="y" hint-placeholder-count="4">
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px var(--shadow);overflow:hidden">
+            <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line2)">
+              <div style="font:700 17px 'JetBrains Mono',monospace;letter-spacing:-.01em">CAT {{ y.year }}</div>
+              <div style="font:600 11px Manrope,sans-serif;background:var(--surface2);color:var(--ink2);padding:4px 9px;border-radius:6px">{{ y.slotCount }}</div>
+              <sc-if value="{{ y.isNew }}" hint-placeholder-val="">
+                <div style="font:700 10.5px 'JetBrains Mono',monospace;letter-spacing:.08em;background:var(--accent2);color:var(--accent);padding:4px 8px;border-radius:6px">NEW</div>
+              </sc-if>
+              <div style="margin-left:auto;font:500 12px Manrope,sans-serif;color:var(--ink3)">{{ y.note }}</div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--line2)">
+              <sc-for list="{{ y.slots }}" as="p" hint-placeholder-count="3">
+                <div style="background:var(--surface);padding:18px 20px;display:flex;flex-direction:column;gap:13px">
+                  <div style="display:flex;align-items:center;gap:9px">
+                    <div style="font:700 14px Manrope,sans-serif">{{ p.slot }}</div>
+                    <div style="font:600 11px Manrope,sans-serif;color:{{ p.diffFg }};background:{{ p.diffBg }};padding:3px 8px;border-radius:5px">{{ p.difficulty }}</div>
+                    <sc-if value="{{ p.attempted }}" hint-placeholder-val="">
+                      <div style="margin-left:auto;font:700 11px 'JetBrains Mono',monospace;color:var(--ok);background:var(--okS);padding:3px 8px;border-radius:5px">{{ p.bestChip }}</div>
+                    </sc-if>
+                  </div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 10px">
+                    <div><div style="font:500 10.5px 'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)">Questions</div><div style="font:700 13px Manrope,sans-serif;margin-top:2px">{{ p.qCount }}</div></div>
+                    <div><div style="font:500 10.5px 'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)">Duration</div><div style="font:700 13px Manrope,sans-serif;margin-top:2px">{{ p.duration }}</div></div>
+                    <div><div style="font:500 10.5px 'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)">Total marks</div><div style="font:700 13px Manrope,sans-serif;margin-top:2px">{{ p.marks }}</div></div>
+                    <div><div style="font:500 10.5px 'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)">Pattern</div><div style="font:700 13px Manrope,sans-serif;margin-top:2px">{{ p.pattern }}</div></div>
+                  </div>
+                  <button onClick="{{ p.start }}" style="margin-top:auto;background:{{ p.btnBg }};color:{{ p.btnFg }};border:1px solid {{ p.btnBd }};border-radius:10px;padding:11px;font:700 13px Manrope,sans-serif;cursor:pointer">{{ p.btnLabel }}</button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ onResultsList }}" hint-placeholder-val="">
+      <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px var(--shadow);overflow:hidden;animation:catfade .3s ease">
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 110px;gap:12px;padding:13px 20px;border-bottom:1px solid var(--line);background:var(--surface2);font:700 10.5px 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)">
+          <div>Paper</div><div>Date</div><div>Score</div><div>%ile</div><div>Accuracy</div><div></div>
+        </div>
+        <sc-for list="{{ allResults }}" as="r" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 110px;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line2);align-items:center">
+            <div><div style="font:700 13px Manrope,sans-serif">{{ r.name }}</div><div style="font:500 11.5px Manrope,sans-serif;color:var(--ink3);margin-top:2px">{{ r.meta }}</div></div>
+            <div style="font:500 12.5px Manrope,sans-serif;color:var(--ink2)">{{ r.date }}</div>
+            <div style="font:700 13.5px 'JetBrains Mono',monospace">{{ r.score }}</div>
+            <div style="font:700 13.5px 'JetBrains Mono',monospace;color:var(--accent)">{{ r.pct }}</div>
+            <div style="font:600 12.5px Manrope,sans-serif">{{ r.acc }}%</div>
+            <button onClick="{{ r.open }}" style="background:transparent;border:1px solid var(--line);border-radius:8px;padding:7px 12px;font:600 12px Manrope,sans-serif;color:var(--ink);cursor:pointer">Open</button>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ onResult }}" hint-placeholder-val="">
+      <div style="display:flex;flex-direction:column;gap:18px;animation:catfade .3s ease">
+        <div style="background:var(--ink);color:var(--paper);border-radius:16px;padding:26px 28px;display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center">
+          <div>
+            <div style="font:600 11px 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;opacity:.5">{{ res.paperName }} · submitted {{ res.submittedAt }}</div>
+            <div style="display:flex;align-items:baseline;gap:12px;margin:14px 0 6px">
+              <div style="font:700 62px/1 'JetBrains Mono',monospace;letter-spacing:-.03em">{{ res.score }}</div>
+              <div style="font:600 15px Manrope,sans-serif;opacity:.5">/ {{ res.total }}</div>
+            </div>
+            <div style="font:400 15px Manrope,sans-serif;opacity:.7">Estimated percentile <span style="font:700 17px 'JetBrains Mono',monospace;color:var(--accent)">{{ res.percentile }}</span></div>
+            <div style="display:flex;gap:22px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.13)">
+              <sc-for list="{{ res.heroStats }}" as="h" hint-placeholder-count="4">
+                <div><div style="font:700 19px 'JetBrains Mono',monospace">{{ h.v }}</div><div style="font:500 11px Manrope,sans-serif;opacity:.5;margin-top:3px">{{ h.k }}</div></div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:24px;justify-content:center">
+            <svg viewBox="0 0 130 130" style="width:170px;height:170px;transform:rotate(-90deg)">
+              <circle cx="65" cy="65" r="54" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="16"></circle>
+              <circle cx="65" cy="65" r="54" fill="none" stroke="var(--ok)" stroke-width="16" stroke-dasharray="{{ res.dashCorrect }}" stroke-linecap="butt"></circle>
+              <circle cx="65" cy="65" r="54" fill="none" stroke="var(--bad)" stroke-width="16" stroke-dasharray="{{ res.dashWrong }}" stroke-dashoffset="{{ res.offWrong }}" stroke-linecap="butt"></circle>
+            </svg>
+            <div style="display:flex;flex-direction:column;gap:11px">
+              <sc-for list="{{ res.donutLegend }}" as="l" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:9px"><div style="width:10px;height:10px;border-radius:3px;background:{{ l.color }}"></div><div style="font:600 12.5px Manrope,sans-serif;opacity:.85">{{ l.label }}</div><div style="font:700 12.5px 'JetBrains Mono',monospace;margin-left:auto">{{ l.v }}</div></div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:6px;border-bottom:1px solid var(--line);flex-wrap:wrap">
+          <sc-for list="{{ resultTabs }}" as="t" hint-placeholder-count="5">
+            <button onClick="{{ t.go }}" style="background:none;border:none;border-bottom:2px solid {{ t.bd }};color:{{ t.fg }};padding:11px 14px;font:700 13px Manrope,sans-serif;cursor:pointer;margin-bottom:-1px">{{ t.label }}</button>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ tabSections }}" hint-placeholder-val="{{ true }}">
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 1px 2px var(--shadow)">
+          <div style="display:grid;grid-template-columns:1.4fr repeat(7,1fr);gap:10px;padding:13px 20px;background:var(--surface2);border-bottom:1px solid var(--line);font:700 10.5px 'JetBrains Mono',monospace;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3)">
+            <div>Section</div><div>Attempted</div><div>Correct</div><div>Wrong</div><div>Skipped</div><div>Accuracy</div><div>Time</div><div>Score</div>
+          </div>
+          <sc-for list="{{ res.sections }}" as="s" hint-placeholder-count="3">
+            <div style="display:grid;grid-template-columns:1.4fr repeat(7,1fr);gap:10px;padding:15px 20px;border-bottom:1px solid var(--line2);align-items:center">
+              <div><div style="font:700 13px Manrope,sans-serif">{{ s.key }}</div><div style="font:500 11px Manrope,sans-serif;color:var(--ink3);margin-top:2px">{{ s.name }}</div></div>
+              <div style="font:600 13px 'JetBrains Mono',monospace">{{ s.attempted }}/{{ s.count }}</div>
+              <div style="font:700 13px 'JetBrains Mono',monospace;color:var(--ok)">{{ s.correct }}</div>
+              <div style="font:700 13px 'JetBrains Mono',monospace;color:var(--bad)">{{ s.wrong }}</div>
+              <div style="font:600 13px 'JetBrains Mono',monospace;color:var(--ink3)">{{ s.skipped }}</div>
+              <div style="font:700 13px 'JetBrains Mono',monospace">{{ s.acc }}%</div>
+              <div style="font:600 12.5px 'JetBrains Mono',monospace;color:var(--ink2)">{{ s.time }}</div>
+              <div style="font:700 14px 'JetBrains Mono',monospace">{{ s.score }}</div>
+            </div>
+          </sc-for>
+          <div style="display:grid;grid-template-columns:1.4fr repeat(7,1fr);gap:10px;padding:15px 20px;background:var(--surface2);align-items:center">
+            <div style="font:700 13px Manrope,sans-serif">Total</div>
+            <div style="font:700 13px 'JetBrains Mono',monospace">{{ res.attempted }}/{{ res.count }}</div>
+            <div style="font:700 13px 'JetBrains Mono',monospace;color:var(--ok)">{{ res.correct }}</div>
+            <div style="font:700 13px 'JetBrains Mono',monospace;color:var(--bad)">{{ res.wrong }}</div>
+            <div style="font:700 13px 'JetBrains Mono',monospace;color:var(--ink3)">{{ res.skipped }}</div>
+            <div style="font:700 13px 'JetBrains Mono',monospace">{{ res.accuracy }}%</div>
+            <div style="font:700 12.5px 'JetBrains Mono',monospace">{{ res.timeTotal }}</div>
+            <div style="font:700 15px 'JetBrains Mono',monospace">{{ res.score }}</div>
+          </div>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ tabCharts }}" hint-placeholder-val="">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 2px var(--shadow)">
+            <div style="font:700 14px Manrope,sans-serif;margin-bottom:4px">Section-wise score</div>
+            <div style="font:500 12px Manrope,sans-serif;color:var(--ink3);margin-bottom:18px">Marks obtained against maximum</div>
+            <div style="display:flex;align-items:flex-end;gap:26px;height:180px;padding:0 6px">
+              <sc-for list="{{ res.chartSection }}" as="c" hint-placeholder-count="3">
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%">
+                  <div style="font:700 12px 'JetBrains Mono',monospace;margin-top:auto">{{ c.v }}</div>
+                  <div style="width:100%;background:var(--surface2);border-radius:6px 6px 0 0;height:{{ c.h }};position:relative;overflow:hidden"><div style="position:absolute;inset:auto 0 0 0;height:{{ c.fill }};background:{{ c.color }};border-radius:6px 6px 0 0;transform-origin:bottom;animation:catgrow .5s ease"></div></div>
+                  <div style="font:600 11.5px Manrope,sans-serif;color:var(--ink2)">{{ c.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 2px var(--shadow)">
+            <div style="font:700 14px Manrope,sans-serif;margin-bottom:4px">Time distribution</div>
+            <div style="font:500 12px Manrope,sans-serif;color:var(--ink3);margin-bottom:18px">Minutes spent per section vs. 40 available</div>
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <sc-for list="{{ res.chartTime }}" as="c" hint-placeholder-count="3">
+                <div>
+                  <div style="display:flex;justify-content:space-between;font:600 12.5px Manrope,sans-serif;margin-bottom:6px"><span>{{ c.label }}</span><span style="font-family:'JetBrains Mono',monospace;color:var(--ink2)">{{ c.v }}</span></div>
+                  <div style="height:10px;background:var(--surface2);border-radius:5px;overflow:hidden"><div style="height:100%;width:{{ c.w }};background:{{ c.color }};border-radius:5px"></div></div>
+                </div>
+              </sc-for>
+              <div style="font:500 12px/1.55 Manrope,sans-serif;color:var(--ink3);border-top:1px solid var(--line2);padding-top:13px">{{ res.timeNote }}</div>
+            </div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 2px var(--shadow)">
+            <div style="font:700 14px Manrope,sans-serif;margin-bottom:18px">Accuracy by difficulty</div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <sc-for list="{{ res.chartDiff }}" as="c" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <div style="width:56px;font:600 12px Manrope,sans-serif;color:var(--ink2)">{{ c.label }}</div>
+                  <div style="flex:1;height:22px;background:var(--surface2);border-radius:6px;overflow:hidden"><div style="height:100%;width:{{ c.w }};background:{{ c.color }};border-radius:6px"></div></div>
+                  <div style="width:78px;text-align:right;font:700 12px 'JetBrains Mono',monospace">{{ c.v }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 2px var(--shadow)">
+            <div style="font:700 14px Manrope,sans-serif;margin-bottom:18px">Score trend across attempts</div>
+            <svg viewBox="0 0 480 170" style="width:100%;height:170px">
+              <polyline points="{{ trendPoints2 }}" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linejoin="round"></polyline>
+              <sc-for list="{{ trendDots2 }}" as="d" hint-placeholder-count="6">
+                <g><circle cx="{{ d.x }}" cy="{{ d.y }}" r="4" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.2"></circle><text x="{{ d.x }}" y="164" text-anchor="middle" fill="var(--ink3)" style="font:600 9px Manrope,sans-serif">{{ d.label }}</text></g>
+              </sc-for>
+            </svg>
+          </div>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ tabReview }}" hint-placeholder-val="">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <sc-for list="{{ reviewFilters }}" as="f" hint-placeholder-count="5">
+              <button onClick="{{ f.go }}" style="border:1px solid {{ f.bd }};background:{{ f.bg }};color:{{ f.fg }};border-radius:99px;padding:7px 14px;font:600 12.5px Manrope,sans-serif;cursor:pointer">{{ f.label }}</button>
+            </sc-for>
+            <div style="margin-left:auto;font:500 12.5px Manrope,sans-serif;color:var(--ink3)">{{ reviewCountLine }}</div>
+          </div>
+          <sc-for list="{{ reviewList }}" as="q" hint-placeholder-count="4">
+            <div style="background:var(--surface);border:1px solid var(--line);border-left:3px solid {{ q.edge }};border-radius:12px;padding:18px 20px;box-shadow:0 1px 2px var(--shadow)">
+              <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:11px">
+                <div style="font:700 11.5px 'JetBrains Mono',monospace;color:var(--ink3)">Q{{ q.no }}</div>
+                <div style="font:600 10.5px Manrope,sans-serif;background:var(--surface2);color:var(--ink2);padding:3px 8px;border-radius:5px">{{ q.sec }}</div>
+                <div style="font:600 10.5px Manrope,sans-serif;background:var(--surface2);color:var(--ink2);padding:3px 8px;border-radius:5px">{{ q.type }}</div>
+                <div style="font:600 10.5px Manrope,sans-serif;background:var(--surface2);color:var(--ink2);padding:3px 8px;border-radius:5px">{{ q.topic }}</div>
+                <div style="font:600 10.5px Manrope,sans-serif;background:{{ q.diffBg }};color:{{ q.diffFg }};padding:3px 8px;border-radius:5px">{{ q.diff }}</div>
+                <div style="margin-left:auto;display:flex;gap:14px;align-items:center">
+                  <div style="font:600 11.5px 'JetBrains Mono',monospace;color:var(--ink3)">◷ {{ q.time }}</div>
+                  <div style="font:700 12px 'JetBrains Mono',monospace;color:{{ q.markColor }}">{{ q.marks }}</div>
+                </div>
+              </div>
+              <div style="font:500 14px/1.6 Manrope,sans-serif;margin-bottom:13px;text-wrap:pretty">{{ q.text }}</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px">
+                <div style="background:{{ q.uaBg }};border:1px solid {{ q.uaBd }};border-radius:9px;padding:10px 12px">
+                  <div style="font:600 10.5px 'JetBrains Mono',monospace;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3)">Your answer</div>
+                  <div style="font:600 13.5px Manrope,sans-serif;margin-top:5px;color:{{ q.uaFg }}">{{ q.userAnswer }}</div>
+                </div>
+                <div style="background:var(--okS);border:1px solid var(--ok);border-radius:9px;padding:10px 12px">
+                  <div style="font:600 10.5px 'JetBrains Mono',monospace;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3)">Correct answer</div>
+                  <div style="font:600 13.5px Manrope,sans-serif;margin-top:5px;color:var(--ok)">{{ q.correctAnswer }}</div>
+                </div>
+              </div>
+              <div style="background:var(--surface2);border-radius:9px;padding:13px 14px">
+                <div style="font:700 11px 'JetBrains Mono',monospace;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px">Explanation</div>
+                <div style="font:400 13.5px/1.65 Manrope,sans-serif;color:var(--ink2);text-wrap:pretty">{{ q.expl }}</div>
+              </div>
+              <button onClick="{{ q.bookmark }}" style="margin-top:12px;background:transparent;border:1px solid var(--line);border-radius:8px;padding:7px 12px;font:600 12px Manrope,sans-serif;color:{{ q.bmFg }};cursor:pointer">{{ q.bmLabel }}</button>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ tabCoach }}" hint-placeholder-val="">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <sc-for list="{{ res.suggestions }}" as="s" hint-placeholder-count="3">
+            <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;display:flex;gap:16px;box-shadow:0 1px 2px var(--shadow)">
+              <div style="width:38px;height:38px;flex:none;border-radius:10px;background:{{ s.iconBg }};color:{{ s.iconFg }};display:grid;place-items:center;font-size:16px">{{ s.icon }}</div>
+              <div>
+                <div style="font:700 14.5px Manrope,sans-serif;margin-bottom:6px">{{ s.title }}</div>
+                <div style="font:400 13.5px/1.65 Manrope,sans-serif;color:var(--ink2);text-wrap:pretty">{{ s.body }}</div>
+                <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+                  <sc-for list="{{ s.tags }}" as="t" hint-placeholder-count="2">
+                    <div style="font:600 11.5px Manrope,sans-serif;background:var(--surface2);color:var(--ink2);padding:5px 10px;border-radius:6px">{{ t }}</div>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="margin-left:auto;font:700 11px 'JetBrains Mono',monospace;letter-spacing:.07em;color:{{ s.iconFg }};align-self:flex-start">{{ s.priority }}</div>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ onProfile }}" hint-placeholder-val="">
+      <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:16px;animation:catfade .3s ease">
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:0 1px 2px var(--shadow);height:fit-content">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:13px;text-align:center">
+            <div style="width:82px;height:82px;border-radius:50%;background:var(--accent2);color:var(--accent);display:grid;place-items:center;font:700 27px Manrope,sans-serif">{{ user.initials }}</div>
+            <div>
+              <div style="font:700 17px Manrope,sans-serif">{{ user.name }}</div>
+              <div style="font:500 12.5px Manrope,sans-serif;color:var(--ink3);margin-top:3px">{{ user.email }}</div>
+            </div>
+            <div style="font:600 11px 'JetBrains Mono',monospace;letter-spacing:.08em;background:var(--surface2);color:var(--ink2);padding:5px 10px;border-radius:6px">MEMBER SINCE JUN 2025</div>
+            <button style="width:100%;margin-top:6px;background:transparent;border:1px solid var(--line);border-radius:9px;padding:10px;font:600 13px Manrope,sans-serif;color:var(--ink);cursor:pointer">Upload photo</button>
+          </div>
+          <div style="border-top:1px solid var(--line2);margin-top:20px;padding-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <sc-for list="{{ profileStats }}" as="p" hint-placeholder-count="4">
+              <div><div style="font:700 19px 'JetBrains Mono',monospace">{{ p.v }}</div><div style="font:500 11.5px Manrope,sans-serif;color:var(--ink3);margin-top:3px">{{ p.k }}</div></div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 1px 2px var(--shadow)">
+            <div style="font:700 14px Manrope,sans-serif;margin-bottom:16px">Account details</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <div><label style="display:block;font:600 12px Manrope,sans-serif;color:var(--ink2);margin-bottom:7px">Full name</label><input value="{{ user.name }}" style="width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13.5px"></div>
+              <div><label style="display:block;font:600 12px Manrope,sans-serif;color:var(--ink2);margin-bottom:7px">Email</label><input value="{{ user.email }}" style="width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13.5px"></div>
+              <div><label style="display:block;font:600 12px Manrope,sans-serif;color:var(--ink2);margin-bottom:7px">Target percentile</label><input value="99.2" style="width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13.5px"></div>
+              <div><label style="display:block;font:600 12px Manrope,sans-serif;color:var(--ink2);margin-bottom:7px">Preferred slot time</label><input value="Morning" style="width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13.5px"></div>
+            </div>
+            <button onClick="{{ saveProfile }}" style="margin-top:16px;background:var(--accent);color:#fff;border:none;border-radius:9px;padding:11px 18px;font:700 13px Manrope,sans-serif;cursor:pointer">Save changes</button>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 1px 2px var(--shadow)">
+            <div style="font:700 14px Manrope,sans-serif;margin-bottom:16px">Change password</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+              <input type="password" placeholder="Current" style="padding:11px 13px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13.5px">
+              <input type="password" placeholder="New" style="padding:11px 13px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13.5px">
+              <input type="password" placeholder="Confirm new" style="padding:11px 13px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13.5px">
+            </div>
+            <button onClick="{{ savePassword }}" style="margin-top:14px;background:transparent;border:1px solid var(--line);border-radius:9px;padding:11px 18px;font:700 13px Manrope,sans-serif;color:var(--ink);cursor:pointer">Update password</button>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ onCalendar }}" hint-placeholder-val="">
+      <div style="display:flex;flex-direction:column;gap:16px;animation:catfade .3s ease">
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 1px 2px var(--shadow)">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+            <div style="font:700 14px Manrope,sans-serif">Practice calendar</div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:7px;font:500 11.5px Manrope,sans-serif;color:var(--ink3)">less
+              <sc-for list="{{ heatScale }}" as="h" hint-placeholder-count="5"><div style="width:11px;height:11px;border-radius:3px;background:{{ h.bg }}"></div></sc-for>more</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(26,1fr);gap:5px">
+            <sc-for list="{{ bigHeat }}" as="c" hint-placeholder-count="182">
+              <div title="{{ c.title }}" style="aspect-ratio:1;border-radius:3px;background:{{ c.bg }}"></div>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:26px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line2)">
+            <sc-for list="{{ calStats }}" as="c" hint-placeholder-count="4">
+              <div><div style="font:700 20px 'JetBrains Mono',monospace">{{ c.v }}</div><div style="font:500 11.5px Manrope,sans-serif;color:var(--ink3);margin-top:3px">{{ c.k }}</div></div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 1px 2px var(--shadow)">
+          <div style="font:700 14px Manrope,sans-serif;margin-bottom:14px">Daily practice</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+            <sc-for list="{{ practiceModes }}" as="m" hint-placeholder-count="3">
+              <div style="border:1px solid var(--line);border-radius:12px;padding:16px">
+                <div style="font-size:17px;margin-bottom:9px">{{ m.icon }}</div>
+                <div style="font:700 13.5px Manrope,sans-serif">{{ m.title }}</div>
+                <div style="font:400 12.5px/1.55 Manrope,sans-serif;color:var(--ink3);margin-top:5px">{{ m.body }}</div>
+                <button onClick="{{ m.go }}" style="margin-top:13px;background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:8px 13px;font:600 12.5px Manrope,sans-serif;color:var(--ink);cursor:pointer">{{ m.cta }}</button>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ onBookmarks }}" hint-placeholder-val="">
+      <div style="display:flex;flex-direction:column;gap:12px;animation:catfade .3s ease">
+        <sc-if value="{{ noBookmarks }}" hint-placeholder-val="">
+          <div style="background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:56px;text-align:center">
+            <div style="font-size:26px;margin-bottom:12px">☆</div>
+            <div style="font:700 15px Manrope,sans-serif;margin-bottom:6px">No bookmarks yet</div>
+            <div style="font:400 13px Manrope,sans-serif;color:var(--ink3)">Star a question during a test or in review and it lands here.</div>
+          </div>
+        </sc-if>
+        <sc-for list="{{ bookmarkList }}" as="q" hint-placeholder-count="0">
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:17px 20px;box-shadow:0 1px 2px var(--shadow)">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:9px">
+              <div style="font:700 11.5px 'JetBrains Mono',monospace;color:var(--ink3)">Q{{ q.no }}</div>
+              <div style="font:600 10.5px Manrope,sans-serif;background:var(--surface2);color:var(--ink2);padding:3px 8px;border-radius:5px">{{ q.sec }}</div>
+              <div style="font:600 10.5px Manrope,sans-serif;background:var(--surface2);color:var(--ink2);padding:3px 8px;border-radius:5px">{{ q.topic }}</div>
+              <button onClick="{{ q.bookmark }}" style="margin-left:auto;background:none;border:none;color:var(--accent);cursor:pointer;font:600 12px Manrope,sans-serif">Remove</button>
+            </div>
+            <div style="font:500 13.5px/1.6 Manrope,sans-serif">{{ q.text }}</div>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ onLeaderboard }}" hint-placeholder-val="">
+      <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 1px 2px var(--shadow);animation:catfade .3s ease">
+        <sc-for list="{{ leaderboard }}" as="l" hint-placeholder-count="8">
+          <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--line2);background:{{ l.bg }}">
+            <div style="width:30px;font:700 14px 'JetBrains Mono',monospace;color:{{ l.rankFg }}">{{ l.rank }}</div>
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--surface2);color:var(--ink2);display:grid;place-items:center;font:700 11.5px Manrope,sans-serif">{{ l.initials }}</div>
+            <div style="font:700 13px Manrope,sans-serif">{{ l.name }}</div>
+            <div style="margin-left:auto;display:flex;gap:26px;align-items:center">
+              <div style="text-align:right"><div style="font:700 13px 'JetBrains Mono',monospace">{{ l.score }}</div><div style="font:500 10.5px Manrope,sans-serif;color:var(--ink3)">best score</div></div>
+              <div style="text-align:right;width:64px"><div style="font:700 13px 'JetBrains Mono',monospace;color:var(--accent)">{{ l.pct }}</div><div style="font:500 10.5px Manrope,sans-serif;color:var(--ink3)">%ile</div></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ onAdminDash }}" hint-placeholder-val="">
+      <div style="display:flex;flex-direction:column;gap:18px;animation:catfade .3s ease">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px">
+          <sc-for list="{{ adminStats }}" as="s" hint-placeholder-count="6">
+            <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:17px 18px;box-shadow:0 1px 2px var(--shadow)">
+              <div style="font:600 11px 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)">{{ s.label }}</div>
+              <div style="font:700 26px 'JetBrains Mono',monospace;letter-spacing:-.02em;margin-top:8px">{{ s.value }}</div>
+              <div style="font:600 11.5px Manrope,sans-serif;margin-top:6px;color:{{ s.fg }}">{{ s.delta }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px">
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 2px var(--shadow)">
+            <div style="font:700 14px Manrope,sans-serif;margin-bottom:4px">User growth</div>
+            <div style="font:500 12px Manrope,sans-serif;color:var(--ink3);margin-bottom:20px">New registrations per month</div>
+            <div style="display:flex;align-items:flex-end;gap:9px;height:160px">
+              <sc-for list="{{ growthBars }}" as="b" hint-placeholder-count="12">
+                <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:7px;height:100%">
+                  <div style="width:100%;background:{{ b.color }};border-radius:5px 5px 0 0;height:{{ b.h }};transform-origin:bottom;animation:catgrow .5s ease" title="{{ b.title }}"></div>
+                  <div style="font:600 9.5px Manrope,sans-serif;color:var(--ink3);text-align:center">{{ b.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 2px var(--shadow)">
+            <div style="font:700 14px Manrope,sans-serif;margin-bottom:16px">Most attempted papers</div>
+            <div style="display:flex;flex-direction:column;gap:13px">
+              <sc-for list="{{ topPapers }}" as="p" hint-placeholder-count="5">
+                <div>
+                  <div style="display:flex;justify-content:space-between;font:600 12.5px Manrope,sans-serif;margin-bottom:6px"><span>{{ p.name }}</span><span style="font-family:'JetBrains Mono',monospace;color:var(--ink2)">{{ p.n }}</span></div>
+                  <div style="height:7px;background:var(--surface2);border-radius:4px;overflow:hidden"><div style="height:100%;width:{{ p.w }};background:var(--accent);border-radius:4px"></div></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 2px var(--shadow)">
+          <div style="font:700 14px Manrope,sans-serif;margin-bottom:16px">Difficulty-wise accuracy across all attempts</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+            <sc-for list="{{ adminDiff }}" as="d" hint-placeholder-count="3">
+              <div style="border:1px solid var(--line);border-radius:12px;padding:16px">
+                <div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font:700 13px Manrope,sans-serif">{{ d.label }}</div><div style="font:700 17px 'JetBrains Mono',monospace;color:{{ d.color }}">{{ d.pct }}%</div></div>
+                <div style="height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;margin-top:11px"><div style="height:100%;width:{{ d.w }};background:{{ d.color }};border-radius:4px"></div></div>
+                <div style="font:500 11.5px Manrope,sans-serif;color:var(--ink3);margin-top:9px">{{ d.note }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ onAdminQuestions }}" hint-placeholder-val="">
+      <div style="display:flex;flex-direction:column;gap:14px;animation:catfade .3s ease">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:7px 11px">
+            <span style="font:700 10.5px 'JetBrains Mono',monospace;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3)">Paper</span>
+            <select value="{{ adminPaper }}" onChange="{{ setAdminPaper }}" style="border:none;background:none;color:var(--ink);font:700 13px Manrope,sans-serif;outline:none;cursor:pointer">
+              <sc-for list="{{ paperOptions }}" as="o" hint-placeholder-count="6">
+                <option value="{{ o.value }}">{{ o.label }}</option>
+              </sc-for>
+            </select>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:9px 12px;width:240px">
+            <span style="color:var(--ink3)">⌕</span>
+            <input value="{{ adminSearch }}" onChange="{{ setAdminSearch }}" placeholder="Search stems, topics…" style="border:none;background:none;color:var(--ink);font-size:13px;width:100%;outline:none">
+          </div>
+          <sc-for list="{{ secFilters }}" as="f" hint-placeholder-count="4">
+            <button onClick="{{ f.go }}" style="border:1px solid {{ f.bd }};background:{{ f.bg }};color:{{ f.fg }};border-radius:99px;padding:8px 14px;font:600 12.5px Manrope,sans-serif;cursor:pointer">{{ f.label }}</button>
+          </sc-for>
+          <button onClick="{{ newQuestion }}" style="margin-left:auto;background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px 16px;font:700 13px Manrope,sans-serif;cursor:pointer">+ Add question</button>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 1px 2px var(--shadow)">
+          <div style="display:grid;grid-template-columns:58px 78px 74px 1fr 120px 84px 130px;gap:12px;padding:12px 18px;background:var(--surface2);border-bottom:1px solid var(--line);font:700 10.5px 'JetBrains Mono',monospace;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3)">
+            <div>ID</div><div>Section</div><div>Type</div><div>Stem</div><div>Topic</div><div>Level</div><div></div>
+          </div>
+          <sc-for list="{{ adminQuestions }}" as="q" hint-placeholder-count="8">
+            <div style="display:grid;grid-template-columns:58px 78px 74px 1fr 120px 84px 130px;gap:12px;padding:13px 18px;border-bottom:1px solid var(--line2);align-items:center">
+              <div style="font:600 11.5px 'JetBrains Mono',monospace;color:var(--ink3)">{{ q.code }}</div>
+              <div style="font:700 11.5px Manrope,sans-serif">{{ q.sec }}</div>
+              <div style="font:600 11px Manrope,sans-serif;color:var(--info)">{{ q.type }}</div>
+              <div style="font:500 12.5px Manrope,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ q.stem }}</div>
+              <div style="font:500 11.5px Manrope,sans-serif;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ q.topic }}</div>
+              <div style="font:600 11px Manrope,sans-serif;color:{{ q.diffFg }};background:{{ q.diffBg }};padding:3px 8px;border-radius:5px;justify-self:start">{{ q.diff }}</div>
+              <div style="display:flex;gap:7px;justify-content:flex-end">
+                <button onClick="{{ q.edit }}" style="background:transparent;border:1px solid var(--line);border-radius:7px;padding:6px 11px;font:600 11.5px Manrope,sans-serif;color:var(--ink);cursor:pointer">Edit</button>
+                <button onClick="{{ q.del }}" style="background:transparent;border:1px solid var(--line);border-radius:7px;padding:6px 11px;font:600 11.5px Manrope,sans-serif;color:var(--bad);cursor:pointer">Delete</button>
+              </div>
+            </div>
+          </sc-for>
+          <div style="padding:13px 18px;font:500 12px Manrope,sans-serif;color:var(--ink3)">{{ adminQCount }}</div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ onAdminPapers }}" hint-placeholder-val="">
+      <div style="display:grid;grid-template-columns:1fr 1.25fr;gap:16px;animation:catfade .3s ease">
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 1px 2px var(--shadow);height:fit-content">
+          <div style="font:700 14px Manrope,sans-serif;margin-bottom:16px">Create paper</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:13px">
+            <div><label style="display:block;font:600 12px Manrope,sans-serif;color:var(--ink2);margin-bottom:6px">Year</label><input value="{{ bf.year }}" onChange="{{ setBfYear }}" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13px"></div>
+            <div><label style="display:block;font:600 12px Manrope,sans-serif;color:var(--ink2);margin-bottom:6px">Slot</label><input value="{{ bf.slot }}" onChange="{{ setBfSlot }}" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13px"></div>
+            <div><label style="display:block;font:600 12px Manrope,sans-serif;color:var(--ink2);margin-bottom:6px">Duration (min)</label><input value="{{ bf.duration }}" onChange="{{ setBfDuration }}" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13px"></div>
+            <div><label style="display:block;font:600 12px Manrope,sans-serif;color:var(--ink2);margin-bottom:6px">Sectional lock (min)</label><input value="{{ bf.lock }}" onChange="{{ setBfLock }}" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13px"></div>
+            <div style="grid-column:span 2"><label style="display:block;font:600 12px Manrope,sans-serif;color:var(--ink2);margin-bottom:6px">Difficulty label</label>
+              <select value="{{ bf.difficulty }}" onChange="{{ setBfDifficulty }}" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13px">
+                <option value="Easy-Moderate">Easy-Moderate</option><option value="Moderate">Moderate</option><option value="Difficult">Difficult</option>
+              </select></div>
+          </div>
+          <sc-if value="{{ builderError }}" hint-placeholder-val="">
+            <div style="background:var(--badS);color:var(--bad);border-radius:9px;padding:10px 12px;font:600 12.5px Manrope,sans-serif;margin-top:13px">{{ builderError }}</div>
+          </sc-if>
+          <div style="border-top:1px solid var(--line2);margin:18px 0;padding-top:16px;display:flex;flex-direction:column;gap:11px">
+            <sc-for list="{{ builderSections }}" as="b" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="font:700 12.5px Manrope,sans-serif;width:52px">{{ b.key }}</div>
+                <div style="flex:1;font:500 12px Manrope,sans-serif;color:var(--ink3)">{{ b.note }}</div>
+                <div style="font:700 12px 'JetBrains Mono',monospace">{{ b.count }} Q</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:9px">
+            <button onClick="{{ savePaperDraft }}" style="flex:1;background:transparent;border:1px solid var(--line);border-radius:9px;padding:11px;font:700 13px Manrope,sans-serif;color:var(--ink);cursor:pointer">Save draft</button>
+            <button onClick="{{ publishPaper }}" style="flex:1;background:var(--accent);color:#fff;border:none;border-radius:9px;padding:11px;font:700 13px Manrope,sans-serif;cursor:pointer">Publish</button>
+          </div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 1px 2px var(--shadow)">
+          <div style="display:grid;grid-template-columns:1.5fr 56px 84px 84px 158px;gap:10px;padding:12px 18px;background:var(--surface2);border-bottom:1px solid var(--line);font:700 10.5px 'JetBrains Mono',monospace;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3)">
+            <div>Paper</div><div>Qs</div><div>Attempts</div><div>Status</div><div></div>
+          </div>
+          <sc-for list="{{ adminPapers }}" as="p" hint-placeholder-count="8">
+            <div style="display:grid;grid-template-columns:1.5fr 56px 84px 84px 158px;gap:10px;padding:13px 18px;border-bottom:1px solid var(--line2);align-items:center;background:{{ p.rowBg }}">
+              <div><div style="font:700 12.5px Manrope,sans-serif">{{ p.name }}</div><div style="font:500 11px Manrope,sans-serif;color:var(--ink3);margin-top:2px">{{ p.meta }}</div></div>
+              <div style="font:600 12px 'JetBrains Mono',monospace">{{ p.qs }}</div>
+              <div style="font:600 12px 'JetBrains Mono',monospace;color:var(--ink2)">{{ p.attempts }}</div>
+              <div style="font:700 10.5px Manrope,sans-serif;color:{{ p.stFg }};background:{{ p.stBg }};padding:4px 8px;border-radius:5px;justify-self:start">{{ p.status }}</div>
+              <div style="display:flex;gap:7px;justify-content:flex-end">
+                <button onClick="{{ p.toggle }}" style="background:transparent;border:1px solid var(--line);border-radius:7px;padding:6px 10px;font:600 11.5px Manrope,sans-serif;color:var(--ink);cursor:pointer">{{ p.action }}</button>
+                <sc-if value="{{ p.canDelete }}" hint-placeholder-val="">
+                  <button onClick="{{ p.del }}" style="background:transparent;border:1px solid var(--line);border-radius:7px;padding:6px 10px;font:600 11.5px Manrope,sans-serif;color:var(--bad);cursor:pointer">Delete</button>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ onAdminUpload }}" hint-placeholder-val="">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;animation:catfade .3s ease">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 1px 2px var(--shadow)">
+            <div style="display:flex;align-items:center;gap:11px;margin-bottom:14px;flex-wrap:wrap">
+              <div style="font:700 14px Manrope,sans-serif">Bulk upload questions</div>
+              <div style="margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--line);border-radius:9px;padding:6px 10px">
+                <span style="font:700 10.5px 'JetBrains Mono',monospace;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3)">Import into</span>
+                <select value="{{ adminPaper }}" onChange="{{ setAdminPaper }}" style="border:none;background:none;color:var(--ink);font:700 12.5px Manrope,sans-serif;outline:none;cursor:pointer">
+                  <sc-for list="{{ paperOptions }}" as="o" hint-placeholder-count="6">
+                    <option value="{{ o.value }}">{{ o.label }}</option>
+                  </sc-for>
+                </select>
+              </div>
+            </div>
+            <div style="border:1.5px dashed var(--line);border-radius:12px;padding:34px;text-align:center;background:var(--surface2)">
+              <div style="font-size:22px;margin-bottom:11px">⇪</div>
+              <div style="font:700 13.5px Manrope,sans-serif;margin-bottom:5px">Drop an .xlsx, .csv or .json file</div>
+              <div style="font:500 12px Manrope,sans-serif;color:var(--ink3);margin-bottom:15px">Up to 2,000 rows per upload · validated before import</div>
+              <button onClick="{{ simulateUpload }}" style="background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px 18px;font:700 12.5px Manrope,sans-serif;cursor:pointer">Choose file</button>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:14px">
+              <sc-for list="{{ uploadFormats }}" as="f" hint-placeholder-count="3">
+                <div style="flex:1;border:1px solid var(--line);border-radius:9px;padding:11px 12px">
+                  <div style="font:700 12px 'JetBrains Mono',monospace">{{ f.ext }}</div>
+                  <div style="font:500 11px Manrope,sans-serif;color:var(--ink3);margin-top:3px">{{ f.note }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 1px 2px var(--shadow)">
+            <div style="font:700 14px Manrope,sans-serif;margin-bottom:6px">Expected schema</div>
+            <div style="font:500 12px Manrope,sans-serif;color:var(--ink3);margin-bottom:13px">One row per question. Column order does not matter.</div>
+            <div style="background:var(--surface2);border-radius:10px;padding:14px;font:500 11.5px/1.9 'JetBrains Mono',monospace;color:var(--ink2);overflow-x:auto;white-space:pre">{{ schemaText }}</div>
+          </div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px var(--shadow);overflow:hidden;height:fit-content">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--line2);display:flex;align-items:center">
+            <div style="font:700 14px Manrope,sans-serif">Validation report</div>
+            <div style="margin-left:auto;font:600 12px Manrope,sans-serif;color:var(--ink3)">{{ uploadSummary }}</div>
+          </div>
+          <sc-if value="{{ noUpload }}" hint-placeholder-val="{{ true }}">
+            <div style="padding:48px 24px;text-align:center;font:500 13px Manrope,sans-serif;color:var(--ink3)">Upload a file to see row-level validation.</div>
+          </sc-if>
+          <sc-for list="{{ uploadRows }}" as="r" hint-placeholder-count="0">
+            <div style="display:flex;gap:12px;padding:12px 20px;border-bottom:1px solid var(--line2);align-items:flex-start">
+              <div style="font:700 11px 'JetBrains Mono',monospace;color:var(--ink3);width:52px;flex:none">{{ r.row }}</div>
+              <div style="font:700 10.5px Manrope,sans-serif;color:{{ r.fg }};background:{{ r.bg }};padding:3px 8px;border-radius:5px;flex:none">{{ r.status }}</div>
+              <div style="font:500 12.5px/1.5 Manrope,sans-serif;color:var(--ink2)">{{ r.msg }}</div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ hasUpload }}" hint-placeholder-val="">
+            <div style="padding:16px 20px;display:flex;gap:9px">
+              <button onClick="{{ clearUpload }}" style="background:transparent;border:1px solid var(--line);border-radius:9px;padding:10px 15px;font:600 12.5px Manrope,sans-serif;color:var(--ink2);cursor:pointer">Discard</button>
+              <button onClick="{{ commitUpload }}" style="background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px 16px;font:700 12.5px Manrope,sans-serif;cursor:pointer">Import valid rows</button>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ onAdminUsers }}" hint-placeholder-val="">
+      <div style="display:flex;flex-direction:column;gap:14px;animation:catfade .3s ease">
+        <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:9px 12px;width:300px">
+          <span style="color:var(--ink3)">⌕</span>
+          <input value="{{ adminSearch }}" onChange="{{ setAdminSearch }}" placeholder="Search by name or email…" style="border:none;background:none;color:var(--ink);font-size:13px;width:100%;outline:none">
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 1px 2px var(--shadow)">
+          <div style="display:grid;grid-template-columns:1.6fr 80px 80px 90px 90px 200px;gap:12px;padding:12px 18px;background:var(--surface2);border-bottom:1px solid var(--line);font:700 10.5px 'JetBrains Mono',monospace;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3)">
+            <div>User</div><div>Tests</div><div>Best</div><div>Avg %ile</div><div>Status</div><div></div>
+          </div>
+          <sc-for list="{{ adminUsers }}" as="u" hint-placeholder-count="8">
+            <div style="display:grid;grid-template-columns:1.6fr 80px 80px 90px 90px 200px;gap:12px;padding:13px 18px;border-bottom:1px solid var(--line2);align-items:center">
+              <div style="display:flex;align-items:center;gap:11px;min-width:0">
+                <div style="width:30px;height:30px;border-radius:50%;background:var(--surface2);color:var(--ink2);display:grid;place-items:center;font:700 11px Manrope,sans-serif;flex:none">{{ u.initials }}</div>
+                <div style="min-width:0"><div style="font:700 12.5px Manrope,sans-serif">{{ u.name }}</div><div style="font:500 11px Manrope,sans-serif;color:var(--ink3)">{{ u.email }}</div></div>
+              </div>
+              <div style="font:600 12px 'JetBrains Mono',monospace">{{ u.tests }}</div>
+              <div style="font:600 12px 'JetBrains Mono',monospace">{{ u.best }}</div>
+              <div style="font:600 12px 'JetBrains Mono',monospace;color:var(--accent)">{{ u.pct }}</div>
+              <div style="font:700 10.5px Manrope,sans-serif;color:{{ u.stFg }};background:{{ u.stBg }};padding:4px 8px;border-radius:5px;justify-self:start">{{ u.status }}</div>
+              <div style="display:flex;gap:6px;justify-content:flex-end">
+                <button onClick="{{ u.reset }}" style="background:transparent;border:1px solid var(--line);border-radius:7px;padding:6px 10px;font:600 11.5px Manrope,sans-serif;color:var(--ink);cursor:pointer">Reset</button>
+                <button onClick="{{ u.block }}" style="background:transparent;border:1px solid var(--line);border-radius:7px;padding:6px 10px;font:600 11.5px Manrope,sans-serif;color:var(--warn);cursor:pointer">{{ u.blockLabel }}</button>
+                <button onClick="{{ u.del }}" style="background:transparent;border:1px solid var(--line);border-radius:7px;padding:6px 10px;font:600 11.5px Manrope,sans-serif;color:var(--bad);cursor:pointer">Delete</button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ onAdminAnalytics }}" hint-placeholder-val="">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;animation:catfade .3s ease">
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 2px var(--shadow)">
+          <div style="font:700 14px Manrope,sans-serif;margin-bottom:18px">Daily active users · last 14 days</div>
+          <svg viewBox="0 0 460 160" style="width:100%;height:160px">
+            <polyline points="{{ dauPoints }}" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linejoin="round"></polyline>
+            <sc-for list="{{ dauDots }}" as="d" hint-placeholder-count="14">
+              <circle cx="{{ d.x }}" cy="{{ d.y }}" r="3" fill="var(--accent)"></circle>
+            </sc-for>
+          </svg>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 2px var(--shadow)">
+          <div style="font:700 14px Manrope,sans-serif;margin-bottom:18px">Completion rate by section</div>
+          <div style="display:flex;flex-direction:column;gap:15px">
+            <sc-for list="{{ completionBars }}" as="c" hint-placeholder-count="3">
+              <div>
+                <div style="display:flex;justify-content:space-between;font:600 12.5px Manrope,sans-serif;margin-bottom:6px"><span>{{ c.label }}</span><span style="font-family:'JetBrains Mono',monospace;color:var(--ink2)">{{ c.v }}</span></div>
+                <div style="height:9px;background:var(--surface2);border-radius:5px;overflow:hidden"><div style="height:100%;width:{{ c.w }};background:{{ c.color }};border-radius:5px"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 1px 2px var(--shadow);grid-column:span 2">
+          <div style="font:700 14px Manrope,sans-serif;margin-bottom:18px">Average score by paper year</div>
+          <div style="display:flex;align-items:flex-end;gap:14px;height:170px">
+            <sc-for list="{{ yearBars }}" as="b" hint-placeholder-count="11">
+              <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;height:100%">
+                <div style="font:700 11px 'JetBrains Mono',monospace;text-align:center">{{ b.v }}</div>
+                <div style="width:100%;background:{{ b.color }};border-radius:5px 5px 0 0;height:{{ b.h }};transform-origin:bottom;animation:catgrow .5s ease"></div>
+                <div style="font:600 10px 'JetBrains Mono',monospace;color:var(--ink3);text-align:center">{{ b.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+    </div>
+  </main>
+</div>
+</sc-if>
+
+<sc-if value="{{ isExam }}" hint-placeholder-val="">
+<div style="position:fixed;inset:0;background:var(--paper);display:flex;flex-direction:column;z-index:80">
+  <header style="display:flex;align-items:center;gap:16px;padding:12px 22px;background:var(--surface);border-bottom:1px solid var(--line)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:26px;height:26px;border-radius:7px;background:var(--accent);display:grid;place-items:center;font:800 12px Manrope,sans-serif;color:#fff">M</div>
+      <div>
+        <div style="font:700 13px Manrope,sans-serif">{{ ex.paperName }}</div>
+        <div style="font:500 11px Manrope,sans-serif;color:var(--ink3)">{{ user.name }} · Roll {{ ex.roll }}</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;margin:0 auto;background:var(--surface2);padding:4px;border-radius:11px">
+      <sc-for list="{{ ex.secTabs }}" as="s" hint-placeholder-count="3">
+        <button onClick="{{ s.go }}" style="border:none;background:{{ s.bg }};color:{{ s.fg }};border-radius:8px;padding:8px 16px;font:700 12.5px Manrope,sans-serif;cursor:{{ s.cursor }};display:flex;align-items:center;gap:8px">
+          {{ s.label }}<span style="font:600 11px 'JetBrains Mono',monospace;opacity:.65">{{ s.time }}</span>
+        </button>
+      </sc-for>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="text-align:right">
+        <div style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)">Section time left</div>
+        <div style="font:700 24px/1.1 'JetBrains Mono',monospace;letter-spacing:-.01em;color:{{ ex.timerColor }};animation:{{ ex.timerAnim }}">{{ ex.timeLeft }}</div>
+      </div>
+      <button onClick="{{ askSubmit }}" style="background:var(--ink);color:var(--paper);border:none;border-radius:9px;padding:11px 18px;font:700 13px Manrope,sans-serif;cursor:pointer">Submit test</button>
+    </div>
+  </header>
+
+  <div style="flex:1;display:flex;min-height:0">
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+      <div style="flex:1;overflow-y:auto;padding:26px 30px">
+        <div style="max-width:900px;margin:0 auto">
+          <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:18px">
+            <div style="font:700 13px Manrope,sans-serif">Question {{ ex.qNoInSec }} <span style="color:var(--ink3);font-weight:600">of {{ ex.secCount }}</span></div>
+            <div style="font:600 10.5px 'JetBrains Mono',monospace;letter-spacing:.06em;background:var(--infoS);color:var(--info);padding:4px 8px;border-radius:5px">{{ ex.qType }}</div>
+            <div style="font:600 10.5px Manrope,sans-serif;background:var(--surface2);color:var(--ink2);padding:4px 8px;border-radius:5px">{{ ex.qTopic }}</div>
+            <div style="font:600 10.5px Manrope,sans-serif;color:var(--ink3);margin-left:6px">+{{ ex.qPlus }} / {{ ex.qMinus }}</div>
+            <button onClick="{{ toggleBookmark }}" style="margin-left:auto;background:transparent;border:1px solid var(--line);border-radius:8px;padding:7px 12px;font:600 12px Manrope,sans-serif;color:{{ ex.bmFg }};cursor:pointer">{{ ex.bmLabel }}</button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:{{ ex.qCols }};gap:24px;align-items:start">
+            <sc-if value="{{ ex.hasPassage }}" hint-placeholder-val="">
+              <div style="background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 22px;max-height:56vh;overflow-y:auto">
+                <div style="font:700 11px 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:11px">{{ ex.passageLabel }}</div>
+                <div style="font:400 14.5px/1.75 Manrope,sans-serif;color:var(--ink);text-wrap:pretty;white-space:pre-line">{{ ex.passage }}</div>
+              </div>
+            </sc-if>
+            <div>
+              <div style="font:500 15.5px/1.7 Manrope,sans-serif;margin-bottom:20px;text-wrap:pretty;white-space:pre-line">{{ ex.qText }}</div>
+              <sc-if value="{{ ex.isMCQ }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <sc-for list="{{ ex.options }}" as="o" hint-placeholder-count="4">
+                    <button onClick="{{ o.pick }}" style="display:flex;align-items:flex-start;gap:13px;text-align:left;padding:14px 16px;border:1.5px solid {{ o.bd }};background:{{ o.bg }};border-radius:11px;cursor:pointer;font:500 14.5px/1.55 Manrope,sans-serif;color:var(--ink);transition:border-color .15s ease,background .15s ease" style-hover="border-color:var(--accent)">
+                      <span style="width:24px;height:24px;flex:none;border-radius:50%;border:1.5px solid {{ o.dotBd }};background:{{ o.dotBg }};color:{{ o.dotFg }};display:grid;place-items:center;font:700 11.5px 'JetBrains Mono',monospace">{{ o.letter }}</span>
+                      <span>{{ o.text }}</span>
+                    </button>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ ex.isTITA }}" hint-placeholder-val="">
+                <div>
+                  <label style="display:block;font:600 12px Manrope,sans-serif;color:var(--ink2);margin-bottom:8px">Type your answer</label>
+                  <input value="{{ ex.titaValue }}" onChange="{{ setTita }}" placeholder="e.g. 24" style="width:260px;padding:14px 16px;border:1.5px solid var(--line);border-radius:11px;background:var(--surface);color:var(--ink);font:600 16px 'JetBrains Mono',monospace">
+                  <div style="font:500 12px Manrope,sans-serif;color:var(--ink3);margin-top:9px">No negative marking on TITA. Numeric values only.</div>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:14px 30px;background:var(--surface);border-top:1px solid var(--line);flex-wrap:wrap">
+        <button onClick="{{ clearResponse }}" style="background:transparent;border:1px solid var(--line);border-radius:9px;padding:11px 15px;font:600 13px Manrope,sans-serif;color:var(--ink2);cursor:pointer">Clear response</button>
+        <button onClick="{{ markReview }}" style="background:var(--warnS);border:1px solid var(--warn);border-radius:9px;padding:11px 15px;font:700 13px Manrope,sans-serif;color:var(--warn);cursor:pointer">Mark for review &amp; next</button>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
+          <button onClick="{{ prevQ }}" style="background:transparent;border:1px solid var(--line);border-radius:9px;padding:11px 15px;font:600 13px Manrope,sans-serif;color:var(--ink);cursor:pointer">← Previous</button>
+          <button onClick="{{ saveNext }}" style="background:var(--accent);color:#fff;border:none;border-radius:9px;padding:11px 22px;font:700 13px Manrope,sans-serif;cursor:pointer">Save &amp; next →</button>
+        </div>
+      </div>
+    </div>
+
+    <aside style="flex:0 0 300px;background:var(--surface);border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0">
+      <div style="padding:16px 18px;border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:11px">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--accent2);color:var(--accent);display:grid;place-items:center;font:700 12.5px Manrope,sans-serif">{{ user.initials }}</div>
+        <div>
+          <div style="font:700 12.5px Manrope,sans-serif">{{ user.name }}</div>
+          <div style="font:500 11px Manrope,sans-serif;color:var(--ink3)">{{ ex.sectionName }}</div>
+        </div>
+      </div>
+      <div style="padding:14px 18px;border-bottom:1px solid var(--line2)">
+        <div style="display:flex;justify-content:space-between;font:600 11.5px Manrope,sans-serif;color:var(--ink2);margin-bottom:7px"><span>Progress</span><span style="font-family:'JetBrains Mono',monospace">{{ ex.answeredCount }}/{{ ex.totalCount }}</span></div>
+        <div style="height:7px;background:var(--surface2);border-radius:4px;overflow:hidden"><div style="height:100%;width:{{ ex.progressW }};background:var(--accent);border-radius:4px;transition:width .3s ease"></div></div>
+      </div>
+      <div style="padding:14px 18px;border-bottom:1px solid var(--line2);display:grid;grid-template-columns:1fr 1fr;gap:8px 10px">
+        <sc-for list="{{ ex.legend }}" as="l" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:16px;height:16px;border-radius:4px;background:{{ l.bg }};border:1px solid {{ l.bd }};flex:none"></div>
+            <div style="font:600 11px Manrope,sans-serif;color:var(--ink2)">{{ l.label }} <span style="font-family:'JetBrains Mono',monospace;color:var(--ink3)">{{ l.n }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px 18px">
+        <div style="font:700 10.5px 'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:11px">Question palette</div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:7px">
+          <sc-for list="{{ ex.palette }}" as="p" hint-placeholder-count="24">
+            <button onClick="{{ p.go }}" style="aspect-ratio:1;border-radius:8px;border:1.5px solid {{ p.bd }};background:{{ p.bg }};color:{{ p.fg }};font:700 12px 'JetBrains Mono',monospace;cursor:pointer;position:relative;box-shadow:{{ p.ring }}">
+              {{ p.n }}<sc-if value="{{ p.star }}" hint-placeholder-val=""><span style="position:absolute;top:-3px;right:-2px;font-size:9px;color:var(--accent)">★</span></sc-if>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="padding:14px 18px;border-top:1px solid var(--line2);font:500 11.5px/1.6 Manrope,sans-serif;color:var(--ink3)">Answers save automatically. Sections lock when their timer ends.</div>
+    </aside>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ modalStart }}" hint-placeholder-val="">
+<div style="position:fixed;inset:0;background:rgba(10,11,13,.62);display:grid;place-items:center;z-index:120;padding:24px;backdrop-filter:blur(3px)">
+  <div style="width:100%;max-width:470px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:0 24px 70px var(--sh2);animation:catpop .18s ease">
+    <div style="font:400 26px/1.2 'Instrument Serif',Georgia,serif;margin-bottom:10px">Your MockMint full-length test is about to begin.</div>
+    <div style="font:400 14px/1.7 Manrope,sans-serif;color:var(--ink2);margin-bottom:18px">{{ startPaperLine }}</div>
+    <div style="display:flex;flex-direction:column;gap:10px;background:var(--surface2);border-radius:11px;padding:15px 16px;margin-bottom:20px">
+      <sc-for list="{{ startRules }}" as="r" hint-placeholder-count="4">
+        <div style="display:flex;gap:10px;font:500 13px/1.5 Manrope,sans-serif;color:var(--ink2)"><span style="color:var(--accent)">·</span>{{ r }}</div>
+      </sc-for>
+    </div>
+    <div style="font:700 14px Manrope,sans-serif;margin-bottom:16px">Are you ready?</div>
+    <div style="display:flex;gap:10px">
+      <button onClick="{{ closeModal }}" style="flex:1;background:transparent;border:1px solid var(--line);border-radius:10px;padding:12px;font:600 13.5px Manrope,sans-serif;color:var(--ink2);cursor:pointer">Cancel</button>
+      <button onClick="{{ startExam }}" style="flex:1.4;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px;font:700 13.5px Manrope,sans-serif;cursor:pointer">Start exam</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ modalEarly }}" hint-placeholder-val="">
+<div style="position:fixed;inset:0;background:rgba(10,11,13,.62);display:grid;place-items:center;z-index:120;padding:24px;backdrop-filter:blur(3px)">
+  <div style="width:100%;max-width:440px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:0 24px 70px var(--sh2);animation:catpop .18s ease">
+    <div style="font:400 24px/1.25 'Instrument Serif',Georgia,serif;margin-bottom:10px">You still have {{ ex.timeLeft }} remaining.</div>
+    <div style="font:400 14px/1.7 Manrope,sans-serif;color:var(--ink2);margin-bottom:18px">Are you sure you want to submit? Once submitted, you cannot resume this attempt.</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
+      <sc-for list="{{ ex.legend }}" as="l" hint-placeholder-count="4">
+        <div style="background:var(--surface2);border-radius:9px;padding:11px 10px"><div style="font:700 17px 'JetBrains Mono',monospace;color:{{ l.fg }}">{{ l.n }}</div><div style="font:600 10.5px Manrope,sans-serif;color:var(--ink3);margin-top:3px">{{ l.label }}</div></div>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button onClick="{{ closeModal }}" style="flex:1.3;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px;font:700 13.5px Manrope,sans-serif;cursor:pointer">Continue exam</button>
+      <button onClick="{{ submitExam }}" style="flex:1;background:transparent;border:1px solid var(--line);border-radius:10px;padding:12px;font:600 13.5px Manrope,sans-serif;color:var(--ink2);cursor:pointer">Submit anyway</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ modalTimeUp }}" hint-placeholder-val="">
+<div style="position:fixed;inset:0;background:rgba(10,11,13,.7);display:grid;place-items:center;z-index:130;padding:24px;backdrop-filter:blur(3px)">
+  <div style="width:100%;max-width:420px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:30px;text-align:center;box-shadow:0 24px 70px var(--sh2);animation:catpop .18s ease">
+    <div style="width:52px;height:52px;border-radius:50%;background:var(--accent2);color:var(--accent);display:grid;place-items:center;font-size:22px;margin:0 auto 16px">◷</div>
+    <div style="font:400 26px/1.2 'Instrument Serif',Georgia,serif;margin-bottom:10px">Time is over.</div>
+    <div style="font:400 14px/1.7 Manrope,sans-serif;color:var(--ink2);margin-bottom:22px">Your responses have been submitted successfully.</div>
+    <button onClick="{{ viewResult }}" style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:13px;font:700 13.5px Manrope,sans-serif;cursor:pointer">View analysis</button>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ modalQuestion }}" hint-placeholder-val="">
+<div style="position:fixed;inset:0;background:rgba(10,11,13,.62);display:grid;place-items:center;z-index:120;padding:24px;backdrop-filter:blur(3px);overflow-y:auto">
+  <div style="width:100%;max-width:720px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 24px 70px var(--sh2);animation:catpop .18s ease;margin:auto">
+    <div style="padding:20px 24px;border-bottom:1px solid var(--line2);display:flex;align-items:center">
+      <div><div style="font:700 15.5px Manrope,sans-serif">{{ qfTitle }}</div><div style="font:500 12px Manrope,sans-serif;color:var(--ink3);margin-top:2px">{{ qfSub }}</div></div>
+      <button onClick="{{ closeModal }}" style="margin-left:auto;background:none;border:none;color:var(--ink3);cursor:pointer;font-size:15px">✕</button>
+    </div>
+    <div style="padding:22px 24px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div><label style="display:block;font:600 11.5px Manrope,sans-serif;color:var(--ink2);margin-bottom:6px">Section</label>
+          <select value="{{ qf.sec }}" onChange="{{ setQfSec }}" style="width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13px">
+            <option value="VARC">VARC</option><option value="DILR">DILR</option><option value="QA">QA</option>
+          </select></div>
+        <div><label style="display:block;font:600 11.5px Manrope,sans-serif;color:var(--ink2);margin-bottom:6px">Type</label>
+          <select value="{{ qf.type }}" onChange="{{ setQfType }}" style="width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13px">
+            <option value="MCQ">MCQ</option><option value="TITA">TITA</option>
+          </select></div>
+        <div><label style="display:block;font:600 11.5px Manrope,sans-serif;color:var(--ink2);margin-bottom:6px">Difficulty</label>
+          <select value="{{ qf.diff }}" onChange="{{ setQfDiff }}" style="width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13px">
+            <option value="Easy">Easy</option><option value="Medium">Medium</option><option value="Hard">Hard</option>
+          </select></div>
+        <div><label style="display:block;font:600 11.5px Manrope,sans-serif;color:var(--ink2);margin-bottom:6px">Topic</label>
+          <input value="{{ qf.topic }}" onChange="{{ setQfTopic }}" style="width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13px"></div>
+      </div>
+      <div><label style="display:block;font:600 11.5px Manrope,sans-serif;color:var(--ink2);margin-bottom:6px">Question stem</label>
+        <textarea value="{{ qf.text }}" onChange="{{ setQfText }}" rows="3" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font:500 13.5px/1.6 Manrope,sans-serif;resize:vertical"></textarea></div>
+      <sc-if value="{{ qfIsMCQ }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <label style="font:600 11.5px Manrope,sans-serif;color:var(--ink2)">Options — click the circle to set the correct answer</label>
+          <sc-for list="{{ qfOptions }}" as="o" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;gap:10px">
+              <button onClick="{{ o.setCorrect }}" style="width:26px;height:26px;flex:none;border-radius:50%;border:1.5px solid {{ o.bd }};background:{{ o.bg }};color:{{ o.fg }};font:700 11px 'JetBrains Mono',monospace;cursor:pointer">{{ o.letter }}</button>
+              <input value="{{ o.text }}" onChange="{{ o.set }}" placeholder="Option text" style="flex:1;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13px">
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ qfIsTITA }}" hint-placeholder-val="">
+        <div><label style="display:block;font:600 11.5px Manrope,sans-serif;color:var(--ink2);margin-bottom:6px">Correct answer (exact match)</label>
+          <input value="{{ qf.tita }}" onChange="{{ setQfTita }}" style="width:200px;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font:600 14px 'JetBrains Mono',monospace"></div>
+      </sc-if>
+      <div><label style="display:block;font:600 11.5px Manrope,sans-serif;color:var(--ink2);margin-bottom:6px">Explanation</label>
+        <textarea value="{{ qf.expl }}" onChange="{{ setQfExpl }}" rows="3" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font:400 13px/1.65 Manrope,sans-serif;resize:vertical"></textarea></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+        <div><label style="display:block;font:600 11.5px Manrope,sans-serif;color:var(--ink2);margin-bottom:6px">Marks</label>
+          <input value="{{ qf.marks }}" onChange="{{ setQfMarks }}" style="width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13px"></div>
+        <div><label style="display:block;font:600 11.5px Manrope,sans-serif;color:var(--ink2);margin-bottom:6px">Negative marks</label>
+          <input value="{{ qf.neg }}" onChange="{{ setQfNeg }}" style="width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--ink);font-size:13px"></div>
+        <div><label style="display:block;font:600 11.5px Manrope,sans-serif;color:var(--ink2);margin-bottom:6px">Image</label>
+          <button style="width:100%;padding:10px;border:1px dashed var(--line);border-radius:9px;background:transparent;color:var(--ink2);font:600 12.5px Manrope,sans-serif;cursor:pointer">⇪ Attach</button></div>
+      </div>
+    </div>
+    <div style="padding:18px 24px;border-top:1px solid var(--line2);display:flex;gap:10px;justify-content:flex-end">
+      <button onClick="{{ closeModal }}" style="background:transparent;border:1px solid var(--line);border-radius:10px;padding:11px 18px;font:600 13px Manrope,sans-serif;color:var(--ink2);cursor:pointer">Cancel</button>
+      <button onClick="{{ saveQuestion }}" style="background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 22px;font:700 13px Manrope,sans-serif;cursor:pointer">Save question</button>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ toast }}" hint-placeholder-val="">
+<div style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:12px 20px;border-radius:11px;font:600 13px Manrope,sans-serif;z-index:200;box-shadow:0 12px 34px var(--sh2);animation:catpop .16s ease">{{ toast }}</div>
+</sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;defaultTheme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;'light'|'dark'&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#b0501e&quot;,&quot;options&quot;:[&quot;#b0501e&quot;,&quot;#1f5f52&quot;,&quot;#3b4a8f&quot;,&quot;#7a3b6a&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;}}">
+const SECS=[
+ {key:'VARC',name:'Verbal Ability & RC',count:24,mins:40},
+ {key:'DILR',name:'Data Interpretation & LR',count:20,mins:40},
+ {key:'QA',name:'Quantitative Ability',count:22,mins:40}
+];
+const PASSAGE=`Cities were once read as machines: inputs of labour and coal, outputs of goods and smoke. The metaphor was flattering to planners, because machines can be tuned. A neighbourhood that failed was a badly calibrated part, and the remedy was replacement — clear the block, widen the road, rehouse the residents in towers set in lawns.
+
+What this reading missed is that a city is less a machine than a metabolism. Its most valuable structures are not the buildings but the relationships that accumulate around them: the shopkeeper who extends credit, the tenant who watches the street, the informal repair economy that keeps a scooter running for twenty years. These are slow to build and impossible to specify in a drawing. When a block is cleared, the buildings are replaced within a year; the relationships are not replaced at all.
+
+The consequence is a peculiar asymmetry in urban policy. Interventions that destroy relational capital are cheap to execute and their costs appear nowhere in the ledger, while interventions that grow it are expensive, slow, and politically unrewarding. Planners are therefore structurally biased toward demolition — not from malice, but because the accounting system they inherited can only see the machine.`;
+
+const AUTH={
+ VARC:[
+  {type:'MCQ',topic:'RC · Inference',diff:'Medium',passage:PASSAGE,q:'Which of the following best captures the "peculiar asymmetry in urban policy" the author describes?',opts:['Demolition is cheaper than construction, so planners prefer it on budgetary grounds alone.','The harms of destroying relational capital are invisible in official accounting, while building it is costly and slow.','Planners are hostile to informal economies and deliberately displace them.','Relationships in a neighbourhood matter more to residents than buildings do.'],ans:1,expl:'The asymmetry is explicitly about accounting: destructive interventions are "cheap to execute and their costs appear nowhere in the ledger", while constructive ones are "expensive, slow, and politically unrewarding". Option A captures only half; C imports malice the author explicitly rejects; D is true in the passage but is not the asymmetry.'},
+  {type:'MCQ',topic:'RC · Main idea',diff:'Easy',passage:PASSAGE,q:'The primary purpose of the passage is to:',opts:['argue that tower-block housing has failed in most cities.','propose a new accounting standard for municipal budgets.','show how an inherited metaphor distorts what urban policy can perceive.','trace the history of industrial cities and their decline.'],ans:2,expl:'The passage moves from the machine metaphor, to the metabolism alternative, to the conclusion that "the accounting system they inherited can only see the machine". The distortion caused by the metaphor is the thread; the other options are local details or inventions.'},
+  {type:'MCQ',topic:'RC · Vocabulary in context',diff:'Medium',passage:PASSAGE,q:'"Flattering to planners" in the first paragraph implies that the machine metaphor:',opts:['overstated the aesthetic quality of industrial cities.','granted planners a sense of competence and control they may not have had.','was invented by planners to justify their salaries.','praised planners in official government reports.'],ans:1,expl:'The clause that follows is the clue: "because machines can be tuned". The metaphor flatters by implying the planner is a competent mechanic with a tunable object — a sense of control the rest of the passage undercuts.'},
+  {type:'MCQ',topic:'Para summary',diff:'Hard',q:'The four sentences below, when arranged, form a coherent paragraph. Choose the correct order.\n\n1. Standardised tests reward speed of retrieval over depth of understanding.\n2. Yet retrieval speed is itself a proxy for hours of prior practice, which correlates with family resources.\n3. Defenders argue that timing is neutral: everyone faces the same clock.\n4. The clock is neutral only if the preparation behind it was.',opts:['1-3-2-4','3-1-2-4','1-2-3-4','3-4-1-2'],ans:0,expl:'Sentence 1 states the claim, 3 introduces the counter-argument ("Defenders argue"), 2 rebuts it ("Yet"), and 4 closes with the epigram that resolves the rebuttal. 1-3-2-4.'},
+  {type:'MCQ',topic:'Odd one out',diff:'Medium',q:'Four of the five sentences below form a coherent paragraph. Pick the one that does not belong.',opts:['Fermentation was, for most of history, a form of storage rather than a cuisine.','A jar of pickles was insurance against a bad month, not a flourish on a plate.','Modern kitchens fermented for flavour only once refrigeration had made preservation unnecessary.','Refrigerated shipping lowered the price of fresh produce in inland cities by nearly half.','The techniques survived the loss of their purpose, and were reinterpreted as taste.'],ans:3,expl:'The paragraph traces fermentation from preservation to flavour. Option D is a fact about produce pricing and refrigerated logistics — related to refrigeration but not to the fermentation argument.'}
+ ],
+ DILR:[
+  {type:'MCQ',topic:'Table analysis',diff:'Medium',passage:`Four coaching centres — P, Q, R and S — each enrolled students in three streams (Verbal, Logic, Quant) in 2024. The table gives enrolment in hundreds.
+
+        Verbal   Logic   Quant
+P         12       8       20
+Q         15      12       13
+R          9      18       23
+S         14      10       16
+
+Fee per student per stream: Verbal 8,000; Logic 10,000; Quant 12,000.`,q:'Which centre earned the highest total fee revenue in 2024?',opts:['P','Q','R','S'],ans:2,expl:'Revenue in ₹ lakh (enrolment in hundreds × fee ÷ 100): P = 12·8 + 8·10 + 20·12 = 96+80+240 = 416. Q = 120+120+156 = 396. R = 72+180+276 = 528. S = 112+100+192 = 404. R is highest.'},
+  {type:'TITA',topic:'Table analysis',diff:'Hard',passage:`Four coaching centres — P, Q, R and S — each enrolled students in three streams (Verbal, Logic, Quant) in 2024. The table gives enrolment in hundreds.
+
+        Verbal   Logic   Quant
+P         12       8       20
+Q         15      12       13
+R          9      18       23
+S         14      10       16`,q:'What percentage of all Quant enrolments across the four centres came from centre R? (Answer to the nearest integer.)',opts:[],ans:'32',expl:'Total Quant = 20+13+23+16 = 72 (hundreds). R contributes 23. 23/72 = 31.94%, which rounds to 32.'},
+  {type:'MCQ',topic:'Arrangement',diff:'Hard',passage:`Five friends — Anil, Bina, Chetan, Divya and Esha — sit in a row of five chairs numbered 1 to 5 from left to right.
+· Bina sits immediately to the right of Anil.
+· Chetan is not at either end.
+· Divya sits in chair 5.
+· Esha sits somewhere to the left of Chetan.`,q:'Who sits in chair 1?',opts:['Anil','Bina','Chetan','Esha'],ans:3,expl:'Divya is in 5. Chetan must be in 2, 3 or 4. Anil–Bina is a consecutive pair. If Esha is left of Chetan and the pair must fit, the only consistent arrangement is Esha-1, Chetan-2, Anil-3, Bina-4, Divya-5. So Esha sits in chair 1.'},
+  {type:'MCQ',topic:'Logical reasoning',diff:'Easy',q:'In a group of 100 students, 62 study Statistics, 48 study Economics and 14 study neither. How many study both?',opts:['24','20','28','34'],ans:0,expl:'Students studying at least one = 100 − 14 = 86. |A ∪ B| = |A| + |B| − |A ∩ B| → 86 = 62 + 48 − both → both = 24.'}
+ ],
+ QA:[
+  {type:'MCQ',topic:'Arithmetic · Time & work',diff:'Medium',q:'A can finish a job in 12 days and B in 18 days. They work together for 4 days, after which A leaves. In how many more days will B finish the remaining work?',opts:['8','10','9','12'],ans:0,expl:'Combined one-day work = 1/12 + 1/18 = 5/36. In 4 days they complete 20/36 = 5/9, leaving 4/9. B alone does 1/18 per day, so the remaining time = (4/9) × 18 = 8 days.'},
+  {type:'TITA',topic:'Algebra · Quadratics',diff:'Medium',q:'If x + 1/x = 5, find the value of x² + 1/x².',opts:[],ans:'23',expl:'Squaring both sides: x² + 2 + 1/x² = 25, so x² + 1/x² = 23.'},
+  {type:'MCQ',topic:'Geometry · Circles',diff:'Hard',q:'A chord of length 16 cm is at a distance of 6 cm from the centre of a circle. What is the area of the circle, in cm²?',opts:['100π','64π','144π','36π'],ans:0,expl:'Half the chord (8), the distance (6) and the radius form a right triangle: r² = 8² + 6² = 100, so r = 10 and area = 100π.'},
+  {type:'MCQ',topic:'Arithmetic · Percentages',diff:'Easy',q:'The price of a book is increased by 25% and then reduced by 20%. The net change in price is:',opts:['5% increase','no change','5% decrease','1% increase'],ans:1,expl:'1.25 × 0.80 = 1.00 — the price returns to its original value, so there is no net change.'},
+  {type:'TITA',topic:'Number theory',diff:'Hard',q:'How many three-digit numbers leave a remainder of 2 when divided by 7?',opts:[],ans:'129',expl:'The smallest such three-digit number is 100 (100 = 7·14 + 2) and the largest is 996 (996 = 7·142 + 2). Count = 142 − 14 + 1 = 129.'}
+ ]
+};
+const TOPICS={VARC:['RC · Inference','RC · Main idea','Para jumbles','Para summary','Odd one out','RC · Tone'],DILR:['Table analysis','Bar graph','Arrangement','Games & tournaments','Venn diagrams','Logical reasoning'],QA:['Arithmetic · SI & CI','Algebra · Equations','Geometry · Triangles','Number theory','Arithmetic · Ratios','Modern maths · P&C']};
+const DIFFS=['Easy','Medium','Hard'];
+const KEY='catpyq_session_v1';
+const ADMIN={email:'admin@mockmint.in',pass:'MockMint@2026',name:'MockMint Admin',initials:'MM'};
+const pad=n=>String(n).padStart(2,'0');
+const fmt=s=>{s=Math.max(0,Math.round(s));return pad(Math.floor(s/60))+':'+pad(s%60);};
+const fmtMin=s=>Math.round(s/60)+'m';
+
+class Component extends DCLogic {
+  state={
+    theme:'light',screen:'login',page:'dashboard',
+    authName:'',authEmail:'aarav@example.com',authPass:'demo1234',asAdmin:false,authError:'',
+    modal:null,notifOpen:false,query:'',toast:null,
+    user:{name:'Aarav Sharma',email:'aarav@example.com',initials:'AS'},
+    studentUser:{name:'Aarav Sharma',email:'aarav@example.com',initials:'AS'},
+    isAdmin:false,pendingPaper:null,exam:null,result:null,
+    resultTab:'sections',reviewFilter:'wrong',bookmarks:{},savedSession:null,paperFilter:'all',
+    adminSearch:'',adminSec:'all',qf:null,qfIndex:null,uploadRows:null,
+    banks:{},adminPaper:'2024-1',blocked:{},deleted:{},unpublished:{},
+    builder:{year:'2026',slot:'1',duration:'120',lock:'40',difficulty:'Moderate'},
+    builderError:'',customPapers:[],
+    history:[
+      {id:'h1',year:2021,slot:1,date:'12 Jun',score:78,pct:'88.4',acc:61,secScores:[30,18,30]},
+      {id:'h2',year:2022,slot:2,date:'26 Jun',score:71,pct:'84.1',acc:57,secScores:[27,15,29]},
+      {id:'h3',year:2022,slot:1,date:'09 Jul',score:94,pct:'93.7',acc:66,secScores:[36,22,36]},
+      {id:'h4',year:2023,slot:3,date:'21 Jul',score:88,pct:'92.0',acc:63,secScores:[33,20,35]},
+      {id:'h5',year:2023,slot:1,date:'04 Aug',score:108,pct:'96.2',acc:70,secScores:[42,24,42]}
+    ],
+    attemptedPapers:{'2021-1':78,'2022-2':71,'2022-1':94,'2023-3':88,'2023-1':108}
+  };
+
+  componentDidMount(){
+    document.documentElement.setAttribute('data-cattheme',this.props.defaultTheme||'light');
+    if(this.props.accent)document.documentElement.style.setProperty('--accent',this.props.accent);
+    this.setState({theme:this.props.defaultTheme||'light'});
+    try{const raw=localStorage.getItem(KEY);if(raw)this.setState({savedSession:JSON.parse(raw)});}catch(e){}
+    this.timer=setInterval(()=>this.tick(),1000);
+  }
+  componentWillUnmount(){clearInterval(this.timer);}
+
+  flash(t){this.setState({toast:t});clearTimeout(this._t);this._t=setTimeout(()=>this.setState({toast:null}),2200);}
+
+  // ---------- paper + question generation ----------
+  buildQuestions(year,slot){
+    const qs=[];let n=0;
+    SECS.forEach((sec,si)=>{
+      const authored=AUTH[sec.key];
+      for(let i=0;i<sec.count;i++){
+        n++;
+        const a=authored[i];
+        if(a){
+          qs.push({id:sec.key+'-'+(i+1),no:n,secNo:i+1,sec:sec.key,si,type:a.type,topic:a.topic,diff:a.diff,passage:a.passage||null,text:a.q,opts:a.opts,ans:a.ans,expl:a.expl,placeholder:false});
+        }else{
+          const seed=(year*7+slot*13+si*17+i*29)%1000;
+          const tita=seed%5===0;
+          const topic=TOPICS[sec.key][seed%6];
+          const diff=DIFFS[seed%3];
+          qs.push({id:sec.key+'-'+(i+1),no:n,secNo:i+1,sec:sec.key,si,type:tita?'TITA':'MCQ',topic,diff,passage:null,
+            text:'['+sec.key+' Q'+(i+1)+' · '+topic+'] Placeholder question — import your question bank to replace this stem. All timing, marking and analytics below are computed from real responses.',
+            opts:tita?[]:['Option A for Q'+n,'Option B for Q'+n,'Option C for Q'+n,'Option D for Q'+n],
+            ans:tita?String(10+(seed%90)):seed%4,
+            expl:'Placeholder explanation for '+sec.key+' Q'+(i+1)+'. Bulk-upload your bank (XLSX/CSV/JSON) from the admin panel and explanations appear here.',placeholder:true});
+        }
+      }
+    });
+    return qs;
+  }
+  papersFor(year,includeDrafts){
+    const out=[];
+    const base=year>=2015&&year<=2025?(year>=2020?3:2):0;
+    for(let s=1;s<=base;s++){
+      const seed=(year*3+s*5)%3;
+      const draft=!!this.state.unpublished[year+'-'+s];
+      if(draft&&!includeDrafts)continue;
+      out.push({year,slot:s,difficulty:['Moderate','Difficult','Easy-Moderate'][seed],qCount:66,duration:'120 min',marks:198,status:draft?'draft':'live'});
+    }
+    (this.state.customPapers||[]).filter(p=>p.year===year).forEach(p=>{
+      if(p.status!=='live'&&!includeDrafts)return;
+      out.push({year,slot:p.slot,difficulty:p.difficulty,qCount:66,duration:p.duration+' min',marks:198,status:p.status,custom:true});
+    });
+    return out.sort((a,b)=>a.slot-b.slot);
+  }
+  paperYears(includeDrafts){
+    const base=[2025,2024,2023,2022,2021,2020,2019,2018,2017,2016,2015];
+    const extra=(this.state.customPapers||[]).filter(p=>includeDrafts||p.status==='live').map(p=>p.year);
+    return Array.from(new Set(base.concat(extra))).sort((a,b)=>b-a);
+  }
+  commitPaper=(status)=>{
+    const b=this.state.builder;
+    const year=parseInt(b.year,10),slot=parseInt(b.slot,10),dur=parseInt(b.duration,10),lock=parseInt(b.lock,10);
+    if(!year||year<2000||year>2100)return this.setState({builderError:'Enter a four-digit year between 2000 and 2100.'});
+    if(!slot||slot<1||slot>4)return this.setState({builderError:'Slot must be between 1 and 4.'});
+    if(!dur||dur<30)return this.setState({builderError:'Duration must be at least 30 minutes.'});
+    if(!lock||lock*3>dur)return this.setState({builderError:'Three sectional locks of '+b.lock+' min do not fit in '+b.duration+' min.'});
+    const clash=this.papersFor(year,true).some(p=>p.slot===slot);
+    if(clash)return this.setState({builderError:'CAT '+year+' Slot '+slot+' already exists. Change the year or slot.'});
+    const cp=(this.state.customPapers||[]).concat([{year,slot,duration:String(dur),lock:String(lock),difficulty:b.difficulty,status}]);
+    this.setState({customPapers:cp,builderError:'',
+      builder:Object.assign({},b,{slot:String(slot+1)})});
+    this.flash(status==='live'
+      ?'CAT '+year+' Slot '+slot+' published — now live on the student Papers page'
+      :'CAT '+year+' Slot '+slot+' saved as a draft — hidden from students');
+  };
+
+  // ---------- navigation ----------
+  nav(p){this.setState({page:p,notifOpen:false});}
+  login=()=>{
+    const em=this.state.authEmail.trim().toLowerCase();
+    if(!em.includes('@'))return this.setState({authError:'Enter a valid email address.'});
+    if(this.state.authPass.length<6)return this.setState({authError:'Password must be at least 6 characters.'});
+    const isAdminEmail=em===ADMIN.email;
+    if(isAdminEmail&&this.state.authPass!==ADMIN.pass)
+      return this.setState({authError:'Incorrect administrator password.'});
+    const admin=isAdminEmail;
+    this.setState({authError:'',screen:'app',isAdmin:admin,page:admin?'admin-dashboard':'dashboard',
+      user:admin?{name:ADMIN.name,email:ADMIN.email,initials:ADMIN.initials}:this.state.studentUser});
+  };
+  signup=()=>{
+    if(this.state.authName.trim().length<3)return this.setState({authError:'Tell us your name.'});
+    if(!this.state.authEmail.includes('@'))return this.setState({authError:'Enter a valid email address.'});
+    if(this.state.authPass.length<8)return this.setState({authError:'Use at least 8 characters.'});
+    const parts=this.state.authName.trim().split(/\s+/);
+    const u={name:this.state.authName.trim(),email:this.state.authEmail,initials:(parts[0][0]+(parts[1]?parts[1][0]:'')).toUpperCase()};
+    this.setState({authError:'',screen:'app',page:'dashboard',isAdmin:false,user:u,studentUser:u});
+  };
+
+  // ---------- exam ----------
+  askStart=(p)=>this.setState({pendingPaper:p,modal:'start'});
+  startExam=()=>{
+    const p=this.state.pendingPaper;
+    const qs=this.examQs(p.year,p.slot);
+    const cp=(this.state.customPapers||[]).find(x=>x.year===p.year&&x.slot===p.slot);
+    const lock=cp&&Number(cp.lock)?Number(cp.lock):40;
+    this.setState({modal:null,screen:'exam',exam:{
+      year:p.year,slot:p.slot,qs,cur:0,si:0,
+      responses:{},marked:{},visited:{[qs[0].id]:true},
+      secLeft:[lock*60,lock*60,lock*60],lock,qTime:{},started:Date.now()
+    }});
+  };
+  resumeSaved=()=>{
+    const s=this.state.savedSession;if(!s)return;
+    const qs=this.examQs(s.year,s.slot);
+    this.setState({screen:'exam',exam:Object.assign({},s,{qs})});
+  };
+  discardSaved=()=>{try{localStorage.removeItem(KEY);}catch(e){}this.setState({savedSession:null});this.flash('Saved attempt discarded');};
+  persist(ex){
+    try{const c=Object.assign({},ex);delete c.qs;localStorage.setItem(KEY,JSON.stringify(c));}catch(e){}
+  }
+  tick(){
+    const ex=this.state.exam;
+    if(this.state.screen!=='exam'||!ex||this.state.modal==='timeup')return;
+    const secLeft=ex.secLeft.slice();
+    const q=ex.qs[ex.cur];
+    const qTime=Object.assign({},ex.qTime);qTime[q.id]=(qTime[q.id]||0)+1;
+    secLeft[ex.si]=Math.max(0,secLeft[ex.si]-1);
+    const next=Object.assign({},ex,{secLeft,qTime});
+    if(secLeft[ex.si]===0){
+      if(ex.si<2){
+        const ns=ex.si+1;
+        next.si=ns;next.cur=ex.qs.findIndex(x=>x.si===ns);
+        this.setState({exam:next});this.flash('Section time over — moved to '+SECS[ns].key);
+        return;
+      }
+      this.finish(next,true);return;
+    }
+    this.setState({exam:next});
+    if(secLeft[ex.si]%5===0)this.persist(next);
+  }
+  goQ=(i)=>{const ex=this.state.exam;const visited=Object.assign({},ex.visited);visited[ex.qs[i].id]=true;
+    this.setState({exam:Object.assign({},ex,{cur:i,si:ex.qs[i].si,visited})});};
+  goSec=(si)=>{const ex=this.state.exam;if(ex.secLeft[si]===0)return this.flash(SECS[si].key+' is locked — its time is over');
+    const i=ex.qs.findIndex(q=>q.si===si);this.goQ(i);};
+  pick=(v)=>{const ex=this.state.exam;const responses=Object.assign({},ex.responses);responses[ex.qs[ex.cur].id]=v;
+    this.setState({exam:Object.assign({},ex,{responses})});};
+  clearResponse=()=>{const ex=this.state.exam;const responses=Object.assign({},ex.responses);delete responses[ex.qs[ex.cur].id];
+    this.setState({exam:Object.assign({},ex,{responses})});this.flash('Response cleared');};
+  markReview=()=>{const ex=this.state.exam;const marked=Object.assign({},ex.marked);marked[ex.qs[ex.cur].id]=true;
+    this.setState({exam:Object.assign({},ex,{marked})},()=>this.step(1));};
+  saveNext=()=>{this.flash('Saved');this.step(1);};
+  step=(d)=>{const ex=this.state.exam;const i=ex.cur+d;if(i<0||i>=ex.qs.length)return;
+    if(ex.qs[i].si!==ex.si&&ex.secLeft[ex.qs[i].si]===0)return this.flash('That section is locked');this.goQ(i);};
+  toggleBookmark=()=>{const ex=this.state.exam;const id=ex.year+'-'+ex.slot+'-'+ex.qs[ex.cur].id;
+    const b=Object.assign({},this.state.bookmarks);
+    if(b[id])delete b[id];else b[id]={id,q:ex.qs[ex.cur]};
+    this.setState({bookmarks:b});this.flash(b[id]?'Bookmarked':'Bookmark removed');};
+  askSubmit=()=>this.setState({modal:'early'});
+  submitExam=()=>this.finish(this.state.exam,false);
+
+  finish(ex,timeUp){
+    const secs=SECS.map((s,si)=>{
+      const qs=ex.qs.filter(q=>q.si===si);
+      let correct=0,wrong=0,attempted=0,score=0,time=0;
+      qs.forEach(q=>{
+        time+=ex.qTime[q.id]||0;
+        const r=ex.responses[q.id];
+        const has=r!==undefined&&r!==''&&r!==null;
+        if(!has)return;
+        attempted++;
+        const ok=q.type==='TITA'?String(r).trim()===String(q.ans):r===q.ans;
+        if(ok){correct++;score+=(q.marks||3);}else{wrong++;score-=(q.neg||0);}
+      });
+      const n=qs.length;
+      return{key:s.key,name:s.name,count:n,attempted,correct,wrong,skipped:n-attempted,
+        acc:attempted?Math.round(correct/attempted*100):0,score,timeSec:time,time:fmtMin(time),
+        max:qs.reduce((a,q)=>a+(q.marks||3),0)};
+    });
+    const score=secs.reduce((a,s)=>a+s.score,0);
+    const correct=secs.reduce((a,s)=>a+s.correct,0);
+    const wrong=secs.reduce((a,s)=>a+s.wrong,0);
+    const attempted=secs.reduce((a,s)=>a+s.attempted,0);
+    const timeSec=secs.reduce((a,s)=>a+s.timeSec,0);
+    const count=ex.qs.length;
+    const totalMarks=secs.reduce((a,s)=>a+s.max,0);
+    const diffAgg={};
+    ex.qs.forEach(q=>{
+      const d=diffAgg[q.diff]||(diffAgg[q.diff]={a:0,c:0});
+      const r=ex.responses[q.id];
+      if(r===undefined||r===''||r===null)return;
+      d.a++;
+      const ok=q.type==='TITA'?String(r).trim()===String(q.ans):r===q.ans;
+      if(ok)d.c++;
+    });
+    const result={
+      year:ex.year,slot:ex.slot,qs:ex.qs,responses:ex.responses,qTime:ex.qTime,secs,score,correct,wrong,attempted,
+      skipped:count-attempted,count,timeSec,totalMarks,accuracy:attempted?Math.round(correct/attempted*100):0,
+      attemptRate:count?Math.round(attempted/count*100):0,
+      percentile:this.percentile(totalMarks?score*198/totalMarks:0),diffAgg,
+      submittedAt:new Date().toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})
+    };
+    const h=this.state.history.concat([{id:'h'+(this.state.history.length+1),year:ex.year,slot:ex.slot,
+      date:new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short'}),score,pct:result.percentile,acc:result.accuracy,
+      secScores:secs.map(s=>s.score)}]);
+    const ap=Object.assign({},this.state.attemptedPapers);
+    const k=ex.year+'-'+ex.slot;if(!ap[k]||ap[k]<score)ap[k]=score;
+    try{localStorage.removeItem(KEY);}catch(e){}
+    this.setState({exam:null,result,history:h,attemptedPapers:ap,savedSession:null,
+      screen:'app',page:'result',resultTab:'sections',modal:timeUp?'timeup':null});
+  }
+  percentile(score){
+    const pts=[[0,8],[20,42],[40,68],[60,83],[80,92],[100,96.5],[120,98.7],[150,99.6],[198,99.99]];
+    if(score<=0)return '5.00';
+    for(let i=1;i<pts.length;i++){
+      if(score<=pts[i][0]){
+        const [x0,y0]=pts[i-1],[x1,y1]=pts[i];
+        return (y0+(score-x0)/(x1-x0)*(y1-y0)).toFixed(2);
+      }
+    }
+    return '99.99';
+  }
+
+  suggestions(r){
+    const out=[];
+    const weakest=r.secs.slice().sort((a,b)=>a.acc-b.acc)[0];
+    out.push({icon:'◎',iconBg:'var(--badS)',iconFg:'var(--bad)',priority:'HIGH',
+      title:'Your '+weakest.key+' accuracy is '+weakest.acc+'%',
+      body:'That is the weakest of the three sections this attempt. Work through '+(weakest.key==='QA'?'arithmetic and algebra':weakest.key==='DILR'?'timed table-and-arrangement sets':'inference and para-summary sets')+' in 20-minute blocks and review every wrong answer before moving on.',
+      tags:[weakest.name,'Accuracy '+weakest.acc+'%','Score '+weakest.score+'/'+weakest.max]});
+    const neg=r.secs.reduce((a,s)=>a+s.wrong,0);
+    if(neg>0)out.push({icon:'▽',iconBg:'var(--warnS)',iconFg:'var(--warn)',priority:'MEDIUM',
+      title:'You lost '+neg+' marks to negative marking',
+      body:neg>8?'You are attempting questions you cannot convert. Leave a question the moment you have not found a foothold in 60 seconds — selection is worth more than speed at your accuracy level.':'Negative marking is under control. Keep the same selection discipline as you raise your attempt count.',
+      tags:[r.wrong+' incorrect','Attempt rate '+r.attemptRate+'%']});
+    const slow=r.secs.slice().sort((a,b)=>b.timeSec/Math.max(1,b.attempted)-a.timeSec/Math.max(1,a.attempted))[0];
+    out.push({icon:'◷',iconBg:'var(--infoS)',iconFg:'var(--info)',priority:'MEDIUM',
+      title:slow.key+' pace is '+Math.round(slow.timeSec/Math.max(1,slow.attempted))+'s per attempted question',
+      body:'Aim for 90–110s per question in '+slow.key+'. Practise with a visible per-question clock so pace becomes automatic rather than something you monitor.',
+      tags:['Time '+slow.time,'Attempted '+slow.attempted+'/'+slow.count]});
+    if(r.skipped>20)out.push({icon:'△',iconBg:'var(--okS)',iconFg:'var(--ok)',priority:'LOW',
+      title:r.skipped+' questions left untouched',
+      body:'Your attempt rate is '+r.attemptRate+'%. Once accuracy holds above 70%, raising attempts by five questions is worth roughly 12 marks — a full percentile band at your current score.',
+      tags:['Attempt rate '+r.attemptRate+'%']});
+    return out;
+  }
+
+  heat(n,seedOff){
+    const cells=[];
+    for(let i=0;i<n;i++){
+      const s=(i*37+seedOff)%11;
+      const lvl=s>8?4:s>6?3:s>4?2:s>2?1:0;
+      const bg=['var(--surface2)','color-mix(in oklab,var(--accent) 22%,var(--surface2))','color-mix(in oklab,var(--accent) 45%,var(--surface2))','color-mix(in oklab,var(--accent) 70%,var(--surface2))','var(--accent)'][lvl];
+      cells.push({bg,title:lvl?lvl*2+' sets practised':'no practice'});
+    }
+    return cells;
+  }
+
+  // ---------- admin ----------
+  bank(key){
+    key=key||this.state.adminPaper;
+    if(this.state.banks[key])return this.state.banks[key];
+    const [y,s]=key.split('-').map(Number);
+    return this.buildQuestions(y,s).map((q,i)=>({
+      code:key+'-'+String(1001+i),sec:q.sec,type:q.type,topic:q.topic,diff:q.diff,passage:q.passage||null,
+      text:q.text,opts:(q.opts||[]).slice(),ans:q.ans,expl:q.expl,marks:'3',neg:q.type==='TITA'?'0':'1'
+    }));
+  }
+  setBank(list,key){
+    key=key||this.state.adminPaper;
+    this.setState({banks:Object.assign({},this.state.banks,{[key]:list})});
+  }
+  examQs(year,slot){
+    const recs=this.bank(year+'-'+slot);
+    const out=[];let n=0;
+    SECS.forEach((sec,si)=>{
+      recs.filter(r=>r.sec===sec.key).forEach((r,i)=>{
+        n++;
+        out.push({id:r.code,no:n,secNo:i+1,sec:sec.key,si,type:r.type,topic:r.topic,diff:r.diff,
+          passage:r.passage||null,text:r.text,opts:(r.opts||[]).slice(),ans:r.ans,expl:r.expl,
+          marks:Number(r.marks)||3,neg:r.type==='TITA'?0:(Number(r.neg)||0)});
+      });
+    });
+    return out;
+  }
+  newQuestion=()=>this.setState({modal:'question',qfIndex:null,qf:{sec:'QA',type:'MCQ',diff:'Medium',topic:'Arithmetic · Ratios',
+    text:'',opts:['','','',''],ans:0,tita:'',expl:'',marks:'3',neg:'1'}});
+  editQuestion=(i)=>{const q=this.bank()[i];
+    this.setState({modal:'question',qfIndex:i,qf:{sec:q.sec,type:q.type,diff:q.diff,topic:q.topic,text:q.text,
+      opts:q.type==='MCQ'?q.opts.slice():['','','',''],ans:q.type==='MCQ'?q.ans:0,tita:q.type==='TITA'?String(q.ans):'',
+      expl:q.expl,marks:q.marks,neg:q.neg}});};
+  saveQuestion=()=>{
+    const f=this.state.qf;
+    if(!f.text.trim())return this.flash('Question stem cannot be empty');
+    if(f.type==='MCQ'&&f.opts.some(o=>!o.trim()))return this.flash('All four options are required');
+    if(f.type==='TITA'&&!f.tita.trim())return this.flash('TITA answer is required');
+    const key=this.state.adminPaper;
+    const qs=this.bank(key).slice();
+    const rec={code:this.state.qfIndex===null?key+'-n'+(qs.length+1):qs[this.state.qfIndex].code,
+      sec:f.sec,type:f.type,topic:f.topic,diff:f.diff,passage:null,text:f.text,opts:f.opts.slice(),
+      ans:f.type==='TITA'?f.tita.trim():f.ans,expl:f.expl,marks:f.marks,neg:f.neg};
+    if(this.state.qfIndex===null)qs.unshift(rec);else qs[this.state.qfIndex]=rec;
+    this.setBank(qs,key);
+    this.setState({modal:null,qf:null});
+    this.flash(this.state.qfIndex===null?'Question added to CAT '+key.split('-')[0]+' Slot '+key.split('-')[1]:'Question updated');
+  };
+  deleteQuestion=(i)=>{const qs=this.bank().slice();qs.splice(i,1);this.setBank(qs);this.flash('Question deleted');};
+  setQf(patch){this.setState({qf:Object.assign({},this.state.qf,patch)});}
+  simulateUpload=()=>{
+    const rows=[
+      {row:'Row 2',status:'OK',msg:'QA · Arithmetic · Ratios — MCQ, 4 options, answer B, explanation present.',
+       q:{sec:'QA',type:'MCQ',topic:'Arithmetic · Ratios',diff:'Medium',text:'The ratio of milk to water in a 60-litre mixture is 7:3. How many litres of water must be added to make the ratio 7:5?',
+          opts:['8 litres','12 litres','14 litres','18 litres'],ans:1,
+          expl:'Milk = 42 L, water = 18 L. For 7:5 with milk unchanged, water must be 30 L, so 12 L are added.',marks:'3',neg:'1'}},
+      {row:'Row 3',status:'OK',msg:'QA · Algebra — TITA, answer 23, explanation present.',
+       q:{sec:'QA',type:'TITA',topic:'Algebra · Equations',diff:'Medium',text:'If 3x − 7 = 2x + 16, what is the value of x + 4?',
+          opts:[],ans:'27',expl:'3x − 7 = 2x + 16 gives x = 23, so x + 4 = 27.',marks:'3',neg:'0'}},
+      {row:'Row 4',status:'WARN',msg:'DILR · Table analysis — explanation missing. Row will import but will show no explanation in review.',
+       q:{sec:'DILR',type:'MCQ',topic:'Table analysis',diff:'Hard',text:'Imported set: four branches report quarterly footfall. Which branch had the largest quarter-on-quarter swing?',
+          opts:['Branch P','Branch Q','Branch R','Branch S'],ans:2,expl:'No explanation supplied in the upload.',marks:'3',neg:'1'}},
+      {row:'Row 5',status:'ERROR',msg:'VARC — correct_answer is "E" but only 4 options were supplied.'},
+      {row:'Row 6',status:'OK',msg:'VARC · RC · Inference — MCQ linked to passage_id P-114.',
+       q:{sec:'VARC',type:'MCQ',topic:'RC · Inference',diff:'Medium',text:'Imported RC question (passage P-114): the author\u2019s attitude to the reform is best described as:',
+          opts:['unqualified enthusiasm','cautious approval','open hostility','studied indifference'],ans:1,
+          expl:'The author concedes the reform\u2019s intent while listing three implementation risks — approval with reservations.',marks:'3',neg:'1'}},
+      {row:'Row 7',status:'ERROR',msg:'section value "Verbal" is not one of VARC / DILR / QA.'},
+      {row:'Row 8',status:'WARN',msg:'difficulty missing — defaulted to Medium.',
+       q:{sec:'DILR',type:'TITA',topic:'Venn diagrams',diff:'Medium',text:'Of 200 respondents, 118 use app A, 96 use app B and 24 use neither. How many use both?',
+          opts:[],ans:'38',expl:'At least one = 176. 118 + 96 − both = 176, so both = 38.',marks:'3',neg:'0'}},
+      {row:'Row 9',status:'OK',msg:'QA · Geometry — MCQ, answer A, image geo-114.png resolved.',
+       q:{sec:'QA',type:'MCQ',topic:'Geometry · Triangles',diff:'Easy',text:'A right triangle has legs of 9 cm and 12 cm. What is its perimeter, in cm?',
+          opts:['36','30','33','39'],ans:0,expl:'Hypotenuse = 15 (9-12-15 triple), so the perimeter is 9 + 12 + 15 = 36 cm.',marks:'3',neg:'1'}}
+    ];
+    this.setState({uploadRows:rows});this.flash('8 rows parsed from questions-2026.xlsx');
+  };
+  commitUpload=()=>{
+    const key=this.state.adminPaper;
+    const good=(this.state.uploadRows||[]).filter(r=>r.q);
+    const qs=this.bank(key).slice();
+    good.forEach((r,i)=>qs.unshift(Object.assign({code:key+'-u'+(qs.length+i+1),passage:null},r.q)));
+    this.setBank(qs,key);
+    this.setState({uploadRows:null});
+    this.flash(good.length+' questions imported into CAT '+key.split('-')[0]+' Slot '+key.split('-')[1]+' · 2 rows rejected');
+  };
+
+  renderVals(){
+    const S=this.state,ss=this.setState.bind(this);
+    const V={
+      user:S.user,isAdmin:S.isAdmin,query:S.query,toast:S.toast,notifOpen:S.notifOpen,
+      isAuth:S.screen==='login'||S.screen==='signup'||S.screen==='forgot',
+      isLogin:S.screen==='login',isSignup:S.screen==='signup',isForgot:S.screen==='forgot',
+      isShell:S.screen==='app',isExam:S.screen==='exam',
+      authEmail:S.authEmail,authPass:S.authPass,authName:S.authName,authError:S.authError,asAdmin:S.asAdmin,
+      setEmail:e=>ss({authEmail:e.target.value}),setPass:e=>ss({authPass:e.target.value}),
+      setName:e=>ss({authName:e.target.value}),setQuery:e=>ss({query:e.target.value}),
+      fillAdmin:()=>ss({authEmail:ADMIN.email,authPass:ADMIN.pass,authError:''}),
+      goLogin:()=>ss({screen:'login',authError:''}),goSignup:()=>ss({screen:'signup',authError:''}),
+      goForgot:()=>ss({screen:'forgot',authError:''}),
+      login:this.login,signup:this.signup,
+      sendReset:()=>{ss({screen:'login'});this.flash('Reset link sent to '+S.authEmail);},
+      logout:()=>ss({screen:'login',isAdmin:false,result:null,page:'dashboard',
+        user:S.studentUser,authEmail:S.studentUser.email,authPass:'demo1234',authError:''}),
+      toggleTheme:()=>{const t=S.theme==='light'?'dark':'light';document.documentElement.setAttribute('data-cattheme',t);ss({theme:t});},
+      themeLabel:S.theme==='light'?'Dark mode':'Light mode',themeIcon:S.theme==='light'?'◐':'◑',
+      roleLabel:S.isAdmin?'Administrator':'Aspirant · CAT 2026',
+      toggleNotif:()=>ss({notifOpen:!S.notifOpen}),
+      closeModal:()=>ss({modal:null}),
+      modalStart:S.modal==='start',modalEarly:S.modal==='early',modalTimeUp:S.modal==='timeup',
+      startExam:this.startExam,submitExam:this.submitExam,askSubmit:this.askSubmit,
+      viewResult:()=>ss({modal:null}),
+      goPapers:()=>this.nav('papers'),goResults:()=>this.nav('results'),
+      saveProfile:()=>this.flash('Profile updated'),savePassword:()=>this.flash('Password updated'),
+      onDashboard:S.page==='dashboard',onPapers:S.page==='papers',onResultsList:S.page==='results',
+      onResult:S.page==='result',onProfile:S.page==='profile',onCalendar:S.page==='calendar',
+      onBookmarks:S.page==='bookmarks',onLeaderboard:S.page==='leaderboard',
+      pw1:S.authPass.length>0?'var(--bad)':'var(--line)',
+      pw2:S.authPass.length>=8?'var(--warn)':'var(--line)',
+      pw3:S.authPass.length>=12?'var(--ok)':'var(--line)',
+      notifications:[
+        {title:'CAT 2025 Slot 3 paper is now live with full explanations.',when:'2 hours ago',dot:'var(--accent)'},
+        {title:'Your DILR accuracy crossed 60% for the first time.',when:'Yesterday',dot:'var(--ok)'},
+        {title:'Weekly report ready — 4 tests, +14 marks vs. last week.',when:'2 days ago',dot:'var(--info)'},
+        {title:'Unfinished attempt on CAT 2024 Slot 1 expires in 3 days.',when:'4 days ago',dot:'var(--warn)'}
+      ]
+    };
+
+    const titles={dashboard:['Dashboard','Your preparation at a glance'],papers:['Question papers','Year-wise CAT papers, slot by slot'],
+      results:['Results','Every attempt you have saved'],result:['Test analysis','Score, sections, charts and question review'],
+      profile:['Profile','Account, preferences and security'],calendar:['Practice calendar','Consistency over intensity'],
+      bookmarks:['Bookmarked questions','Saved for another look'],leaderboard:['Leaderboard','This month, all papers']};
+    const t=titles[S.page]||['',''];
+    V.pageTitle=t[0];V.pageSub=t[1];
+
+    const navDef=[['dashboard','Dashboard','◈'],['papers','Papers','▤'],['results','Results','◫'],
+      ['bookmarks','Bookmarks','☆'],['calendar','Calendar','▦'],['leaderboard','Leaderboard','▲'],['profile','Profile','◍']];
+    const bm=Object.keys(S.bookmarks).length;
+    V.navItems=navDef.map(([id,label,icon])=>({label,icon,go:()=>this.nav(id),
+      badge:id==='bookmarks'&&bm?String(bm):'',
+      bg:S.page===id?'var(--accent2)':'transparent',fg:S.page===id?'var(--accent)':'var(--ink2)'}));
+
+    // dashboard
+    const h=S.history;
+    const best=Math.max.apply(null,h.map(x=>x.score));
+    const avgAcc=Math.round(h.reduce((a,x)=>a+x.acc,0)/h.length);
+    const hrs=(h.length*1.9).toFixed(1);
+    const hour=new Date().getHours();
+    V.greeting=(hour<12?'Good morning, ':hour<17?'Good afternoon, ':'Good evening, ')+S.user.name.split(' ')[0]+'.';
+    V.dashLine=h.length+' tests logged · best '+best+' marks · last attempt '+h[h.length-1].date;
+    V.statCards=[
+      {label:'Tests attempted',value:String(h.length),unit:'papers',delta:'+2 this week',deltaColor:'var(--ok)'},
+      {label:'Best score',value:String(best),unit:'/ 198',delta:h[h.length-1].pct+' %ile',deltaColor:'var(--ink3)'},
+      {label:'Average accuracy',value:String(avgAcc),unit:'%',delta:'+4 pts vs. last 3',deltaColor:'var(--ok)'},
+      {label:'Time on tests',value:hrs,unit:'hours',delta:'≈ '+Math.round(h.length*38)+' min / paper',deltaColor:'var(--ink3)'}
+    ];
+    const mkTrend=(hist,w,hh,pad)=>{
+      const max=Math.max(140,Math.max.apply(null,hist.map(x=>x.score))+20);
+      const step=hist.length>1?(w-pad*2)/(hist.length-1):0;
+      const dots=hist.map((x,i)=>({x:Math.round(pad+i*step),y:Math.round(hh-20-(x.score/max)*(hh-46)),label:'S'+x.slot+"'"+String(x.year).slice(2),score:x.score}));
+      return{points:dots.map(d=>d.x+','+d.y).join(' '),dots};
+    };
+    const tr=mkTrend(h,520,190,26);
+    V.trendPoints=tr.points;V.trendDots=tr.dots;V.trendCount=h.length;
+    V.gridLines=[0,1,2,3].map(i=>({y:24+i*38,ty:20+i*38,label:String(160-i*40)}));
+    const secAvg=[0,1,2].map(i=>Math.round(h.reduce((a,x)=>a+x.secScores[i],0)/h.length));
+    V.strengthBars=SECS.map((s,i)=>{
+      const pct=Math.round(secAvg[i]/(s.count*3)*100);
+      return{label:s.key,pct,w:pct+'%',color:pct>55?'var(--ok)':pct>40?'var(--warn)':'var(--bad)',
+        note:'avg '+secAvg[i]+' of '+(s.count*3)+' marks'};
+    });
+    V.recentTests=h.slice().reverse().slice(0,4).map(x=>({yr:String(x.year).slice(2)+'·'+x.slot,name:'CAT '+x.year+' — Slot '+x.slot,
+      meta:x.date+' · accuracy '+x.acc+'%',score:x.score,pct:x.pct,open:()=>{this.openHistory(x);}}));
+    V.coachHeadline=avgAcc<65?'Accuracy first. Attempts later.':'Your accuracy holds — now raise the attempt count.';
+    V.coachBody=avgAcc<65?'At '+avgAcc+'% accuracy, every extra attempt costs you as often as it pays. Take the next paper with a hard rule: no answer unless you are sure within 90 seconds.':'You are converting what you attempt. Push attempts up by five per section and watch whether accuracy holds above 68%.';
+    V.miniHeat=this.heat(28,3);
+    V.streakLine='6-day streak · 18 of the last 28 days practised';
+    V.heatScale=[0,1,2,3,4].map(l=>({bg:['var(--surface2)','color-mix(in oklab,var(--accent) 22%,var(--surface2))','color-mix(in oklab,var(--accent) 45%,var(--surface2))','color-mix(in oklab,var(--accent) 70%,var(--surface2))','var(--accent)'][l]}));
+    V.bigHeat=this.heat(182,5);
+    V.calStats=[{v:'18',k:'Days active (28d)'},{v:'6',k:'Current streak'},{v:'21',k:'Longest streak'},{v:'42',k:'Sets practised'}];
+    V.practiceModes=[
+      {icon:'◆',title:'Daily 15',body:'Fifteen mixed questions, one from each of your weak topics. Resets at midnight.',cta:'Start today\u2019s set',go:()=>this.flash('Daily 15 — hook up to your question bank')},
+      {icon:'⟳',title:'Random practice',body:'Pull a random set of 10 from any year, untimed, with instant explanations.',cta:'Shuffle 10',go:()=>this.flash('Random set drawn')},
+      {icon:'★',title:'Bookmarked drill',body:'Re-attempt everything you starred, oldest first.',cta:'Drill '+bm+' saved',go:()=>this.nav('bookmarks')}
+    ];
+
+    // papers
+    const yearsAll=this.paperYears(false);
+    const filters=[['all','All years'],['recent','2022 onward'],['attempted','Attempted'],['new','Not attempted']];
+    V.paperFilters=filters.map(([id,label])=>({label,go:()=>ss({paperFilter:id}),
+      bg:S.paperFilter===id?'var(--ink)':'transparent',fg:S.paperFilter===id?'var(--paper)':'var(--ink2)',
+      bd:S.paperFilter===id?'var(--ink)':'var(--line)'}));
+    const q=S.query.trim().toLowerCase();
+    V.years=yearsAll.filter(y=>{
+      if(S.paperFilter==='recent'&&y<2022)return false;
+      if(q&&!('cat '+y).includes(q))return false;
+      const slots=this.papersFor(y);
+      if(!slots.length)return false;
+      if(S.paperFilter==='attempted')return slots.some(p=>S.attemptedPapers[y+'-'+p.slot]);
+      if(S.paperFilter==='new')return slots.some(p=>!S.attemptedPapers[y+'-'+p.slot]);
+      return true;
+    }).map(y=>{
+      const slots=this.papersFor(y);
+      const yb=this.bank(y+'-'+slots[0].slot);
+      const yc=SECS.map(s=>s.key+' '+yb.filter(q=>q.sec===s.key).length).join(' · ');
+      return{year:y,slotCount:slots.length===1?'1 slot':slots.length+' slots',isNew:y>=2025,
+        note:yb.length+' questions · '+yc,
+        slots:slots.map(p=>{
+          const done=S.attemptedPapers[y+'-'+p.slot];
+          const bl=this.bank(y+'-'+p.slot).length;
+          return{slot:'Slot '+p.slot,difficulty:p.difficulty,qCount:bl+' questions',duration:p.duration,
+            marks:(bl*3)+' marks',pattern:'MCQ + TITA',attempted:!!done,bestChip:'Best '+done,
+            diffBg:p.difficulty==='Difficult'?'var(--badS)':p.difficulty==='Easy-Moderate'?'var(--okS)':'var(--warnS)',
+            diffFg:p.difficulty==='Difficult'?'var(--bad)':p.difficulty==='Easy-Moderate'?'var(--ok)':'var(--warn)',
+            btnLabel:done?'Re-attempt':'Start test',btnBg:done?'transparent':'var(--accent)',
+            btnFg:done?'var(--ink)':'#fff',btnBd:done?'var(--line)':'var(--accent)',
+            start:()=>this.askStart({year:y,slot:p.slot,duration:120})};
+        })};
+    });
+    const pp=S.pendingPaper;
+    if(pp){
+      const pb=this.bank(pp.year+'-'+pp.slot);
+      const pcp=(S.customPapers||[]).find(x=>x.year===pp.year&&x.slot===pp.slot);
+      const plock=pcp&&Number(pcp.lock)?Number(pcp.lock):40;
+      const pdur=plock*3;
+      const pmarks=pb.reduce((a,q)=>a+(Number(q.marks)||3),0);
+      const titaN=pb.filter(q=>q.type==='TITA').length;
+      V.startPaperLine='CAT '+pp.year+' — Slot '+pp.slot+' · '+pb.length+' questions · '+pdur+' minutes · '+pmarks+' marks';
+      V.startRules=['Duration: '+pdur+' minutes — '+plock+' minutes per section, in order VARC → DILR → QA.',
+        'Ensure a stable internet connection. Answers auto-save every few seconds.',
+        'Once started, the timer cannot be paused. A section locks when its timer ends.',
+        (pb.length-titaN)+' MCQ: +3 correct, −1 incorrect. '+titaN+' TITA: +3 correct, no penalty.'];
+    }else{V.startPaperLine='';V.startRules=[];}
+
+    // results list
+    V.allResults=h.slice().reverse().map(x=>({name:'CAT '+x.year+' — Slot '+x.slot,meta:'66 questions · 120 min',
+      date:x.date+' 2026',score:x.score,pct:x.pct,acc:x.acc,open:()=>this.openHistory(x)}));
+
+    // exam
+    const ex=S.exam;
+    if(ex){
+      const cq=ex.qs[ex.cur];
+      const r=ex.responses[cq.id];
+      const secQs=ex.qs.filter(x=>x.si===ex.si);
+      const answered=Object.keys(ex.responses).filter(k=>ex.responses[k]!==''&&ex.responses[k]!==undefined).length;
+      const legendCounts={ans:0,notAns:0,mark:0,notVisited:0};
+      secQs.forEach(x=>{
+        const rr=ex.responses[x.id];const has=rr!==undefined&&rr!=='';
+        if(ex.marked[x.id])legendCounts.mark++;
+        else if(has)legendCounts.ans++;
+        else if(ex.visited[x.id])legendCounts.notAns++;
+        else legendCounts.notVisited++;
+      });
+      const bmId=ex.year+'-'+ex.slot+'-'+cq.id;
+      const left=ex.secLeft[ex.si];
+      V.ex={
+        paperName:'CAT '+ex.year+' — Slot '+ex.slot,roll:'CT'+(ex.year%100)+'0'+ex.slot+'4471',
+        sectionName:SECS[ex.si].name,secCount:secQs.length,qNoInSec:cq.secNo,
+        qType:cq.type,qTopic:cq.topic,qPlus:String(cq.marks||3),qMinus:cq.neg?'−'+cq.neg:'0',
+        qText:cq.text,hasPassage:!!cq.passage,passage:cq.passage||'',
+        passageLabel:cq.sec==='VARC'?'Read the passage':'Study the data',
+        qCols:cq.passage?'1fr 1fr':'1fr',
+        isMCQ:cq.type==='MCQ',isTITA:cq.type==='TITA',titaValue:r===undefined?'':String(r),
+        options:(cq.opts||[]).map((text,i)=>({text,letter:'ABCD'[i],pick:()=>this.pick(i),
+          bg:r===i?'var(--accent2)':'var(--surface)',bd:r===i?'var(--accent)':'var(--line)',
+          dotBg:r===i?'var(--accent)':'transparent',dotFg:r===i?'#fff':'var(--ink3)',
+          dotBd:r===i?'var(--accent)':'var(--line)'})),
+        timeLeft:fmt(left),timerColor:left<300?'var(--bad)':'var(--ink)',timerAnim:left<60?'catpulse 1s infinite':'none',
+        secTabs:SECS.map((s,i)=>({label:s.key,time:fmt(ex.secLeft[i]),go:()=>this.goSec(i),
+          cursor:ex.secLeft[i]===0?'not-allowed':'pointer',
+          bg:ex.si===i?'var(--surface)':'transparent',fg:ex.secLeft[i]===0?'var(--ink3)':ex.si===i?'var(--ink)':'var(--ink2)'})),
+        answeredCount:answered,totalCount:ex.qs.length,progressW:Math.round(answered/Math.max(1,ex.qs.length)*100)+'%',
+        legend:[{label:'Answered',n:legendCounts.ans,bg:'var(--ok)',bd:'var(--ok)',fg:'var(--ok)'},
+          {label:'Not answered',n:legendCounts.notAns,bg:'var(--badS)',bd:'var(--bad)',fg:'var(--bad)'},
+          {label:'Marked',n:legendCounts.mark,bg:'var(--warn)',bd:'var(--warn)',fg:'var(--warn)'},
+          {label:'Not visited',n:legendCounts.notVisited,bg:'var(--surface2)',bd:'var(--line)',fg:'var(--ink3)'}],
+        palette:secQs.map(x=>{
+          const rr=ex.responses[x.id];const has=rr!==undefined&&rr!=='';
+          const mk=ex.marked[x.id];const vis=ex.visited[x.id];
+          const bg=mk?'var(--warn)':has?'var(--ok)':vis?'var(--badS)':'var(--surface2)';
+          const fg=mk||has?'#fff':vis?'var(--bad)':'var(--ink3)';
+          const bd=mk?'var(--warn)':has?'var(--ok)':vis?'var(--bad)':'var(--line)';
+          const i=ex.qs.indexOf(x);
+          return{n:x.secNo,bg,fg,bd,star:!!S.bookmarks[ex.year+'-'+ex.slot+'-'+x.id],
+            ring:i===ex.cur?'0 0 0 2px var(--accent)':'none',go:()=>this.goQ(i)};
+        }),
+        bmLabel:S.bookmarks[bmId]?'★ Bookmarked':'☆ Bookmark',
+        bmFg:S.bookmarks[bmId]?'var(--accent)':'var(--ink2)'
+      };
+      V.setTita=e=>this.pick(e.target.value);
+      V.pick=this.pick;V.clearResponse=this.clearResponse;V.markReview=this.markReview;
+      V.saveNext=this.saveNext;V.prevQ=()=>this.step(-1);V.toggleBookmark=this.toggleBookmark;
+    }
+
+    // saved session banner
+    const sv=S.savedSession;
+    V.hasSaved=!!sv&&S.screen==='app';
+    if(sv){
+      V.savedLabel='CAT '+sv.year+' — Slot '+sv.slot;
+      V.savedProgress=Object.keys(sv.responses||{}).length+' answered · '+fmt(sv.secLeft[sv.si])+' left in '+SECS[sv.si].key;
+    }
+    V.resumeSaved=this.resumeSaved;V.discardSaved=this.discardSaved;
+
+    // result
+    const R=S.result;
+    if(R){
+      const C=2*Math.PI*54;
+      const fr=n=>(n/Math.max(1,R.count)*C).toFixed(1)+' '+C.toFixed(1);
+      V.res={
+        paperName:'CAT '+R.year+' — Slot '+R.slot,submittedAt:R.submittedAt,score:R.score,total:R.totalMarks||198,
+        percentile:R.percentile,accuracy:R.accuracy,attempted:R.attempted,correct:R.correct,wrong:R.wrong,
+        skipped:R.skipped,count:R.count,timeTotal:fmtMin(R.timeSec),sections:R.secs,
+        heroStats:[{k:'Accuracy',v:R.accuracy+'%'},{k:'Attempt rate',v:R.attemptRate+'%'},
+          {k:'Correct',v:String(R.correct)},{k:'Incorrect',v:String(R.wrong)}],
+        dashCorrect:fr(R.correct),dashWrong:fr(R.wrong),offWrong:(-(R.correct/Math.max(1,R.count)*C)).toFixed(1),
+        donutLegend:[{label:'Correct',v:String(R.correct),color:'var(--ok)'},{label:'Incorrect',v:String(R.wrong),color:'var(--bad)'},
+          {label:'Unattempted',v:String(R.skipped),color:'rgba(255,255,255,.2)'}],
+        chartSection:R.secs.map(s=>({label:s.key,v:s.score+'/'+s.max,h:'150px',
+          fill:Math.max(2,Math.round(Math.max(0,s.score)/s.max*100))+'%',
+          color:s.score/s.max>.55?'var(--ok)':s.score/s.max>.35?'var(--warn)':'var(--bad)'})),
+        chartTime:R.secs.map(s=>({label:s.key,v:fmtMin(s.timeSec)+' / 40m',w:Math.min(100,Math.round(s.timeSec/2400*100))+'%',
+          color:s.timeSec>2300?'var(--bad)':'var(--accent)'})),
+        chartDiff:DIFFS.map(d=>{
+          const a=R.diffAgg[d]||{a:0,c:0};
+          const pct=a.a?Math.round(a.c/a.a*100):0;
+          return{label:d,v:a.c+'/'+a.a+' · '+pct+'%',w:pct+'%',
+            color:pct>65?'var(--ok)':pct>45?'var(--warn)':'var(--bad)'};
+        }),
+        timeNote:'You spent '+fmtMin(R.timeSec)+' of the 120 available. '+(R.timeSec<5400?'Large unused time usually means you abandoned sets early rather than reading them properly.':'Time use is close to full — the lever now is selection, not speed.'),
+        suggestions:this.suggestions(R)
+      };
+      const tr2=mkTrend(h,480,170,26);
+      V.trendPoints2=tr2.points;V.trendDots2=tr2.dots;
+      const tabs=[['sections','Section-wise'],['charts','Charts'],['review','Question review'],['coach','Improvement plan']];
+      V.resultTabs=tabs.map(([id,label])=>({label,go:()=>ss({resultTab:id}),
+        bd:S.resultTab===id?'var(--accent)':'transparent',fg:S.resultTab===id?'var(--ink)':'var(--ink3)'}));
+      V.tabSections=S.resultTab==='sections';V.tabCharts=S.resultTab==='charts';
+      V.tabReview=S.resultTab==='review';V.tabCoach=S.resultTab==='coach';
+      const rf=[['all','All '+R.count],['wrong','Incorrect'],['correct','Correct'],['skipped','Unattempted'],['bookmarked','Bookmarked']];
+      V.reviewFilters=rf.map(([id,label])=>({label,go:()=>ss({reviewFilter:id}),
+        bg:S.reviewFilter===id?'var(--ink)':'transparent',fg:S.reviewFilter===id?'var(--paper)':'var(--ink2)',
+        bd:S.reviewFilter===id?'var(--ink)':'var(--line)'}));
+      const list=R.qs.filter(x=>{
+        const rr=R.responses[x.id];const has=rr!==undefined&&rr!=='';
+        const ok=has&&(x.type==='TITA'?String(rr).trim()===String(x.ans):rr===x.ans);
+        if(S.reviewFilter==='wrong')return has&&!ok;
+        if(S.reviewFilter==='correct')return ok;
+        if(S.reviewFilter==='skipped')return !has;
+        if(S.reviewFilter==='bookmarked')return !!S.bookmarks[R.year+'-'+R.slot+'-'+x.id];
+        return true;
+      });
+      V.reviewCountLine=list.length+' of '+R.count+' questions';
+      V.reviewList=list.slice(0,25).map(x=>{
+        const rr=R.responses[x.id];const has=rr!==undefined&&rr!=='';
+        const ok=has&&(x.type==='TITA'?String(rr).trim()===String(x.ans):rr===x.ans);
+        const marks=!has?'0':ok?'+3':x.type==='TITA'?'0':'−1';
+        const bid=R.year+'-'+R.slot+'-'+x.id;
+        return{no:x.no,sec:x.sec,type:x.type,topic:x.topic,diff:x.diff,text:x.text,expl:x.expl,
+          time:fmt(R.qTime[x.id]||0),marks:marks,
+          markColor:ok?'var(--ok)':has&&x.type==='MCQ'?'var(--bad)':'var(--ink3)',
+          edge:ok?'var(--ok)':has?'var(--bad)':'var(--line)',
+          diffBg:x.diff==='Hard'?'var(--badS)':x.diff==='Easy'?'var(--okS)':'var(--warnS)',
+          diffFg:x.diff==='Hard'?'var(--bad)':x.diff==='Easy'?'var(--ok)':'var(--warn)',
+          userAnswer:!has?'Not attempted':x.type==='TITA'?String(rr):'ABCD'[rr]+'. '+x.opts[rr],
+          correctAnswer:x.type==='TITA'?String(x.ans):'ABCD'[x.ans]+'. '+x.opts[x.ans],
+          uaBg:ok?'var(--okS)':has?'var(--badS)':'var(--surface2)',
+          uaBd:ok?'var(--ok)':has?'var(--bad)':'var(--line)',
+          uaFg:ok?'var(--ok)':has?'var(--bad)':'var(--ink3)',
+          bmLabel:S.bookmarks[bid]?'★ Bookmarked':'☆ Bookmark this',
+          bmFg:S.bookmarks[bid]?'var(--accent)':'var(--ink2)',
+          bookmark:()=>{const b=Object.assign({},S.bookmarks);if(b[bid])delete b[bid];else b[bid]={id:bid,q:x};ss({bookmarks:b});}};
+      });
+    }
+
+    // bookmarks page
+    const bl=Object.keys(S.bookmarks).map(k=>S.bookmarks[k]);
+    V.noBookmarks=bl.length===0;
+    V.bookmarkList=bl.map(b=>({no:b.q.no,sec:b.q.sec,topic:b.q.topic,text:b.q.text,
+      bookmark:()=>{const x=Object.assign({},S.bookmarks);delete x[b.id];ss({bookmarks:x});}}));
+
+    // profile
+    V.profileStats=[{v:String(h.length),k:'Tests attempted'},{v:String(best),k:'Best score'},
+      {v:avgAcc+'%',k:'Avg accuracy'},{v:String(bl.length),k:'Bookmarks'}];
+
+    // leaderboard
+    const names=[['Rhea Kapoor',146,'99.42'],['Ishaan Rao',141,'99.18'],['Meera Iyer',134,'98.81'],
+      ['Aarav Sharma',best,h[h.length-1].pct],['Kabir Shah',102,'95.90'],['Tanvi Desai',97,'94.72'],
+      ['Nikhil Bose',91,'93.40'],['Sara Ali',86,'91.85']];
+    V.leaderboard=names.sort((a,b)=>b[1]-a[1]).map((n,i)=>({rank:'#'+(i+1),name:n[0],score:n[1],pct:n[2],
+      initials:n[0].split(' ').map(x=>x[0]).join(''),
+      bg:n[0]===S.user.name?'var(--accent2)':'transparent',
+      rankFg:i<3?'var(--accent)':'var(--ink3)'}));
+
+    // ---------- admin values ----------
+    const aTitles={'admin-dashboard':['Admin overview','Platform health at a glance'],'admin-questions':['Question bank','Add, edit and retire questions'],
+      'admin-papers':['Paper management','Build and publish year-slot papers'],'admin-upload':['Bulk upload','XLSX, CSV or JSON with validation'],
+      'admin-users':['User management','Search, block, reset and inspect'],'admin-analytics':['Analytics','Growth, engagement and difficulty']};
+    if(aTitles[S.page]){V.pageTitle=aTitles[S.page][0];V.pageSub=aTitles[S.page][1];}
+    const aNav=[['admin-dashboard','Overview','◈'],['admin-questions','Questions','▤'],['admin-papers','Papers','◫'],
+      ['admin-upload','Bulk upload','⇪'],['admin-users','Users','◍'],['admin-analytics','Analytics','▲']];
+    V.adminItems=aNav.map(([id,label,icon])=>({label,icon,go:()=>this.nav(id),
+      bg:S.page===id?'var(--accent2)':'transparent',fg:S.page===id?'var(--accent)':'var(--ink2)'}));
+    V.onAdminDash=S.page==='admin-dashboard';V.onAdminQuestions=S.page==='admin-questions';
+    V.onAdminPapers=S.page==='admin-papers';V.onAdminUpload=S.page==='admin-upload';
+    V.onAdminUsers=S.page==='admin-users';V.onAdminAnalytics=S.page==='admin-analytics';
+    V.adminSearch=S.adminSearch;V.setAdminSearch=e=>ss({adminSearch:e.target.value});
+
+    const bank=this.bank();
+    const pOpts=[];
+    this.paperYears(true).forEach(y=>this.papersFor(y,true).forEach(p=>
+      pOpts.push({value:y+'-'+p.slot,label:'CAT '+y+' — Slot '+p.slot+(p.status==='draft'?' (draft)':'')})));
+    V.paperOptions=pOpts;V.adminPaper=S.adminPaper;
+    V.setAdminPaper=e=>ss({adminPaper:e.target.value,adminSearch:'',uploadRows:null});
+    V.adminPaperLabel=(pOpts.find(o=>o.value===S.adminPaper)||{label:'CAT '+S.adminPaper}).label;
+    const bankCounts=SECS.map(s=>s.key+' '+bank.filter(q=>q.sec===s.key).length).join(' · ');
+    V.bankCounts=bankCounts+' · '+bank.length+' total';
+    V.adminStats=[
+      {label:'Total users',value:'12,486',delta:'+412 this month',fg:'var(--ok)'},
+      {label:'Active (7d)',value:'3,914',delta:'31% of base',fg:'var(--ink3)'},
+      {label:'Papers live',value:'31',delta:'2 in draft',fg:'var(--ink3)'},
+      {label:'Questions',value:'2,178',delta:'+84 imported',fg:'var(--ok)'},
+      {label:'Tests attempted',value:'41,203',delta:'+2,867 this month',fg:'var(--ok)'},
+      {label:'Average score',value:'82.4',delta:'−1.6 vs. last month',fg:'var(--bad)'}
+    ];
+    const gm=['Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'];
+    const gv=[210,265,340,290,380,455,410,520,610,700,830,912];
+    V.growthBars=gm.map((m,i)=>({label:m,h:Math.round(gv[i]/912*100)+'%',
+      color:i===gm.length-1?'var(--accent)':'color-mix(in oklab,var(--accent) 45%,var(--surface2))',
+      title:gv[i]+' registrations'}));
+    const tp=[['CAT 2024 — Slot 1',4820],['CAT 2023 — Slot 1',4110],['CAT 2025 — Slot 2',3760],['CAT 2022 — Slot 3',2940],['CAT 2021 — Slot 2',2180]];
+    V.topPapers=tp.map(([name,n])=>({name,n:n.toLocaleString('en-IN'),w:Math.round(n/4820*100)+'%'}));
+    V.adminDiff=[['Easy',74,'812 questions tagged Easy'],['Medium',58,'1,046 questions tagged Medium'],['Hard',36,'320 questions tagged Hard']]
+      .map(([label,pct,note])=>({label,pct,note,w:pct+'%',color:pct>65?'var(--ok)':pct>45?'var(--warn)':'var(--bad)'}));
+
+    const asq=S.adminSearch.trim().toLowerCase();
+    const secF=[['all','All sections'],['VARC','VARC'],['DILR','DILR'],['QA','QA']];
+    V.secFilters=secF.map(([id,label])=>({label,go:()=>ss({adminSec:id}),
+      bg:S.adminSec===id?'var(--ink)':'transparent',fg:S.adminSec===id?'var(--paper)':'var(--ink2)',
+      bd:S.adminSec===id?'var(--ink)':'var(--line)'}));
+    const filtered=bank.map((q,i)=>({q,i})).filter(({q})=>{
+      if(S.adminSec!=='all'&&q.sec!==S.adminSec)return false;
+      if(asq&&!(q.text+' '+q.topic+' '+q.code).toLowerCase().includes(asq))return false;
+      return true;
+    });
+    V.adminQuestions=filtered.slice(0,14).map(({q,i})=>({code:q.code,sec:q.sec,type:q.type,topic:q.topic,diff:q.diff,
+      stem:q.text,diffBg:q.diff==='Hard'?'var(--badS)':q.diff==='Easy'?'var(--okS)':'var(--warnS)',
+      diffFg:q.diff==='Hard'?'var(--bad)':q.diff==='Easy'?'var(--ok)':'var(--warn)',
+      edit:()=>this.editQuestion(i),del:()=>this.deleteQuestion(i)}));
+    V.adminQCount='Showing '+Math.min(14,filtered.length)+' of '+filtered.length+' matching · '+V.adminPaperLabel+' bank holds '+bankCounts+' ('+bank.length+' questions)';
+    V.newQuestion=this.newQuestion;V.saveQuestion=this.saveQuestion;
+    V.modalQuestion=S.modal==='question';
+    const f=S.qf||{sec:'QA',type:'MCQ',diff:'Medium',topic:'',text:'',opts:['','','',''],ans:0,tita:'',expl:'',marks:'3',neg:'1'};
+    V.qf=f;V.qfIsMCQ=f.type==='MCQ';V.qfIsTITA=f.type==='TITA';
+    V.qfTitle=S.qfIndex===null?'Add question':'Edit question';
+    V.qfSub=S.qfIndex===null?'Will be added to '+V.adminPaperLabel:'Editing '+((bank[S.qfIndex||0]||{}).code||'')+' · '+V.adminPaperLabel;
+    V.qfOptions=f.opts.map((text,i)=>({text,letter:'ABCD'[i],
+      set:e=>{const o=f.opts.slice();o[i]=e.target.value;this.setQf({opts:o});},
+      setCorrect:()=>this.setQf({ans:i}),
+      bg:f.ans===i?'var(--accent)':'transparent',fg:f.ans===i?'#fff':'var(--ink3)',
+      bd:f.ans===i?'var(--accent)':'var(--line)'}));
+    V.setQfSec=e=>this.setQf({sec:e.target.value});V.setQfType=e=>this.setQf({type:e.target.value});
+    V.setQfDiff=e=>this.setQf({diff:e.target.value});V.setQfTopic=e=>this.setQf({topic:e.target.value});
+    V.setQfText=e=>this.setQf({text:e.target.value});V.setQfExpl=e=>this.setQf({expl:e.target.value});
+    V.setQfTita=e=>this.setQf({tita:e.target.value});V.setQfMarks=e=>this.setQf({marks:e.target.value});
+    V.setQfNeg=e=>this.setQf({neg:e.target.value});
+
+    V.builderSections=SECS.map(s=>({key:s.key,count:s.count,note:s.mins+' min sectional lock · '+Math.round(s.count*0.2)+' TITA'}));
+    V.bf=S.builder;V.builderError=S.builderError;
+    const setBf=patch=>ss({builder:Object.assign({},S.builder,patch),builderError:''});
+    V.setBfYear=e=>setBf({year:e.target.value});V.setBfSlot=e=>setBf({slot:e.target.value});
+    V.setBfDuration=e=>setBf({duration:e.target.value});V.setBfLock=e=>setBf({lock:e.target.value});
+    V.setBfDifficulty=e=>setBf({difficulty:e.target.value});
+    V.savePaperDraft=()=>this.commitPaper('draft');
+    V.publishPaper=()=>this.commitPaper('live');
+    const apList=[];
+    this.paperYears(true).slice(0,6).forEach(y=>this.papersFor(y,true).forEach(p=>{
+      const k=y+'-'+p.slot;
+      const pub=p.status!=='draft';
+      apList.push({name:'CAT '+y+' — Slot '+p.slot,meta:p.difficulty+' · '+p.duration+(p.custom?' · created here':''),qs:'66',
+        attempts:p.custom?'0':(1200+((y*p.slot*37)%3600)).toLocaleString('en-IN'),
+        status:pub?'Live':'Draft',stBg:pub?'var(--okS)':'var(--warnS)',stFg:pub?'var(--ok)':'var(--warn)',
+        action:pub?'Unpublish':'Publish',canDelete:!!p.custom,
+        rowBg:p.custom?'var(--accent2)':'transparent',
+        toggle:()=>{
+          if(p.custom){
+            const cp=(S.customPapers||[]).map(x=>x.year===y&&x.slot===p.slot?Object.assign({},x,{status:pub?'draft':'live'}):x);
+            ss({customPapers:cp});
+          }else{
+            const u=Object.assign({},S.unpublished);if(u[k])delete u[k];else u[k]=1;ss({unpublished:u});
+          }
+          this.flash('CAT '+y+' Slot '+p.slot+(pub?' unpublished':' published'));
+        },
+        del:()=>{ss({customPapers:(S.customPapers||[]).filter(x=>!(x.year===y&&x.slot===p.slot))});
+          this.flash('CAT '+y+' Slot '+p.slot+' deleted');}});
+    }));
+    V.adminPapers=apList.slice(0,12);
+
+    V.uploadFormats=[{ext:'.xlsx',note:'Sheet 1, header row required'},{ext:'.csv',note:'UTF-8, comma delimited'},{ext:'.json',note:'Array of question objects'}];
+    V.schemaText='section        VARC | DILR | QA\ntype           MCQ | TITA\npassage_id     optional, groups RC/DI sets\nstem           question text (markdown ok)\noption_a..d    required when type = MCQ\ncorrect        A|B|C|D  or  exact string for TITA\nexplanation    shown in post-test review\ndifficulty     Easy | Medium | Hard\ntopic          free text, used for analytics\nmarks          default 3\nnegative       default 1 (0 for TITA)';
+    V.uploadRows=(S.uploadRows||[]).map(r=>({row:r.row,status:r.status,msg:r.msg,
+      bg:r.status==='OK'?'var(--okS)':r.status==='WARN'?'var(--warnS)':'var(--badS)',
+      fg:r.status==='OK'?'var(--ok)':r.status==='WARN'?'var(--warn)':'var(--bad)'}));
+    V.noUpload=!S.uploadRows;V.hasUpload=!!S.uploadRows;
+    V.uploadSummary=S.uploadRows?'84 rows · 80 valid · 2 warnings · 2 errors':'No file yet';
+    V.simulateUpload=this.simulateUpload;V.commitUpload=this.commitUpload;
+    V.clearUpload=()=>{ss({uploadRows:null});this.flash('Upload discarded');};
+
+    const uBase=[['Rhea Kapoor','rhea.k@email.com',22,146,'99.42'],['Ishaan Rao','ishaan@email.com',19,141,'99.18'],
+      ['Meera Iyer','meera.iyer@email.com',17,134,'98.81'],['Aarav Sharma','aarav@example.com',h.length,best,h[h.length-1].pct],
+      ['Kabir Shah','kabir.shah@email.com',11,102,'95.90'],['Tanvi Desai','tanvi@email.com',9,97,'94.72'],
+      ['Nikhil Bose','nikhil.b@email.com',7,91,'93.40'],['Sara Ali','sara.ali@email.com',5,86,'91.85'],
+      ['Dev Menon','dev.menon@email.com',3,64,'82.10']];
+    V.adminUsers=uBase.filter(u=>!S.deleted[u[1]]).filter(u=>{
+      if(!asq)return true;return (u[0]+' '+u[1]).toLowerCase().includes(asq);
+    }).map(u=>{
+      const blocked=!!S.blocked[u[1]];
+      return{name:u[0],email:u[1],tests:String(u[2]),best:String(u[3]),pct:u[4],
+        initials:u[0].split(' ').map(x=>x[0]).join(''),
+        status:blocked?'Blocked':'Active',stBg:blocked?'var(--badS)':'var(--okS)',stFg:blocked?'var(--bad)':'var(--ok)',
+        blockLabel:blocked?'Unblock':'Block',
+        reset:()=>this.flash('Reset link sent to '+u[1]),
+        block:()=>{const b=Object.assign({},S.blocked);if(b[u[1]])delete b[u[1]];else b[u[1]]=1;ss({blocked:b});this.flash(b[u[1]]?u[0]+' blocked':u[0]+' unblocked');},
+        del:()=>{const d=Object.assign({},S.deleted);d[u[1]]=1;ss({deleted:d});this.flash(u[0]+' deleted');}};
+    });
+
+    const dau=[1840,1920,2210,2080,2460,2890,2740,2510,2680,3020,3310,3180,3540,3914];
+    const dmax=4000;
+    const ddots=dau.map((v,i)=>({x:Math.round(20+i*(420/13)),y:Math.round(140-(v/dmax)*120)}));
+    V.dauPoints=ddots.map(d=>d.x+','+d.y).join(' ');V.dauDots=ddots;
+    V.completionBars=[['VARC · completed all 24',82,'var(--ok)'],['DILR · completed all 20',54,'var(--warn)'],['QA · completed all 22',67,'var(--accent)']]
+      .map(([label,v,color])=>({label,v:v+'%',w:v+'%',color}));
+    const ys=[[2015,71],[2016,74],[2017,69],[2018,77],[2019,80],[2020,84],[2021,79],[2022,88],[2023,92],[2024,86],[2025,81]];
+    V.yearBars=ys.map(([y,v])=>({label:String(y).slice(2),v:String(v),h:Math.round(v/95*100)+'%',
+      color:v>=88?'var(--accent)':'color-mix(in oklab,var(--accent) 40%,var(--surface2))'}));
+
+    return V;
+  }
+
+  openHistory(x){
+    const qs=this.examQs(x.year,x.slot);
+    const responses={},qTime={};
+    qs.forEach((q,i)=>{
+      const seed=(x.score*7+i*31)%100;
+      qTime[q.id]=40+((seed*13)%140);
+      if(seed<22)return;
+      const right=seed<22+Math.round(x.acc*0.78);
+      responses[q.id]=q.type==='TITA'?(right?String(q.ans):String(Number(q.ans)+3)):(right?q.ans:(q.ans+1)%4);
+    });
+    const ex={year:x.year,slot:x.slot,qs,responses,qTime,secLeft:[0,0,0],si:2,marked:{},visited:{},cur:0};
+    this.finish(ex,false);
+  }
+}
+
+</script>
+</body>
+</html>

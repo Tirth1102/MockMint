@@ -1,0 +1,152 @@
+.yearCard {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px var(--shadow);
+  overflow: hidden;
+}
+
+.yearHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line2);
+  flex-wrap: wrap;
+}
+
+.yearTitle {
+  font: 700 17px var(--font-mono);
+  letter-spacing: -0.01em;
+}
+
+.yearNote {
+  margin-left: auto;
+  font: 500 12px var(--font-sans);
+  color: var(--ink3);
+}
+
+/* 1px gaps on a tinted background give the hairline dividers between slot cards. */
+.slotGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1px;
+  background: var(--line2);
+}
+
+.slot {
+  background: var(--surface);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.slotHead {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.slotName {
+  font: 700 14px var(--font-sans);
+}
+
+.slotBest {
+  margin-left: auto;
+  font: 700 11px var(--font-mono);
+  color: var(--ok);
+  background: var(--okS);
+  padding: 3px 8px;
+  border-radius: 5px;
+}
+
+.slotFacts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 10px;
+}
+
+.factLabel {
+  font: 500 10.5px var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.factValue {
+  font: 700 13px var(--font-sans);
+  margin-top: 2px;
+}
+
+.slotCta {
+  margin-top: auto;
+  border-radius: 10px;
+  padding: 11px;
+  font: 700 13px var(--font-sans);
+  cursor: pointer;
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid var(--accent);
+  transition: filter 0.15s ease;
+}
+
+.slotCta:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.slotCta[data-attempted='true'] {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.slotCta[data-attempted='true']:hover:not(:disabled) {
+  background: var(--surface2);
+  filter: none;
+}
+
+.slotCta:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* ---------------------------------------------------------------- start modal */
+
+.startModal {
+  max-width: 470px;
+}
+
+.rules {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--surface2);
+  border-radius: 11px;
+  padding: 15px 16px;
+  margin-bottom: 20px;
+}
+
+.rule {
+  display: flex;
+  gap: 10px;
+  font: 500 13px/1.5 var(--font-sans);
+  color: var(--ink2);
+}
+
+.ruleBullet {
+  color: var(--accent);
+}
+
+.ready {
+  font: 700 14px var(--font-sans);
+  margin-bottom: 16px;
+}
+
+.cancelBtn {
+  flex: 1;
+}
+
+.startBtn {
+  flex: 1.4;
+}

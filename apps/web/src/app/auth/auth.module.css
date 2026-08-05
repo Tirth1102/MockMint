@@ -1,0 +1,298 @@
+/* Split-screen auth: dark editorial hero on the left, form on the right. */
+
+.shell {
+  display: grid;
+  grid-template-columns: 1.02fr 0.98fr;
+  min-height: 100vh;
+}
+
+.hero {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 56px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--accent);
+  display: grid;
+  place-items: center;
+  font: 800 13px var(--font-sans);
+  color: #fff;
+}
+
+.brandName {
+  font: 700 15px var(--font-sans);
+  letter-spacing: -0.01em;
+}
+
+.heroBody {
+  max-width: 520px;
+}
+
+.eyebrow {
+  font: 400 12px/1 var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin-bottom: 22px;
+}
+
+.heroTitle {
+  font: 400 58px/1.02 var(--font-serif);
+  letter-spacing: -0.02em;
+  margin: 0 0 20px;
+  text-wrap: pretty;
+}
+
+.heroTitle em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.heroLead {
+  font: 400 15px/1.65 var(--font-sans);
+  opacity: 0.62;
+  margin: 0;
+  max-width: 420px;
+  text-wrap: pretty;
+}
+
+.heroStats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.heroStatValue {
+  font: 700 26px var(--font-mono);
+}
+
+.heroStatLabel {
+  font: 500 12px var(--font-sans);
+  opacity: 0.5;
+  margin-top: 4px;
+}
+
+.formPane {
+  display: grid;
+  place-items: center;
+  padding: 48px 40px;
+}
+
+.form {
+  width: 100%;
+  max-width: 392px;
+  animation: catfade 0.4s ease;
+}
+
+.title {
+  font: 700 26px/1.15 var(--font-sans);
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+}
+
+.subtitle {
+  font: 400 14px/1.5 var(--font-sans);
+  color: var(--ink2);
+  margin: 0 0 26px;
+}
+
+.label {
+  display: block;
+  font: 600 12px var(--font-sans);
+  color: var(--ink2);
+  margin-bottom: 7px;
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 7px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.linkButton {
+  background: none;
+  border: none;
+  padding: 0;
+  font: 600 12px var(--font-sans);
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.demoBox {
+  background: var(--surface2);
+  border: 1px solid var(--line2);
+  border-radius: 10px;
+  padding: 13px 15px;
+  margin-bottom: 18px;
+}
+
+.demoTitle {
+  font: 700 10.5px var(--font-mono);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 9px;
+}
+
+.demoList {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.demoRow {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.demoRole {
+  font: 600 11.5px var(--font-sans);
+  color: var(--ink2);
+  width: 58px;
+  flex: none;
+}
+
+.demoCreds {
+  font: 500 11.5px var(--font-mono);
+  color: var(--ink);
+}
+
+.demoFill {
+  margin-top: 11px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 6px 11px;
+  font: 600 11.5px var(--font-sans);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.error {
+  background: var(--badS);
+  color: var(--bad);
+  border-radius: 9px;
+  padding: 10px 12px;
+  font: 600 12.5px var(--font-sans);
+  margin-bottom: 14px;
+}
+
+.notice {
+  background: var(--okS);
+  color: var(--ok);
+  border-radius: 9px;
+  padding: 10px 12px;
+  font: 600 12.5px var(--font-sans);
+  margin-bottom: 14px;
+}
+
+.submit {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 11px;
+  padding: 13px;
+  font: 700 14.5px var(--font-sans);
+  cursor: pointer;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: filter 0.15s ease;
+}
+
+.submit:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.footer {
+  font: 400 13px var(--font-sans);
+  color: var(--ink2);
+  text-align: center;
+  margin: 20px 0 0;
+}
+
+.footerLink {
+  background: none;
+  border: none;
+  padding: 0;
+  font: 700 13px var(--font-sans);
+  color: var(--accent);
+  cursor: pointer;
+}
+
+/* Password strength meter — three segments that fill as the password grows. */
+.strength {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.strengthBar {
+  height: 4px;
+  flex: 1;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+.strengthBar[data-on='1'] {
+  background: var(--bad);
+}
+.strengthBar[data-on='2'] {
+  background: var(--warn);
+}
+.strengthBar[data-on='3'] {
+  background: var(--ok);
+}
+
+@media (max-width: 900px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 36px 28px;
+    gap: 32px;
+  }
+
+  .heroTitle {
+    font-size: 40px;
+  }
+
+  .formPane {
+    padding: 36px 24px 56px;
+  }
+}

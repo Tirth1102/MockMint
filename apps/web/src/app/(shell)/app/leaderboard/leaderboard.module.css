@@ -1,0 +1,67 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line2);
+  background: transparent;
+}
+
+.row[data-self='true'] {
+  background: var(--accent2);
+}
+
+.rank {
+  width: 30px;
+  font: 700 14px var(--font-mono);
+  color: var(--ink3);
+}
+
+.rank[data-top='true'] {
+  color: var(--accent);
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface2);
+  color: var(--ink2);
+  display: grid;
+  place-items: center;
+  font: 700 11.5px var(--font-sans);
+  flex: none;
+}
+
+.name {
+  font: 700 13px var(--font-sans);
+}
+
+.stats {
+  margin-left: auto;
+  display: flex;
+  gap: 26px;
+  align-items: center;
+}
+
+.statBlock {
+  text-align: right;
+}
+
+.pctBlock {
+  width: 64px;
+}
+
+.statValue {
+  font: 700 13px var(--font-mono);
+}
+
+.pctValue {
+  font: 700 13px var(--font-mono);
+  color: var(--accent);
+}
+
+.statLabel {
+  font: 500 10.5px var(--font-sans);
+  color: var(--ink3);
+}

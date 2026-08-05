@@ -1,0 +1,260 @@
+.intro h1 {
+  font: 400 34px/1.1 var(--font-serif);
+  letter-spacing: -0.01em;
+  margin: 0 0 6px;
+}
+
+.intro p {
+  font: 400 14px var(--font-sans);
+  color: var(--ink2);
+  margin: 0;
+}
+
+/* Resume banner for an unfinished attempt. */
+.resume {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--accent2);
+  border: 1px solid var(--accent);
+  border-radius: 14px;
+  padding: 16px 20px;
+  flex-wrap: wrap;
+}
+
+.resumeIcon {
+  font-size: 19px;
+}
+
+.resumeTitle {
+  font: 700 13.5px var(--font-sans);
+}
+
+.resumeSub {
+  font: 500 12.5px var(--font-sans);
+  color: var(--ink2);
+  margin-top: 2px;
+}
+
+.resumeActions {
+  margin-left: auto;
+  display: flex;
+  gap: 9px;
+}
+
+/* ---------------------------------------------------------------- stats */
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+}
+
+.statCard {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 17px 18px;
+  box-shadow: 0 1px 2px var(--shadow);
+}
+
+.statLabel {
+  font: 600 11.5px var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.statValueRow {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 9px;
+}
+
+.statValue {
+  font: 700 28px var(--font-mono);
+  letter-spacing: -0.02em;
+}
+
+.statUnit {
+  font: 600 12px var(--font-sans);
+  color: var(--ink3);
+}
+
+.statDelta {
+  font: 600 11.5px var(--font-sans);
+  margin-top: 7px;
+}
+
+.statDelta[data-tone='ok'] {
+  color: var(--ok);
+}
+.statDelta[data-tone='bad'] {
+  color: var(--bad);
+}
+.statDelta[data-tone='muted'] {
+  color: var(--ink3);
+}
+
+/* ---------------------------------------------------------------- layout */
+
+.split {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 16px;
+}
+
+.trendHead {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.trendCount {
+  font: 500 12px var(--font-sans);
+  color: var(--ink3);
+  margin-left: auto;
+}
+
+.strengthList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.strengthNote {
+  font: 500 11.5px var(--font-sans);
+  color: var(--ink3);
+  margin-top: 5px;
+}
+
+/* ---------------------------------------------------------------- recent */
+
+.recentRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line2);
+}
+
+.recentBadge {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--surface2);
+  display: grid;
+  place-items: center;
+  font: 700 11px var(--font-mono);
+  color: var(--ink2);
+  flex: none;
+}
+
+.recentName {
+  font: 700 13px var(--font-sans);
+}
+
+.recentMeta {
+  font: 500 11.5px var(--font-sans);
+  color: var(--ink3);
+  margin-top: 2px;
+}
+
+.recentScore {
+  margin-left: auto;
+  text-align: right;
+}
+
+.recentScoreValue {
+  font: 700 15px var(--font-mono);
+}
+
+.recentPct {
+  font: 600 11px var(--font-sans);
+  color: var(--ink3);
+}
+
+/* ---------------------------------------------------------------- coach */
+
+.sideColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.coach {
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.coachEyebrow {
+  font: 600 11px var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin-bottom: 11px;
+}
+
+.coachHeadline {
+  font: 400 18px/1.4 var(--font-serif);
+  margin-bottom: 14px;
+  text-wrap: pretty;
+}
+
+.coachBody {
+  font: 400 13px/1.6 var(--font-sans);
+  opacity: 0.68;
+}
+
+.coachCta {
+  margin-top: 16px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  padding: 10px 15px;
+  font: 700 12.5px var(--font-sans);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.coachCta:hover {
+  text-decoration: none;
+  color: #fff;
+  filter: brightness(1.08);
+}
+
+.streakCard {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 1px 2px var(--shadow);
+}
+
+.streakTitle {
+  font: 700 13.5px var(--font-sans);
+  margin-bottom: 13px;
+}
+
+.streakLine {
+  font: 500 11.5px var(--font-sans);
+  color: var(--ink3);
+  margin-top: 11px;
+}
+
+@media (max-width: 940px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+
+  .resumeActions {
+    margin-left: 0;
+    width: 100%;
+  }
+}

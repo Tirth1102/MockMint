@@ -1,0 +1,382 @@
+.shell {
+  display: flex;
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+/* ---------------------------------------------------------------- sidebar */
+
+.sidebar {
+  flex: 0 0 244px;
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+  padding: 22px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.brand:hover {
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--accent);
+  display: grid;
+  place-items: center;
+  font: 800 13px var(--font-sans);
+  color: #fff;
+}
+
+.brandName {
+  font: 700 14.5px var(--font-sans);
+  letter-spacing: -0.01em;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+}
+
+.navGroup {
+  font: 700 10.5px var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  padding: 6px 10px 4px;
+}
+
+.navGroupSpaced {
+  padding-top: 16px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  padding: 9px 10px;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  font: 600 13.5px var(--font-sans);
+  background: transparent;
+  color: var(--ink2);
+  text-decoration: none;
+}
+
+.navItem:hover {
+  background: var(--surface2);
+  text-decoration: none;
+  color: var(--ink2);
+}
+
+.navItem[data-active='true'] {
+  background: var(--accent2);
+  color: var(--accent);
+}
+
+.navIcon {
+  font-size: 14px;
+  width: 17px;
+  display: inline-block;
+  text-align: center;
+  opacity: 0.9;
+}
+
+.navBadge {
+  margin-left: auto;
+  font: 700 10.5px var(--font-mono);
+  background: var(--accent2);
+  color: var(--accent);
+  padding: 2px 6px;
+  border-radius: 5px;
+}
+
+.sidebarFooter {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.themeToggle {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--ink2);
+  font: 600 12.5px var(--font-sans);
+  cursor: pointer;
+}
+
+.account {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 8px;
+  border-top: 1px solid var(--line2);
+}
+
+.avatar {
+  width: 31px;
+  height: 31px;
+  border-radius: 50%;
+  background: var(--accent2);
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+  font: 700 12px var(--font-sans);
+  flex: none;
+}
+
+.accountText {
+  min-width: 0;
+}
+
+.accountName {
+  font: 700 12.5px var(--font-sans);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.accountRole {
+  font: 500 11px var(--font-sans);
+  color: var(--ink3);
+}
+
+.logout {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--ink3);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* ---------------------------------------------------------------- main */
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 30px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.pageTitle {
+  font: 700 16.5px var(--font-sans);
+  letter-spacing: -0.01em;
+}
+
+.pageSub {
+  font: 500 12px var(--font-sans);
+  color: var(--ink3);
+  margin-top: 2px;
+}
+
+.headerRight {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface2);
+  border: 1px solid var(--line2);
+  border-radius: 9px;
+  padding: 8px 11px;
+  width: 230px;
+}
+
+.searchIcon {
+  color: var(--ink3);
+  font-size: 13px;
+}
+
+.searchInput {
+  border: none;
+  background: none;
+  color: var(--ink);
+  font-size: 13px;
+  width: 100%;
+  outline: none;
+}
+
+.bell {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--ink2);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.bellDot {
+  position: absolute;
+  top: 6px;
+  right: 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.notifPanel {
+  position: absolute;
+  top: 68px;
+  right: 30px;
+  width: 340px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 14px 40px var(--sh2);
+  z-index: 60;
+  overflow: hidden;
+  animation: catpop 0.16s ease;
+}
+
+.notifHead {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--line2);
+  font: 700 13px var(--font-sans);
+  display: flex;
+  align-items: center;
+}
+
+.notifClose {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--ink3);
+  cursor: pointer;
+}
+
+.notifRow {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line2);
+  display: flex;
+  gap: 11px;
+}
+
+.notifDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex: none;
+}
+
+.notifBody {
+  font: 600 12.8px/1.45 var(--font-sans);
+}
+
+.notifWhen {
+  font: 500 11.5px var(--font-sans);
+  color: var(--ink3);
+  margin-top: 3px;
+}
+
+.notifEmpty {
+  padding: 26px 16px;
+  text-align: center;
+  font: 500 12.5px var(--font-sans);
+  color: var(--ink3);
+}
+
+.content {
+  padding: 28px 30px 60px;
+  max-width: 1240px;
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------- responsive */
+
+@media (max-width: 1000px) {
+  .shell {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+    flex: none;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .sidebarFooter {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .account {
+    border-top: none;
+    margin-left: auto;
+  }
+
+  .content {
+    padding: 20px 16px 48px;
+  }
+
+  .header {
+    padding: 14px 16px;
+  }
+
+  .search {
+    display: none;
+  }
+
+  .notifPanel {
+    right: 16px;
+    width: min(340px, calc(100vw - 32px));
+  }
+}

@@ -1,0 +1,96 @@
+.chartSvg {
+  width: 100%;
+  overflow: visible;
+}
+
+.gridLabel {
+  font: 500 9.5px var(--font-mono);
+}
+
+.dotLabel {
+  font: 600 9.5px var(--font-sans);
+}
+
+.chartEmpty {
+  padding: 40px 0;
+  text-align: center;
+  font: 500 12.5px var(--font-sans);
+  color: var(--ink3);
+}
+
+/* ---------------------------------------------------------------- heatmap */
+
+.heat {
+  display: grid;
+  gap: 4px;
+}
+
+.heatCell {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: var(--surface2);
+}
+
+.heatCell[data-level='1'] {
+  background: color-mix(in oklab, var(--accent) 22%, var(--surface2));
+}
+.heatCell[data-level='2'] {
+  background: color-mix(in oklab, var(--accent) 45%, var(--surface2));
+}
+.heatCell[data-level='3'] {
+  background: color-mix(in oklab, var(--accent) 70%, var(--surface2));
+}
+.heatCell[data-level='4'] {
+  background: var(--accent);
+}
+
+.heatScale {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font: 500 11.5px var(--font-sans);
+  color: var(--ink3);
+}
+
+.heatScaleCell {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+}
+
+/* ---------------------------------------------------------------- bars */
+
+.barColumns {
+  display: flex;
+  align-items: flex-end;
+  gap: 9px;
+  height: 160px;
+}
+
+.barColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 7px;
+  height: 100%;
+}
+
+.bar {
+  width: 100%;
+  border-radius: 5px 5px 0 0;
+  transform-origin: bottom;
+  animation: catgrow 0.5s ease;
+}
+
+.barLabel {
+  font: 600 9.5px var(--font-sans);
+  color: var(--ink3);
+  text-align: center;
+}
+
+.barValue {
+  font: 700 11px var(--font-mono);
+  text-align: center;
+}

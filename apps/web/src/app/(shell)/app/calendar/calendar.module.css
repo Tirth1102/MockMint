@@ -1,0 +1,74 @@
+.head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.stats {
+  display: flex;
+  gap: 26px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line2);
+  flex-wrap: wrap;
+}
+
+.statValue {
+  font: 700 20px var(--font-mono);
+}
+
+.statLabel {
+  font: 500 11.5px var(--font-sans);
+  color: var(--ink3);
+  margin-top: 3px;
+}
+
+.modes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.mode {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modeIcon {
+  font-size: 17px;
+  margin-bottom: 9px;
+}
+
+.modeTitle {
+  font: 700 13.5px var(--font-sans);
+}
+
+.modeBody {
+  font: 400 12.5px/1.55 var(--font-sans);
+  color: var(--ink3);
+  margin-top: 5px;
+}
+
+.modeCta {
+  margin-top: 13px;
+  align-self: flex-start;
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 13px;
+  font: 600 12.5px var(--font-sans);
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.modeCta:hover {
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--line2);
+}

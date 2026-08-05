@@ -1,0 +1,21 @@
+node_modules/
+dist/
+build/
+.next/
+out/
+coverage/
+
+.env
+.env.local
+.env.*.local
+
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+*.tsbuildinfo
+.turbo/
+
+# Claude Design handoff bundle — source material, not build input
+"CAT PYQ Platform prototype-handoff.zip"

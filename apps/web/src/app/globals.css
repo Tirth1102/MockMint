@@ -1,0 +1,179 @@
+/**
+ * MockMint design tokens.
+ *
+ * Values are ported verbatim from the prototype's `:root` / `[data-cattheme="dark"]`
+ * blocks. Dark mode is driven by `data-cattheme` on <html>, set before hydration by
+ * the inline script in layout.tsx so there is no flash of the wrong theme.
+ */
+
+:root {
+  --paper: #f2efe8;
+  --surface: #fffdf9;
+  --surface2: #f7f4ed;
+  --line: rgba(18, 20, 24, 0.11);
+  --line2: rgba(18, 20, 24, 0.06);
+  --ink: #15171b;
+  --ink2: #5c6169;
+  --ink3: #8b9099;
+  --accent: #b0501e;
+  --accent2: #f0e2d6;
+  --ok: #2c7a5b;
+  --okS: #e2f0ea;
+  --warn: #b5860f;
+  --warnS: #f6eed6;
+  --bad: #a93a31;
+  --badS: #f7e4e1;
+  --info: #39548f;
+  --infoS: #e4e9f5;
+  --shadow: rgba(18, 20, 24, 0.07);
+  --sh2: rgba(18, 20, 24, 0.13);
+
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+
+[data-cattheme='dark'] {
+  --paper: #0f1114;
+  --surface: #171a1f;
+  --surface2: #1e2228;
+  --line: rgba(255, 255, 255, 0.11);
+  --line2: rgba(255, 255, 255, 0.06);
+  --ink: #ecebe6;
+  --ink2: #9aa0aa;
+  --ink3: #6c737d;
+  --accent: #e08a4e;
+  --accent2: #33261c;
+  --ok: #5cc196;
+  --okS: #17281f;
+  --warn: #e0b64a;
+  --warnS: #2a2415;
+  --bad: #e4796d;
+  --badS: #2c1a18;
+  --info: #8fabe6;
+  --infoS: #1a2032;
+  --shadow: rgba(0, 0, 0, 0.4);
+  --sh2: rgba(0, 0, 0, 0.55);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+input,
+button,
+select,
+textarea {
+  font-family: inherit;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+::placeholder {
+  color: var(--ink3);
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+/* Prototype keyframes, kept under the same names. */
+@keyframes catfade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes catpop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes catpulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes catgrow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Visually hidden but available to assistive tech. */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

@@ -1,0 +1,30 @@
+{
+  "name": "mockmint",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MockMint — CAT previous-year paper platform",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "npm-run-all --parallel dev:api dev:web",
+    "dev:api": "npm run dev --workspace @mockmint/api",
+    "dev:web": "npm run dev --workspace @mockmint/web",
+    "build": "npm run build --workspace @mockmint/shared && npm run build --workspace @mockmint/api && npm run build --workspace @mockmint/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:migrate": "npm run migrate --workspace @mockmint/api",
+    "db:seed": "npm run seed --workspace @mockmint/api",
+    "db:reset": "npm run migrate --workspace @mockmint/api -- --fresh && npm run seed --workspace @mockmint/api"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.6.3"
+  }
+}

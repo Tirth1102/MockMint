@@ -1,0 +1,486 @@
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+  gap: 14px;
+}
+
+.statCard {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 17px 18px;
+  box-shadow: 0 1px 2px var(--shadow);
+}
+
+.statLabel {
+  font: 600 11px var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.statValue {
+  font: 700 26px var(--font-mono);
+  letter-spacing: -0.02em;
+  margin-top: 8px;
+}
+
+.statDelta {
+  font: 600 11.5px var(--font-sans);
+  margin-top: 6px;
+}
+
+.statDelta[data-tone='ok'] {
+  color: var(--ok);
+}
+.statDelta[data-tone='bad'] {
+  color: var(--bad);
+}
+.statDelta[data-tone='muted'] {
+  color: var(--ink3);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 16px;
+}
+
+.half {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.spanAll {
+  grid-column: span 2;
+}
+
+.barList {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.diffGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.diffCard {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.diffHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.diffPct {
+  font: 700 17px var(--font-mono);
+}
+
+.diffNote {
+  font: 500 11.5px var(--font-sans);
+  color: var(--ink3);
+  margin-top: 9px;
+}
+
+/* ---------------------------------------------------------------- questions */
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.selectShell {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 7px 11px;
+}
+
+.selectLabel {
+  font: 700 10.5px var(--font-mono);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  white-space: nowrap;
+}
+
+.bareSelect {
+  border: none;
+  background: none;
+  color: var(--ink);
+  font: 700 13px var(--font-sans);
+  outline: none;
+  cursor: pointer;
+  max-width: 220px;
+}
+
+.pushRight {
+  margin-left: auto;
+}
+
+.questionRow {
+  grid-template-columns: 120px 78px 74px 1fr 140px 84px 130px;
+  min-width: 940px;
+  padding: 13px 18px;
+}
+
+.code {
+  font: 600 11.5px var(--font-mono);
+  color: var(--ink3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sec {
+  font: 700 11.5px var(--font-sans);
+}
+
+.type {
+  font: 600 11px var(--font-sans);
+  color: var(--info);
+}
+
+.stem {
+  font: 500 12.5px var(--font-sans);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topic {
+  font: 500 11.5px var(--font-sans);
+  color: var(--ink2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rowActions {
+  display: flex;
+  gap: 7px;
+  justify-content: flex-end;
+}
+
+.tableFoot {
+  padding: 13px 18px;
+  font: 500 12px var(--font-sans);
+  color: var(--ink3);
+}
+
+/* ---------------------------------------------------------------- question modal */
+
+.qModal {
+  max-width: 720px;
+}
+
+.qModalHead {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--line2);
+  display: flex;
+  align-items: center;
+}
+
+.qModalTitle {
+  font: 700 15.5px var(--font-sans);
+}
+
+.qModalSub {
+  font: 500 12px var(--font-sans);
+  color: var(--ink3);
+  margin-top: 2px;
+}
+
+.qModalClose {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--ink3);
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.qModalBody {
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.quadGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.tripleGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.optionRows {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Click the circle to set the correct answer. */
+.optionPick {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  background: transparent;
+  color: var(--ink3);
+  font: 700 11px var(--font-mono);
+  cursor: pointer;
+}
+
+.optionPick[data-correct='true'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.qModalFoot {
+  padding: 18px 24px;
+  border-top: 1px solid var(--line2);
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* ---------------------------------------------------------------- papers */
+
+.papersGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 16px;
+}
+
+.builderGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px;
+}
+
+.builderWide {
+  grid-column: span 2;
+}
+
+.builderSections {
+  border-top: 1px solid var(--line2);
+  margin: 18px 0;
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.builderSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.builderKey {
+  font: 700 12.5px var(--font-sans);
+  width: 52px;
+}
+
+.builderNote {
+  flex: 1;
+  font: 500 12px var(--font-sans);
+  color: var(--ink3);
+}
+
+.builderCount {
+  font: 700 12px var(--font-mono);
+}
+
+.paperRow {
+  grid-template-columns: 1.5fr 56px 84px 84px 158px;
+  min-width: 640px;
+  padding: 13px 18px;
+}
+
+.paperName {
+  font: 700 12.5px var(--font-sans);
+}
+
+.paperMeta {
+  font: 500 11px var(--font-sans);
+  color: var(--ink3);
+  margin-top: 2px;
+}
+
+/* ---------------------------------------------------------------- upload */
+
+.uploadGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.dropzone {
+  border: 1.5px dashed var(--line);
+  border-radius: 12px;
+  padding: 34px;
+  text-align: center;
+  background: var(--surface2);
+  transition: border-color 0.15s ease;
+}
+
+.dropzone[data-dragging='true'] {
+  border-color: var(--accent);
+}
+
+.dropIcon {
+  font-size: 22px;
+  margin-bottom: 11px;
+}
+
+.dropTitle {
+  font: 700 13.5px var(--font-sans);
+  margin-bottom: 5px;
+}
+
+.dropSub {
+  font: 500 12px var(--font-sans);
+  color: var(--ink3);
+  margin-bottom: 15px;
+}
+
+.formatRow {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.formatCard {
+  flex: 1;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 11px 12px;
+}
+
+.formatExt {
+  font: 700 12px var(--font-mono);
+}
+
+.formatNote {
+  font: 500 11px var(--font-sans);
+  color: var(--ink3);
+  margin-top: 3px;
+}
+
+.schemaBlock {
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 14px;
+  font: 500 11.5px/1.9 var(--font-mono);
+  color: var(--ink2);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.reportRow {
+  display: flex;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--line2);
+  align-items: flex-start;
+}
+
+.reportNo {
+  font: 700 11px var(--font-mono);
+  color: var(--ink3);
+  width: 52px;
+  flex: none;
+}
+
+.reportStatus {
+  font: 700 10.5px var(--font-sans);
+  padding: 3px 8px;
+  border-radius: 5px;
+  flex: none;
+}
+
+.reportMsg {
+  font: 500 12.5px/1.5 var(--font-sans);
+  color: var(--ink2);
+}
+
+/* ---------------------------------------------------------------- users */
+
+.userRow {
+  grid-template-columns: 1.6fr 80px 80px 90px 90px 210px;
+  min-width: 880px;
+  padding: 13px 18px;
+}
+
+.userCell {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.userAvatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--surface2);
+  color: var(--ink2);
+  display: grid;
+  place-items: center;
+  font: 700 11px var(--font-sans);
+  flex: none;
+}
+
+.userName {
+  font: 700 12.5px var(--font-sans);
+}
+
+.userEmail {
+  font: 500 11px var(--font-sans);
+  color: var(--ink3);
+}
+
+@media (max-width: 1100px) {
+  .split,
+  .half,
+  .papersGrid,
+  .uploadGrid,
+  .diffGrid,
+  .quadGrid,
+  .tripleGrid,
+  .builderGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .spanAll,
+  .builderWide {
+    grid-column: span 1;
+  }
+}
