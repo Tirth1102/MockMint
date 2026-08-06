@@ -8,7 +8,7 @@
     "apps/*"
   ],
   "engines": {
-    "node": "20.x"
+    "node": ">=20"
   },
   "scripts": {
     "dev": "npm-run-all --parallel dev:api dev:web",

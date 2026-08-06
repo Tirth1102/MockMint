@@ -20,7 +20,7 @@ const isProd = process.env.NODE_ENV === 'production';
 export const config = {
   env: process.env.NODE_ENV ?? 'development',
   isProd,
-  port: Number(process.env.API_PORT ?? 4000),
+  port: Number(process.env.PORT ?? process.env.API_PORT ?? 4000),
 
   databaseUrl: required('DATABASE_URL', 'postgres://mockmint:mockmint@localhost:5432/mockmint'),
   redisUrl: process.env.REDIS_URL ?? 'redis://localhost:6379',
