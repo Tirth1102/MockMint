@@ -7,7 +7,13 @@
  */
 import type { ApiError, AuthResponse, User } from '@mockmint/shared';
 
-export const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+// In production, use a relative base so the browser sends /api/* requests to
+// the same Vercel origin — the rewrite in next.config.mjs forwards them to Render.
+// This keeps cookies same-site and eliminates cross-domain refresh failures.
+export const API_URL =
+  process.env.NODE_ENV === 'production'
+    ? ''
+    : (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000');
 
 let accessToken: string | null = null;
 let refreshPromise: Promise<boolean> | null = null;
