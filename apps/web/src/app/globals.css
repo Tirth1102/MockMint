@@ -92,6 +92,18 @@ textarea {
   font-family: inherit;
 }
 
+/* Fix select dropdown visibility in dark mode */
+[data-cattheme='dark'] select {
+  background: var(--surface2);
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+[data-cattheme='dark'] select option {
+  background: var(--surface2);
+  color: var(--ink);
+}
+
 input:focus,
 textarea:focus,
 select:focus,

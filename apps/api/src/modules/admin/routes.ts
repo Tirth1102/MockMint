@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import { z } from 'zod';
+import ExcelJS from 'exceljs';
 import {
   DIFFICULTIES,
   SECTIONS,
@@ -645,6 +646,78 @@ adminRouter.post(
   }),
 );
 
+/** Returns a pre-filled .xlsx template the admin can fill in and re-upload. */
+adminRouter.get(
+  '/uploads/template',
+  asyncHandler(async (_req, res) => {
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = 'MockMint';
+    const sheet = workbook.addWorksheet('Questions');
+
+    sheet.columns = [
+      { header: 'section', key: 'section', width: 10 },
+      { header: 'type', key: 'type', width: 8 },
+      { header: 'passage_id', key: 'passage_id', width: 12 },
+      { header: 'stem', key: 'stem', width: 45 },
+      { header: 'option_a', key: 'option_a', width: 22 },
+      { header: 'option_b', key: 'option_b', width: 22 },
+      { header: 'option_c', key: 'option_c', width: 22 },
+      { header: 'option_d', key: 'option_d', width: 22 },
+      { header: 'correct', key: 'correct', width: 10 },
+      { header: 'explanation', key: 'explanation', width: 35 },
+      { header: 'difficulty', key: 'difficulty', width: 12 },
+      { header: 'topic', key: 'topic', width: 22 },
+      { header: 'marks', key: 'marks', width: 8 },
+      { header: 'negative', key: 'negative', width: 10 },
+    ];
+
+    // Style header row
+    const headerRow = sheet.getRow(1);
+    headerRow.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFB0501E' } };
+    headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+
+    // MCQ example row
+    sheet.addRow({
+      section: 'VARC', type: 'MCQ', passage_id: '',
+      stem: "Which of the following best describes the author's tone in the passage?",
+      option_a: 'Cynical and dismissive', option_b: 'Analytical and detached',
+      option_c: 'Hopeful and optimistic', option_d: 'Nostalgic and sentimental',
+      correct: 'B', explanation: 'The author uses objective analysis without emotional language.',
+      difficulty: 'Medium', topic: 'Reading Comprehension', marks: 3, negative: 1,
+    });
+
+    // TITA example row
+    sheet.addRow({
+      section: 'QA', type: 'TITA', passage_id: '',
+      stem: 'If the ratio of A to B is 3:4 and the ratio of B to C is 2:5, find A:C.',
+      option_a: '', option_b: '', option_c: '', option_d: '',
+      correct: '3:10', explanation: 'A:B = 3:4, B:C = 2:5, so A:C = 6:20 = 3:10',
+      difficulty: 'Hard', topic: 'Ratios & Proportions', marks: 3, negative: 0,
+    });
+
+    // DILR MCQ example
+    sheet.addRow({
+      section: 'DILR', type: 'MCQ', passage_id: 'set1',
+      stem: 'Based on the table, which month had the highest sales?',
+      option_a: 'January', option_b: 'March', option_c: 'June', option_d: 'September',
+      correct: 'C', explanation: 'June recorded 4,200 units vs all others below 4,000.',
+      difficulty: 'Easy', topic: 'Data Interpretation · Tables', marks: 3, negative: 1,
+    });
+
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    );
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename="mockmint-questions-template.xlsx"',
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
+  }),
+);
+
 adminRouter.get(
   '/uploads/:jobId',
   asyncHandler(async (req, res) => {
@@ -834,6 +907,39 @@ adminRouter.get(
     }));
 
     res.json({ items, page, pageSize });
+  }),
+);
+
+const createUserSchema = z.object({
+  name: z.string().trim().min(3, 'Name must be at least 3 characters').max(120),
+  email: z.string().trim().toLowerCase().email('Enter a valid email address'),
+  password: z.string().min(8, 'Use at least 8 characters').max(200),
+  role: z.enum(['student', 'admin']).default('student'),
+});
+
+adminRouter.post(
+  '/users',
+  validate(createUserSchema),
+  asyncHandler(async (req, res) => {
+    const { id: adminId } = currentUser(req);
+    const body = req.body as z.infer<typeof createUserSchema>;
+
+    const existing = await queryOne<{ id: string }>(`SELECT id FROM users WHERE email = $1`, [
+      body.email,
+    ]);
+    if (existing) throw conflict('An account with that email already exists.');
+
+    const passwordHash = await hashPassword(body.password);
+    const row = await queryOne<{ id: string; name: string; email: string }>(
+      `INSERT INTO users (name, email, password_hash, role)
+       VALUES ($1, $2, $3, $4)
+       RETURNING id, name, email`,
+      [body.name, body.email, passwordHash, body.role],
+    );
+    if (!row) throw badRequest('Could not create the account.');
+
+    await audit(adminId, 'user.create', row.id, { email: row.email, role: body.role });
+    res.status(201).json({ message: `Account created for ${row.name}` });
   }),
 );
 

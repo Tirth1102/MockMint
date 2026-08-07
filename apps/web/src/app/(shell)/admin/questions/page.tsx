@@ -17,6 +17,8 @@ const SECTION_FILTERS: { id: SectionFilter; label: string }[] = [
   { id: 'QA', label: 'QA' },
 ];
 
+const PAGE_SIZE = 25;
+
 interface QuestionForm {
   id: string | null;
   sec: SectionKey;
@@ -30,6 +32,7 @@ interface QuestionForm {
   explanation: string;
   marks: string;
   neg: string;
+  imageUrl: string | null;
 }
 
 function emptyForm(): QuestionForm {
@@ -46,6 +49,7 @@ function emptyForm(): QuestionForm {
     explanation: '',
     marks: '3',
     neg: '1',
+    imageUrl: null,
   };
 }
 
@@ -55,6 +59,7 @@ export default function AdminQuestionsPage() {
 
   const [section, setSection] = useState<SectionFilter>('all');
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
   const [items, setItems] = useState<AdminQuestion[]>([]);
   const [total, setTotal] = useState(0);
   const [bankCounts, setBankCounts] = useState<{ key: SectionKey; count: number }[]>([]);
@@ -63,12 +68,20 @@ export default function AdminQuestionsPage() {
   const [form, setForm] = useState<QuestionForm | null>(null);
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState('');
+  const [confirmDelete, setConfirmDelete] = useState<AdminQuestion | null>(null);
 
-  const load = useCallback(async () => {
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
+  const load = useCallback(async (targetPage: number) => {
     if (!selected) return;
     setLoading(true);
     try {
-      const params = new URLSearchParams({ paperId: selected, section, pageSize: '14' });
+      const params = new URLSearchParams({
+        paperId: selected,
+        section,
+        pageSize: String(PAGE_SIZE),
+        page: String(targetPage),
+      });
       if (search.trim()) params.set('q', search.trim());
       const data = await api.get<{
         items: AdminQuestion[];
@@ -87,11 +100,23 @@ export default function AdminQuestionsPage() {
     }
   }, [selected, section, search]);
 
-  // Debounce the search box so typing does not fire a request per keystroke.
+  // Reset to page 1 whenever the filter changes
   useEffect(() => {
-    const id = setTimeout(() => void load(), search ? 300 : 0);
+    setPage(1);
+  }, [selected, section, search]);
+
+  // Debounce search; load immediately for non-search changes
+  useEffect(() => {
+    const id = setTimeout(() => void load(1), search ? 300 : 0);
     return () => clearTimeout(id);
-  }, [load, search]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected, section, search]);
+
+  // Load when page changes (but not on the initial load — that's handled above)
+  useEffect(() => {
+    if (page !== 1) void load(page);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
 
   async function saveQuestion() {
     if (!form || !selected) return;
@@ -126,7 +151,7 @@ export default function AdminQuestionsPage() {
       else await api.post('/api/admin/questions', body);
       flash(form.id ? 'Question updated' : `Question added to ${selectedLabel}`);
       setForm(null);
-      await load();
+      await load(page);
     } catch (err) {
       setFormError(err instanceof ApiRequestError ? err.message : 'Could not save the question');
     } finally {
@@ -134,13 +159,17 @@ export default function AdminQuestionsPage() {
     }
   }
 
-  async function deleteQuestion(question: AdminQuestion) {
-    // Deleting a question also removes it from every past attempt's review, so confirm.
-    if (!window.confirm(`Delete ${question.code}? This cannot be undone.`)) return;
+  async function confirmDeleteQuestion() {
+    if (!confirmDelete) return;
+    const question = confirmDelete;
+    setConfirmDelete(null);
     try {
       await api.delete(`/api/admin/questions/${question.id}`);
       flash('Question deleted');
-      await load();
+      // Go back a page if we just deleted the last item on this page
+      const newPage = items.length === 1 && page > 1 ? page - 1 : page;
+      setPage(newPage);
+      await load(newPage);
     } catch {
       flash('Could not delete that question');
     }
@@ -161,12 +190,15 @@ export default function AdminQuestionsPage() {
       explanation: question.explanation,
       marks: String(question.marks),
       neg: String(question.neg),
+      imageUrl: question.imageUrl,
     });
   }
 
   if (papersLoading) return <div className={ui.loading}>Loading papers…</div>;
 
   const bankSummary = bankCounts.map((c) => `${c.key} ${c.count}`).join(' · ');
+  const from = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
+  const to = Math.min(page * PAGE_SIZE, total);
 
   return (
     <div className={ui.page} style={{ gap: 14 }}>
@@ -248,7 +280,10 @@ export default function AdminQuestionsPage() {
               <div className={styles.code}>{question.code}</div>
               <div className={styles.sec}>{question.sec}</div>
               <div className={styles.type}>{question.type}</div>
-              <div className={styles.stem} title={question.text}>
+              <div className={styles.stem} title={question.text} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                {question.imageUrl ? (
+                  <span title="Has image" style={{ color: 'var(--accent)', fontSize: 12, flexShrink: 0 }}>⊞</span>
+                ) : null}
                 {question.text}
               </div>
               <div className={styles.topic}>{question.topic}</div>
@@ -275,7 +310,7 @@ export default function AdminQuestionsPage() {
                 <button
                   type="button"
                   className={`${ui.btn} ${ui.btnSmall} ${ui.btnDanger}`}
-                  onClick={() => void deleteQuestion(question)}
+                  onClick={() => setConfirmDelete(question)}
                 >
                   Delete
                 </button>
@@ -284,11 +319,74 @@ export default function AdminQuestionsPage() {
           ))
         )}
 
-        <div className={styles.tableFoot}>
-          Showing {items.length} of {total} matching · {selectedLabel} bank holds {bankSummary} (
-          {bankTotal} questions)
+        {/* Footer: bank info + pagination */}
+        <div
+          className={styles.tableFoot}
+          style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}
+        >
+          <span>
+            Showing {from}–{to} of {total} · {selectedLabel} bank holds {bankSummary} ({bankTotal} questions)
+          </span>
+
+          {totalPages > 1 ? (
+            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <button
+                type="button"
+                className={ui.btn}
+                style={{ padding: '4px 10px', fontSize: 12 }}
+                disabled={page <= 1 || loading}
+                onClick={() => setPage((p) => p - 1)}
+              >
+                ← Prev
+              </button>
+              <span style={{ font: '600 12px var(--font-mono)', color: 'var(--ink2)', minWidth: 70, textAlign: 'center' }}>
+                Page {page} / {totalPages}
+              </span>
+              <button
+                type="button"
+                className={ui.btn}
+                style={{ padding: '4px 10px', fontSize: 12 }}
+                disabled={page >= totalPages || loading}
+                onClick={() => setPage((p) => p + 1)}
+              >
+                Next →
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
+
+      {/* Custom delete confirmation modal */}
+      {confirmDelete ? (
+        <div className={ui.modalBackdrop} role="dialog" aria-modal="true">
+          <div className={ui.modal} style={{ maxWidth: 420 }}>
+            <div className={ui.modalPad}>
+              <div className={ui.modalTitle}>Delete question?</div>
+              <div className={ui.modalBody}>
+                <strong>{confirmDelete.code}</strong> will be permanently removed from{' '}
+                {selectedLabel} and all past attempt reviews. This cannot be undone.
+              </div>
+              <div className={ui.modalActions}>
+                <button
+                  type="button"
+                  className={ui.btn}
+                  onClick={() => setConfirmDelete(null)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className={ui.btnPrimary}
+                  style={{ background: 'var(--bad)', borderColor: 'var(--bad)' }}
+                  onClick={() => void confirmDeleteQuestion()}
+                >
+                  Yes, delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       {form ? (
         <QuestionModal
@@ -361,7 +459,6 @@ function QuestionModal({
                 onChange={(e) =>
                   patch({
                     type: e.target.value as QuestionType,
-                    // TITA never carries a penalty.
                     neg: e.target.value === 'TITA' ? '0' : '1',
                   })
                 }
@@ -478,12 +575,37 @@ function QuestionModal({
                 className={ui.btn}
                 style={{ width: '100%', borderStyle: 'dashed' }}
                 disabled
-                title="Needs the signed S3 upload endpoint"
+                title="Image upload coming soon"
               >
                 ⇪ Attach
               </button>
             </div>
           </div>
+
+          {form.imageUrl ? (
+            <div>
+              <label className={ui.label}>Attached image</label>
+              <div
+                style={{
+                  border: '1px solid var(--line)',
+                  borderRadius: 9,
+                  overflow: 'hidden',
+                  maxHeight: 220,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'var(--surface2)',
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={form.imageUrl}
+                  alt="Question image"
+                  style={{ maxWidth: '100%', maxHeight: 220, objectFit: 'contain' }}
+                />
+              </div>
+            </div>
+          ) : null}
 
           {error ? (
             <div className={ui.errorBox} role="alert">

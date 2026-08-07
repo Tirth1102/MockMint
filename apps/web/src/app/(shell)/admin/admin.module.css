@@ -119,12 +119,18 @@
 
 .bareSelect {
   border: none;
-  background: none;
+  background: transparent;
   color: var(--ink);
   font: 700 13px var(--font-sans);
   outline: none;
   cursor: pointer;
   max-width: 220px;
+}
+
+/* Ensure options are readable in dark mode */
+.bareSelect option {
+  background: var(--surface2);
+  color: var(--ink);
 }
 
 .pushRight {

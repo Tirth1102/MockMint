@@ -7,17 +7,12 @@ import { useAuth } from '@/lib/auth-context';
 import { ApiRequestError } from '@/lib/api';
 import styles from '../auth.module.css';
 
-const DEMO = {
-  student: { email: 'aarav@example.com', password: 'demo1234' },
-  admin: { email: 'admin@mockmint.in', password: 'MockMint@2026' },
-};
-
 export default function LoginPage() {
   const { signIn, user, loading } = useAuth();
   const router = useRouter();
 
-  const [email, setEmail] = useState(DEMO.student.email);
-  const [password, setPassword] = useState(DEMO.student.password);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -34,9 +29,13 @@ export default function LoginPage() {
       const next = await signIn(email, password);
       router.replace(next.role === 'admin' ? '/admin' : '/app');
     } catch (err) {
-      setError(
-        err instanceof ApiRequestError ? err.message : 'Could not sign in. Try again shortly.',
-      );
+      if (err instanceof ApiRequestError) {
+        setError(err.message);
+      } else if (err instanceof TypeError) {
+        setError('Cannot reach the server — make sure the API is running on port 4000.');
+      } else {
+        setError('Could not sign in. Try again shortly.');
+      }
       setSubmitting(false);
     }
   }
@@ -76,35 +75,6 @@ export default function LoginPage() {
         onChange={(e) => setPassword(e.target.value)}
         placeholder="••••••••"
       />
-
-      <div className={styles.demoBox}>
-        <div className={styles.demoTitle}>Demo credentials</div>
-        <div className={styles.demoList}>
-          <div className={styles.demoRow}>
-            <span className={styles.demoRole}>Student</span>
-            <span className={styles.demoCreds}>
-              {DEMO.student.email} · {DEMO.student.password}
-            </span>
-          </div>
-          <div className={styles.demoRow}>
-            <span className={styles.demoRole}>Admin</span>
-            <span className={styles.demoCreds}>
-              {DEMO.admin.email} · {DEMO.admin.password}
-            </span>
-          </div>
-        </div>
-        <button
-          type="button"
-          className={styles.demoFill}
-          onClick={() => {
-            setEmail(DEMO.admin.email);
-            setPassword(DEMO.admin.password);
-            setError('');
-          }}
-        >
-          Use admin credentials
-        </button>
-      </div>
 
       {error ? (
         <div className={styles.error} role="alert">

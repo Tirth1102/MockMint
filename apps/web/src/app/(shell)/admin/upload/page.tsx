@@ -2,11 +2,29 @@
 
 import { useRef, useState, type DragEvent } from 'react';
 import type { UploadRowReport } from '@mockmint/shared';
-import { API_URL, apiRequest, ApiRequestError } from '@/lib/api';
+import { API_URL, apiRequest, ApiRequestError, getAccessToken } from '@/lib/api';
 import { useAdminPapers } from '@/lib/admin';
 import { useToast } from '@/lib/toast';
 import ui from '@/components/ui/ui.module.css';
 import styles from '../admin.module.css';
+
+async function downloadTemplate() {
+  const token = getAccessToken();
+  const res = await fetch(`${API_URL}/api/admin/uploads/template`, {
+    credentials: 'include',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  if (!res.ok) return;
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'mockmint-questions-template.xlsx';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
 
 interface UploadResult {
   jobId: string;
@@ -189,9 +207,26 @@ export default function AdminUploadPage() {
         </div>
 
         <div className={ui.card} style={{ padding: 22 }}>
-          <div className={ui.cardTitle}>Expected schema</div>
-          <div className={ui.cardSub} style={{ marginBottom: 13 }}>
-            One row per question. Column order does not matter.
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              marginBottom: 13,
+            }}
+          >
+            <div>
+              <div className={ui.cardTitle}>Expected schema</div>
+              <div className={ui.cardSub}>One row per question. Column order does not matter.</div>
+            </div>
+            <button
+              type="button"
+              className={ui.btnPrimary}
+              style={{ marginLeft: 'auto', whiteSpace: 'nowrap' }}
+              onClick={() => void downloadTemplate()}
+            >
+              ⬇ Download template
+            </button>
           </div>
           <div className={styles.schemaBlock}>{SCHEMA_TEXT}</div>
         </div>
